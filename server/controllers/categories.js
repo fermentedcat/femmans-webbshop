@@ -33,6 +33,19 @@ exports.addNewCategory = (req, res, next) => {
     });
 }
 
+exports.updateOneCategory = (req, res, next) => {
+  const id = req.params.id;
+  const newCategory = {title: "paraply", thumbnail: "bild.jpg", description: "står emot regn"}
+  Category.findByIdAndUpdate(id, newCategory)
+  .then(() => {
+    console.log(newCategory);
+    res.status(204).json();
+   })
+   .catch(err => {
+    res.status(400).end();
+   });
+}
+
 exports.deleteOneCategory = (req, res, next) => {
   const id = req.params.id;
   Category.findByIdAndDelete(id)
