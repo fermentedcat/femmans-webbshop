@@ -4,10 +4,10 @@ exports.getAllProducts = (req, res, next) => {
   Product.find()
     .populate('categories')
     .exec((err, products) => {
-      if (err) res.status(400).end();
+      if (err) res.sendStatus(400);
 
       if (products) res.status(200).json(products);
-      else res.status(404).end();
+      else res.sendStatus(404);
     });
 }
 
