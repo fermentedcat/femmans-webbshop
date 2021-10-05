@@ -35,10 +35,9 @@ exports.addNewCategory = (req, res, next) => {
 
 exports.updateOneCategory = (req, res, next) => {
   const id = req.params.id;
-  const newCategory = {title: "paraply", thumbnail: "bild.jpg", description: "står emot regn"}
-  Category.findByIdAndUpdate(id, newCategory)
+  const { title, thumbnail, description } = req.body;
+  Category.findByIdAndUpdate(id, { title, thumbnail, description })
   .then(() => {
-    console.log(newCategory);
     res.status(204).json();
    })
    .catch(err => {
