@@ -1,11 +1,23 @@
 const Category = require('../models/Category');
 
 exports.addNewCategory = (req, res, next) => {
-  const {title, thumbnail, description} = req.body;
-  const category = new Category({title, thumbnail, description});
+  const { title, thumbnail, description } = req.body;
+  const category = new Category({ title, thumbnail, description });
 
-  category.save((err, result) => {
-    if (err) return res.status(400).end('Något gick fel');
-    res.status(204).end();
-  });
+  category.save()
+    .then(() => {
+      res.staus(201);
+    }).catch(err => {
+      res.status(400).end()
+    });
+}
+
+exports.getAllCategories = (req, res, next) => {
+  Category.find()
+    .then((data) => {
+      res.json(data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }
