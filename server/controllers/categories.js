@@ -33,6 +33,18 @@ exports.addNewCategory = (req, res, next) => {
     });
 }
 
+exports.updateOneCategory = (req, res, next) => {
+  const id = req.params.id;
+  const { title, thumbnail, description } = req.body;
+  Category.findByIdAndUpdate(id, { title, thumbnail, description })
+  .then(() => {
+    res.status(204).json();
+   })
+   .catch(err => {
+    res.status(400).end();
+   });
+}
+
 exports.deleteOneCategory = (req, res, next) => {
   const id = req.params.id;
   Category.findByIdAndDelete(id)
