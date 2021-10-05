@@ -1,5 +1,11 @@
+const Product = require('../models/Product');
+
 exports.getAllProducts = (req, res, next) => {
-  res.send('hejsan');
+  Product.find()
+    .populate('categories', 'title')
+    .exec((err, products) => {
+      console.log(products);
+    });
 }
 
 
