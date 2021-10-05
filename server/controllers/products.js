@@ -6,7 +6,7 @@ exports.getAllProducts = (req, res, next) => {
     .exec((err, products) => {
       if (err) res.status(400).end();
 
-      if (products) res.status(200).json(products).end();
+      if (products) res.status(200).json(products);
       else res.status(404).end();
     });
 }
