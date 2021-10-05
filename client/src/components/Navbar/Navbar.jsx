@@ -14,6 +14,7 @@ export const Navbar = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Webbshopp
                     </Typography>
+                    <Button ><Link to="/">Home</Link></Button>
                     <Button ><Link to="/admin">Admin</Link></Button>
                 </Toolbar>
             </AppBar>
