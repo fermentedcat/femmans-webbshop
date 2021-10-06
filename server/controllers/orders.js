@@ -3,9 +3,12 @@ const Order = require('../models/Order');
 exports.getAllOrders = (req, res, next) => {
 
   Order.find()
-    .populate('user')
+    .populate('user', '-password')
+    .populate('orderRows.product')
     .exec((err, orders) => {
-      console.log(err);
+      if(err){
+          res.sendStatus(500)
+      }
       res.json(orders);
     })
 }
@@ -29,8 +32,8 @@ exports.addNewOrder = (req, res, next) => {
 
   order.save()
     .then(() => {
-      res.status(201);
+      res.sendStatus(201)
     }).catch(err => {
-      res.status(400).end()
+      res.sendStatus(500)
     });
 }
