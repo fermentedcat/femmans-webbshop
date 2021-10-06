@@ -9,3 +9,16 @@ exports.getAllUsers = (req, res, next) => {
       else res.sendStatus(404);
     });
 }
+
+exports.addNewUser = (req, res, next) => {
+  const data = req.body;
+  const newUser = new User(data);
+
+  newUser.save()
+    .then(() => {
+      res.status(201);
+    })
+    .catch(err => {
+      res.status(400).end();
+    });
+}
