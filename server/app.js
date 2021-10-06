@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const productsRoutes = require('./routes/products');
-// const usersRoutes = require('./routes/users');
+const usersRoutes = require('./routes/users');
 // const ordersRoutes = require('./routes/orders');
 const categoriesRoutes = require('./routes/categories');
 
@@ -28,7 +28,7 @@ db.once('open', () => {
 });
 
 app.use('/api/products', productsRoutes);
-// app.use('/api/users', usersRoutes);
+app.use('/api/users', usersRoutes);
 // app.use('/api/orders', ordersRoutes);
 app.use('/api/categories', categoriesRoutes);
 app.use('/', (req, res, next) => {
