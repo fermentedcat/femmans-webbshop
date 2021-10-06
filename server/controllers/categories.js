@@ -27,7 +27,7 @@ exports.addNewCategory = (req, res, next) => {
 
   category.save()
     .then(() => {
-      res.status(201);
+      res.sendStatus(201);
     }).catch(err => {
       res.status(400).end();
     });
