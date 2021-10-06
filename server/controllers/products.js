@@ -11,5 +11,17 @@ exports.getAllProducts = (req, res, next) => {
     });
 }
 
+exports.addNewProduct = (req, res, next) => {
+  const data = req.body;
 
+  const newProduct = new Product(data);
+
+  newProduct.save()
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch(err => {
+      res.status(400).end();
+    });
+}
 
