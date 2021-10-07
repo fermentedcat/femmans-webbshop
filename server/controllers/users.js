@@ -10,6 +10,20 @@ exports.getAllUsers = (req, res, next) => {
     });
 }
 
+exports.getOneUser = (req, res, next) => {
+  const id = req.params.id;
+
+  User.findById(id)
+    .select('-password')
+    .then((user) => {
+      if (user) res.status(200).json(user);
+      else res.status(404).end();
+    })
+    .catch(err => {
+      res.status(400).end();
+    });
+}
+
 exports.addNewUser = (req, res, next) => {
   const data = req.body;
   const newUser = new User(data);
@@ -23,10 +37,11 @@ exports.addNewUser = (req, res, next) => {
     });
 }
 
-exports.getOneUser = (req, res, next) => {
+exports.updateOneUser = (req, res, next) => {
   const id = req.params.id;
+  const data = req.body;
 
-  User.findById(id)
+  User.findByIdAndUpdate(id, data, { new: true })
     .select('-password')
     .then((user) => {
       if (user) res.status(200).json(user);
@@ -34,5 +49,5 @@ exports.getOneUser = (req, res, next) => {
     })
     .catch(err => {
       res.status(400).end();
-    });
+    })
 }
