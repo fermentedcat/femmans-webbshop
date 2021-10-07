@@ -36,3 +36,16 @@ exports.getOneUser = (req, res, next) => {
       res.status(400).end();
     });
 }
+
+exports.deleteOneUser = (req, res, next) => {
+  const id = req.params.id;
+
+  User.findByIdAndDelete(id)
+    .then((user) => {
+      if (user) res.status(204).json();
+      else res.status(404).end();
+    })
+    .catch(err => {
+      res.status(400).end();
+  });
+}
