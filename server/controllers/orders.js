@@ -6,8 +6,8 @@ exports.getAllOrders = (req, res, next) => {
     .populate('user', '-password')
     .populate('orderRows.product')
     .exec((err, orders) => {
-      if(err){
-          res.sendStatus(500)
+      if (err) {
+        res.sendStatus(500)
       }
       res.json(orders);
     })
@@ -15,10 +15,10 @@ exports.getAllOrders = (req, res, next) => {
 
 exports.addNewOrder = (req, res, next) => {
   const orderData = {
-    user: '615d579c23f83bc71e9fc42e', 
+    user: '615d579c23f83bc71e9fc42e',
     orderRows: {
       product: '615d5d2ba6ef1c864de35b81',
-      amount: 1, 
+      amount: 1,
       priceEach: 1000000
     },
     address: {
@@ -35,5 +35,16 @@ exports.addNewOrder = (req, res, next) => {
       res.sendStatus(201)
     }).catch(err => {
       res.sendStatus(500)
+    });
+}
+
+exports.deleteOneOrder = (req, res, next) => {
+  const id = req.params.id;
+  Order.findByIdAndDelete(id)
+    .then(() => {
+      res.status(204).json();
+    })
+    .catch(err => {
+      res.status(400).end();
     });
 }
