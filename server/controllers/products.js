@@ -1,3 +1,4 @@
+const { findByIdAndRemove } = require('../models/Product');
 const Product = require('../models/Product');
 
 exports.getAllProducts = (req, res, next) => {
@@ -37,4 +38,32 @@ exports.addNewProduct = (req, res, next) => {
       res.status(400).end();
     });
 }
+
+exports.updateOneProduct = (req, res, next) => {
+  const id = req.params.id;
+
+  Product.findByIdAndUpdate(id, req.body)
+    .then(() => {
+      res.status(204).json();
+    })
+    .catch(err => {
+      res.status(400).end();
+    });
+}
+
+
+exports.deleteOneProduct = (req, res, next) => {
+  const id = req.params.id;
+
+  Product.findByIdAndDelete(id)
+    .then(() => {
+      res.status(204).json();
+    })
+    .catch(err => {
+      res.status(400).end();
+    });
+}
+
+
+
 
