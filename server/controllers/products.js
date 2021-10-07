@@ -1,4 +1,3 @@
-const { findByIdAndRemove } = require('../models/Product');
 const Product = require('../models/Product');
 
 exports.getAllProducts = (req, res, next) => {
@@ -21,6 +20,18 @@ exports.getOneProduct = (req, res, next) => {
       if (err) res.sendStatus(400);
 
       if (product) res.status(200).json(product);
+      else res.sendStatus(404);
+    });
+}
+
+exports.getProductByCategory = (req, res, next) => {
+  const categoryId = req.params.id;
+  Product.find({ categories: categoryId })
+    .populate('categories')
+    .exec((err, products) => {
+      if (err) return res.sendStatus(400);
+
+      if (products.length > 0) res.status(200).json(products);
       else res.sendStatus(404);
     });
 }
