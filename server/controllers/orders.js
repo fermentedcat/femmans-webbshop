@@ -42,6 +42,8 @@ exports.getOneOrder = (req, res, next) => {
   const id = req.params.id;
 
   Order.findById(id)
+    .populate('user', '-password')
+    .populate('orderRows.product')
     .then(order => {
       if (order) res.status(200).json(order);
       else res.status(404)
