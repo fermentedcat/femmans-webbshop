@@ -1,5 +1,5 @@
-const { findByIdAndRemove } = require('../models/Product');
 const Product = require('../models/Product');
+const format = require('../utils/format');
 
 exports.getAllProducts = (req, res, next) => {
   Product.find()
@@ -25,6 +25,18 @@ exports.getOneProduct = (req, res, next) => {
     });
 }
 
+exports.getProductByCategory = (req, res, next) => {
+  const categoryId = req.params.id;
+  Product.find({ categories: categoryId })
+    .populate('categories')
+    .exec((err, products) => {
+      if (err) return res.sendStatus(400);
+
+      if (products.length > 0) res.status(200).json(products);
+      else res.sendStatus(404);
+    });
+}
+
 exports.addNewProduct = (req, res, next) => {
   const data = req.body;
 
@@ -35,7 +47,8 @@ exports.addNewProduct = (req, res, next) => {
       res.sendStatus(201);
     })
     .catch(err => {
-      res.status(400).end();
+      let errors = format.validationErrors(err)
+      res.status(400).json(errors);
     });
 }
 
@@ -49,7 +62,8 @@ exports.updateOneProduct = (req, res, next) => {
       else res.sendStatus(404).end();
     })
     .catch(err => {
-      res.status(400).end();
+      let errors = format.validationErrors(err)
+      res.status(400).json(errors);
     });
 }
 

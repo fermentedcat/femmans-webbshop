@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const format = require('../utils/format');
 
 exports.getAllUsers = (req, res, next) => {
   User.find()
@@ -33,7 +34,8 @@ exports.addNewUser = (req, res, next) => {
       res.sendStatus(201);
     })
     .catch(err => {
-      res.status(400).end();
+      let errors = format.validationErrors(err)
+      res.status(400).json(errors);
     });
 }
 
@@ -48,8 +50,8 @@ exports.updateOneUser = (req, res, next) => {
       else res.status(404).end();
     })
     .catch(err => {
-      console.log(err)
-      res.status(400).end();
+      let errors = format.validationErrors(err)
+      res.status(400).json(errors);
     });
 }
 
