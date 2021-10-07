@@ -58,7 +58,7 @@ exports.updateOneOrder = (req, res, next) => {
   const id = req.params.id;
   const data = req.body;
 
-  Order.findByIdAndUpdate(id, data, { new: true })
+  Order.findByIdAndUpdate(id, data, { runValidators: true, new: true })
     .then(order => {
       if (order) res.status(200).json(order);
       else res.status(404).end();

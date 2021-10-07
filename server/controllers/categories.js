@@ -35,10 +35,11 @@ exports.addNewCategory = (req, res, next) => {
 
 exports.updateOneCategory = (req, res, next) => {
   const id = req.params.id;
-  const { title, thumbnail, description } = req.body;
-  Category.findByIdAndUpdate(id, { title, thumbnail, description })
-  .then(() => {
-    res.status(204).json();
+  const data = req.body;
+  Category.findByIdAndUpdate(id, data, { runValidators: true, new: true })
+  .then((category) => {
+    if (category) res.status(204).json(category);
+    else res.status(404).end();
    })
    .catch(err => {
     res.status(400).end();
