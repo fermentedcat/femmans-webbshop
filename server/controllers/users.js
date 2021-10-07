@@ -48,6 +48,7 @@ exports.updateOneUser = (req, res, next) => {
       else res.status(404).end();
     })
     .catch(err => {
+      console.log(err)
       res.status(400).end();
     });
 }
@@ -62,5 +63,5 @@ exports.deleteOneUser = (req, res, next) => {
     })
     .catch(err => {
       res.status(400).end();
-  });
+    });
 }
