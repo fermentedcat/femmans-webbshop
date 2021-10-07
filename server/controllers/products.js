@@ -12,6 +12,19 @@ exports.getAllProducts = (req, res, next) => {
     });
 }
 
+exports.getOneProduct = (req, res, next) => {
+  const id = req.params.id;
+
+  Product.findById(id)
+    .populate('categories', '_id title')
+    .exec((err, product) => {
+      if (err) res.sendStatus(400);
+
+      if (product) res.status(200).json(product);
+      else res.sendStatus(404);
+    });
+}
+
 exports.addNewProduct = (req, res, next) => {
   const data = req.body;
 
