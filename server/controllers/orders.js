@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const format = require('../utils/format');
 
 exports.getAllOrders = (req, res, next) => {
 
@@ -25,7 +26,6 @@ exports.getOneOrder = (req, res, next) => {
     })
     .catch(err => {
       res.status(400).end()
-
     });
 }
 
@@ -47,24 +47,25 @@ exports.addNewOrder = (req, res, next) => {
   const order = new Order(orderData);
 
   order.save()
-    .then(() => {
-      res.sendStatus(201)
+    .then((data) => {
+      res.sendStatus(201).json(data)
     }).catch(err => {
-      res.sendStatus(500)
+      let errors = format.validationErrors(err)
+      res.status(400).json(errors);
     });
 }
 
 exports.updateOneOrder = (req, res, next) => {
   const id = req.params.id;
-  const data = req.body;
 
   Order.findByIdAndUpdate(id, data, { runValidators: true, new: true })
     .then(order => {
       if (order) res.status(200).json(order);
       else res.status(404).end();
     })
-    .catch(() => {
-      res.status(400).end();
+    .catch((err) => {
+      let errors = format.validationErrors(err)
+      res.status(400).json(errors);
     });
 }
 
