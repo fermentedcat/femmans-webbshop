@@ -41,7 +41,7 @@ exports.updateOneUser = (req, res, next) => {
   const id = req.params.id;
   const data = req.body;
 
-  User.findByIdAndUpdate(id, data, { new: true })
+  User.findByIdAndUpdate(id, data, { runValidators: true, new: true })
     .select('-password')
     .then((user) => {
       if (user) res.status(200).json(user);
