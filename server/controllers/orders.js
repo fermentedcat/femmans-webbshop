@@ -54,6 +54,19 @@ exports.addNewOrder = (req, res, next) => {
     });
 }
 
+exports.updateOneOrder = (req, res, next) => {
+  const id = req.params.id;
+  const data = req.body;
+
+  Order.findByIdAndUpdate(id, data, { new: true })
+    .then(order => {
+      if (order) res.status(200).json(order);
+      else res.status(404).end();
+    })
+    .catch(() => {
+      res.status(400).end();
+    });
+}
 
 exports.deleteOneOrder = (req, res, next) => {
   const id = req.params.id;
