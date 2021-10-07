@@ -13,6 +13,22 @@ exports.getAllOrders = (req, res, next) => {
     })
 }
 
+exports.getOneOrder = (req, res, next) => {
+  const id = req.params.id;
+
+  Order.findById(id)
+    .populate('user', '-password')
+    .populate('orderRows.product')
+    .then(order => {
+      if (order) res.status(200).json(order);
+      else res.status(404)
+    })
+    .catch(err => {
+      res.status(400).end()
+
+    });
+}
+
 exports.addNewOrder = (req, res, next) => {
   const orderData = {
     user: '615d579c23f83bc71e9fc42e',
@@ -37,6 +53,7 @@ exports.addNewOrder = (req, res, next) => {
       res.sendStatus(500)
     });
 }
+
 
 exports.deleteOneOrder = (req, res, next) => {
   const id = req.params.id;
