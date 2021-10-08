@@ -4,23 +4,15 @@ import { Sidebar } from '../components/Sidebar/Sidebar';
 import { AdminMain } from '../components/AdminMain/AdminMain';
 
 export const AdminPage = () => {
-  const [data, setData] = useState([]);
-
-  const fetchData = (endpoint) => {
-    fetch(`http://localhost:3000/api/${endpoint}`)
-      .then(res => res.json())
-      .then(data => {
-        setData(data)
-      })
-  }
+  const [categoryObject, setCategoryObject] = useState({ category: "default", endpoint: "" });
 
   return (
     <Grid container>
       <Grid item xs={3}>
-        <Sidebar fetchData={fetchData} />
+        <Sidebar setCategoryObject={setCategoryObject} />
       </Grid>
       <Grid item xs={9}>
-        <AdminMain data={data} />
+        <AdminMain categoryObject={categoryObject} />
       </Grid>
     </Grid>
   )
