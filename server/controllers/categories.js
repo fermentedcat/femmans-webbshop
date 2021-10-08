@@ -1,4 +1,5 @@
 const Category = require('../models/Category');
+const format = require('../utils/format');
 
 exports.getAllCategories = (req, res, next) => {
   Category.find()
@@ -26,11 +27,27 @@ exports.addNewCategory = (req, res, next) => {
   const category = new Category({ title, thumbnail, description });
 
   category.save()
-    .then(() => {
-      res.staus(201);
+    .then((data) => {
+      res.sendStatus(201).json(data);
     }).catch(err => {
-      res.status(400).end()
+      let errors = format.validationErrors(err)
+      res.status(400).json(errors);
     });
+}
+
+exports.updateOneCategory = (req, res, next) => {
+  const id = req.params.id;
+  const data = req.body;
+
+  Category.findByIdAndUpdate(id, data, { runValidators: true, new: true })
+  .then((category) => {
+    if (category) res.status(204).json(category);
+    else res.status(404).end();
+   })
+  .catch(err => {
+    let errors = format.validationErrors(err)
+    res.status(400).json(errors);
+  });
 }
 
 exports.deleteOneCategory = (req, res, next) => {
