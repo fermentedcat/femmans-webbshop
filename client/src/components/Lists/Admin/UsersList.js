@@ -10,16 +10,15 @@ import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-export default function UsersList() {
+export const UsersList = () => {
   const [users, setUsers] = useState(null);
 
   useEffect(() => {
     getAll('users').then((data) => {
-      console.log(data)
       setUsers(data)
     })
   }, [])
-  
+
   return (
     <div>
       

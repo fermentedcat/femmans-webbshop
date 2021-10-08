@@ -9,12 +9,11 @@ import IconButton from '@mui/material/IconButton';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function OrdersList() {
+export const OrdersList = () => {
   const [orders, setOrders] = useState(null);
 
   useEffect(() => {
     getAll('orders').then((data) => {
-      console.log(data)
       setOrders(data)
     })
   }, [])

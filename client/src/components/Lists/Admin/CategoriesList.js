@@ -10,12 +10,11 @@ import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-export default function CategoriesList() {
+export const CategoriesList = () => {
   const [categories, setCategories] = useState(null);
 
   useEffect(() => {
     getAll('categories').then((data) => {
-      console.log(data)
       setCategories(data)
     })
   }, [])
