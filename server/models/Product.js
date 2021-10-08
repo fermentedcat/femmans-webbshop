@@ -29,7 +29,7 @@ const ProductSchema = new Schema({
     default: 'https://i.natgeofe.com/n/9135ca87-0115-4a22-8caf-d1bdef97a814/75552_square.jpg'
   }]
 }, {
-  timestamp: true
+  timestamps: true
 });
 
 module.exports = mongoose.model('Product', ProductSchema);

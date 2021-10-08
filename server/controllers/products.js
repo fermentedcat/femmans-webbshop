@@ -47,7 +47,7 @@ exports.addNewProduct = (req, res, next) => {
       res.sendStatus(201);
     })
     .catch(err => {
-      let errors = format.validationErrors(err)
+      let errors = format.validationErrors(err);
       res.status(400).json(errors);
     });
 }
@@ -62,7 +62,7 @@ exports.updateOneProduct = (req, res, next) => {
       else res.sendStatus(404).end();
     })
     .catch(err => {
-      let errors = format.validationErrors(err)
+      let errors = format.validationErrors(err);
       res.status(400).json(errors);
     });
 }

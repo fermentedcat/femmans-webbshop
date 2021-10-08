@@ -49,7 +49,7 @@ const OrderSchema = new Schema({
     default: 0,
   }
 }, {
-  timestamp: true
+  timestamps: true
 });
 
 module.exports = mongoose.model('Order', OrderSchema);
