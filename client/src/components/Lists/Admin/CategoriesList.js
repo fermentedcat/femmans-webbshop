@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getAll } from '../../../api'
+import { getCategories } from '../../../api/api'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -14,7 +14,7 @@ export const CategoriesList = () => {
   const [categories, setCategories] = useState(null);
 
   useEffect(() => {
-    getAll('categories').then((data) => {
+    getCategories().then((data) => {
       setCategories(data)
     })
   }, [])

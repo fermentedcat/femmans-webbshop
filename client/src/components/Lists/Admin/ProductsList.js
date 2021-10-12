@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getAll } from '../../../api'
+import { getProducts } from '../../../api/api'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -13,14 +13,14 @@ export const ProductsList = () => {
   const [products, setProducts] = useState(null);
 
   useEffect(() => {
-    getAll('products').then((data) => {
+    getProducts('products').then((data) => {
+      console.log(data);
       setProducts(data)
-    })
+    }).then(() => { console.log(products) })
   }, [])
 
   return (
     <div>
-      
     </div>
   )
 }
