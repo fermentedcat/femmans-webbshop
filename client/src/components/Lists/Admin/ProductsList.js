@@ -8,19 +8,14 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useFetch } from '../../../hooks/useFetch';
 
 export const ProductsList = () => {
-  const [products, setProducts] = useState(null);
-
-  useEffect(() => {
-    getProducts('products').then((data) => {
-      console.log(data);
-      setProducts(data)
-    }).then(() => { console.log(products) })
-  }, [])
+  const {data, error} = useFetch(getProducts, []);
 
   return (
     <div>
+      {data && data.map(i => <div>{i.title}</div>)}
     </div>
   )
 }
