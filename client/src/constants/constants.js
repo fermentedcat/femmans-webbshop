@@ -4,3 +4,5 @@ export const DATA_CATEGORIES = [
   { category: 'Users', endpoint: 'users' },
   { category: 'Categories', endpoint: 'categories' }
 ]
+
+export const API_BASE_URL = `http://localhost:3000/api/`;
