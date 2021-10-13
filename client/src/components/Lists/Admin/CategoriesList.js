@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getCategories } from '../../../api/api'
+import { useFetch } from '../../../hooks/useFetch';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -11,13 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 
 export const CategoriesList = () => {
-  const [categories, setCategories] = useState(null);
-
-  useEffect(() => {
-    getCategories().then((data) => {
-      setCategories(data)
-    })
-  }, [])
+  const { data: categories, /*error*/ /*updateData*/ } = useFetch(getCategories);
 
   return (
     <div>
