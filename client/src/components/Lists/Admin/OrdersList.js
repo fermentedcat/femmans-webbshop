@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { getAll } from '../../../api'
-import List from '@mui/material/List'
+import React from 'react';
+import { getOrders } from '../../../api/api';
+import { useFetch } from '../../../hooks/useFetch';
+import List from '@mui/material/List';
 
-import { OrderListItem } from './OrderListItem'
+import { OrderListItem } from './OrderListItem';
 
 export const OrdersList = () => {
-  const [orders, setOrders] = useState(null);
+  const {data: orders, /* error, */ updateData} = useFetch(getOrders);
 
-  useEffect(() => {
-    fetchOrders()
-  }, []);
-
-  const fetchOrders = () => {
-    getAll('orders').then((data) => {
-      setOrders(data);
-    });
-  };
 
   return (
     <List dense>
@@ -25,10 +17,10 @@ export const OrdersList = () => {
             <OrderListItem
               key={index}
               order={order}
-              afterUpdate={fetchOrders}
+              afterUpdate={updateData}
             />
-          )
+          );
         })}
     </List>
-  )
-}
+  );
+};
