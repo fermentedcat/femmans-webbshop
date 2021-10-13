@@ -1,43 +1,34 @@
 import React, { useEffect, useState } from 'react'
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import FolderIcon from '@mui/icons-material/Folder';
-import DeleteIcon from '@mui/icons-material/Delete';
-import {getOrders} from '../../../api/api';
+import { getAll } from '../../../api'
+import List from '@mui/material/List'
+
+import { OrderListItem } from './OrderListItem'
 
 export const OrdersList = () => {
   const [orders, setOrders] = useState(null);
 
   useEffect(() => {
-    getOrders().then((data) => {
-      setOrders(data)
-    })
-  }, [])
+    fetchOrders()
+  }, []);
+
+  const fetchOrders = () => {
+    getAll('orders').then((data) => {
+      setOrders(data);
+    });
+  };
 
   return (
     <List dense>
-      {orders && orders.map((order, index) => {
-        return (
-          <ListItem>
-            <ListItemText
-              primary={order._id}
-              secondary={order.status}
+      {orders &&
+        orders.map((order, index) => {
+          return (
+            <OrderListItem
+              key={index}
+              order={order}
+              afterUpdate={fetchOrders}
             />
-            <IconButton edge="end" aria-label="delete">
-              <DeleteIcon />
-            </IconButton>
-            <ListItemAvatar>
-              <Avatar>
-                <FolderIcon />
-              </Avatar>
-            </ListItemAvatar>
-          </ListItem>
-        )
-      })}
-  </List>
+          )
+        })}
+    </List>
   )
 }

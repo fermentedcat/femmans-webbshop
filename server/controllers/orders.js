@@ -22,7 +22,7 @@ exports.getOneOrder = (req, res, next) => {
     .populate('orderRows.product')
     .then(order => {
       if (order) res.status(200).json(order);
-      else res.status(404)
+      else res.status(404).end()
     })
     .catch(err => {
       res.status(400).end()
@@ -31,7 +31,7 @@ exports.getOneOrder = (req, res, next) => {
 
 exports.addNewOrder = (req, res, next) => {
   const orderData = {
-    user: '615d579c23f83bc71e9fc42e',
+    user: '615d68308e37dc66ae8bff1c',
     orderRows: {
       product: '615d5d2ba6ef1c864de35b81',
       amount: 1,
@@ -57,6 +57,7 @@ exports.addNewOrder = (req, res, next) => {
 
 exports.updateOneOrder = (req, res, next) => {
   const id = req.params.id;
+  const data = req.body;
 
   Order.findByIdAndUpdate(id, data, { runValidators: true, new: true })
     .then(order => {
