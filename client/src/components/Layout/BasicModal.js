@@ -39,9 +39,9 @@ export const BasicModal = (props) => {
               {title}
             </Typography>
           )}
-          {descriptions && descriptions.map(desc => {
+          {descriptions && descriptions.map((desc, index) => {
             return (
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              <Typography key={index} id="modal-modal-description" sx={{ mt: 2 }}>
                 {desc}
               </Typography>
             )}
