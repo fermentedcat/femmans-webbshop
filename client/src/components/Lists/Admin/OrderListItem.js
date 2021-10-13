@@ -7,6 +7,9 @@ import { BasicModal } from '../../Layout/BasicModal';
 import { AddressForm } from '../../Form/AddressForm';
 import { OrderTable } from '../../Table/OrderTable';
 
+import { useFetch } from '../../../hooks/useFetch';
+import { deleteOrder } from '../../../api/api';
+
 const StyledListItem = styled(ListItem)(() => ({
   borderBottom: '2px solid #f0f0f0',
   padding: '1em',
@@ -26,7 +29,9 @@ export const OrderListItem = ({ order, afterUpdate }) => {
   const [status, setStatus] = useState(order.status);
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  
+
+  const { error: deleteError, run: deleteRun } = useFetch(deleteOrder, 'token', order._id);
+
   //TODO: useFetch
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
@@ -75,20 +80,10 @@ export const OrderListItem = ({ order, afterUpdate }) => {
     if (!window.confirm('Är du säker på att du vill radera denna order?')) {
       return;
     }
-    const response = await fetch(
-      `http://localhost:3000/api/orders/${order._id}`,
-      {
-        method: 'DELETE',
-      }
-    );
-    if (!response.ok) {
-      console.log('error deleting order');
-      //TODO: set notification?
-    } else {
-      toggleShowModal();
-      afterUpdate();
-      //TODO: set notification?
-    }
+
+    deleteRun();
+    if (deleteError) return console.log(deleteError);
+    afterUpdate();
   };
 
   const toggleShowModal = (order) => {

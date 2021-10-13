@@ -4,13 +4,16 @@ export const useFetch = (callback, ...callbackArguments) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  const updateData = () => {
+  const run = () => {
     callback(...callbackArguments)
-      .then((res) => setData(res.data))
-      .catch((error) => setError(error));
+      .then((res) => {
+        console.log('hejsan');
+        setData(res.data);
+      })
+      .catch((error) => {
+        setError(error);
+      });
   }
 
-  updateData();
-
-  return { data, error, updateData };
+  return { data, setData, error, run };
 };
