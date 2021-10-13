@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getAll } from '../../../api'
+import { getUsers } from '../../../api/api'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -14,7 +14,7 @@ export const UsersList = () => {
   const [users, setUsers] = useState(null);
 
   useEffect(() => {
-    getAll('users').then((data) => {
+    getUsers().then((data) => {
       setUsers(data)
     })
   }, [])
