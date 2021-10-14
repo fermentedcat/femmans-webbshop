@@ -34,9 +34,8 @@ exports.addNewUser = (req, res, next) => {
       res.sendStatus(201);
     })
     .catch(err => {
-      // let errors = format.validationErrors(err)
-      console.log(err);
-      res.status(400).json(err);
+      let errors = format.validationErrors(err);
+      res.status(400).json(errors);
     });
 }
 
