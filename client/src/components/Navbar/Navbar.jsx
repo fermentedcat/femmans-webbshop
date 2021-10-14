@@ -35,8 +35,8 @@ export const Navbar = () => {
 
     const modalForm = modalType === 'login' ? <LoginForm /> : <RegisterForm />
 
-    const loginButton = <StyledButton name="login" onClick={openModal.bind(this)}>{showModal ? 'Jag har inget konto' : 'Logga in'}</StyledButton>;
-    const registerButton = <StyledButton name="register" onClick={openModal.bind(this)}>{showModal ? 'Jag har redan ett konto' : 'Registrera konto'}</StyledButton>;
+    const loginButton = <StyledButton name="login" onClick={openModal.bind(this)}>{showModal ? 'Jag har redan ett konto' : 'Logga in'}</StyledButton>;
+    const registerButton = <StyledButton name="register" onClick={openModal.bind(this)}>{showModal ? 'Jag har inget konto' : 'Registrera konto'}</StyledButton>;
 
     return (
         <Box sx={{ flexGrow: 1 }}>
