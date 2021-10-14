@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const getUsers = (token) => axios({ url: `${API_BASE_URL}users`, headers: { 'x-auth-token': token } })
 export const getUser = (token, id) => axios({ url: `${API_BASE_URL}users/${id}`, headers: { 'x-auth-token': token } })
-export const addUser = (user) => axios({ url: `${API_BASE_URL}users`, data: user })
+export const addUser = (user) => axios({ url: `${API_BASE_URL}users`, method: 'POST', data: user })
 export const updateUser = (token, user, id) => axios({ url: `${API_BASE_URL}users/${id}`, method: 'POST', headers: { 'x-auth-token': token }, data: user })
 export const deleteUser = (token, id) => axios({ url: `${API_BASE_URL}users/${id}`, method: 'DELETE', headers: { 'x-auth-token': token } })
 

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import useInput from '../../hooks/useInput';
-import { Box, TextField, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { address } from '../../constants/formFields';
+import { FormGenerator } from './FormGenerator';
 
 export const AddressForm = ({ order, onSubmitHandler }) => {
   const [formIsValid, setFormIsValid] = useState(false);
@@ -26,21 +27,6 @@ export const AddressForm = ({ order, onSubmitHandler }) => {
     { ...cityInput, ...address.city },
     { ...countryInput, ...address.country },
   ];
-
-  const inputFields = inputs.map((input, index) => {
-    return (
-      <TextField
-        key={index}
-        type={input.type}
-        name={input.name}
-        value={input.value}
-        onChange={input.onChange}
-        onBlur={input.onBlur}
-        label={input.label}
-        required={input.required}
-      />
-    );
-  });
 
   const handleSubmit = () => {
     if (!formIsValid) {
@@ -71,18 +57,10 @@ export const AddressForm = ({ order, onSubmitHandler }) => {
   ]);
 
   return (
-    <>
-      <Box
-        component="form"
-        sx={{
-          '& .MuiTextField-root': { m: 1, width: '25ch' },
-        }}
-      >
-        {inputFields}
-      </Box>
+    <FormGenerator inputs={inputs}>
       <Button onClick={handleSubmit} disabled={!formIsValid}>
         Spara
       </Button>
-    </>
+    </FormGenerator>
   );
 };

@@ -7,9 +7,9 @@ const fullName = {
         validate: validate.string,
         required: true
       },
-      username = {
+      displayName = {
         type: 'text',
-        name: 'username',
+        name: 'displayName',
         label: 'Användarnamn',
         validate: validate.string,
         required: true
@@ -57,8 +57,8 @@ const fullName = {
         required: true
       }
 
-const register =  { fullName, username, email, password };
-export default register;
+const user =  { fullName, displayName, email, password };
+export default user;
 
 export const login =  { email, password };
 export const address =  { street, postalCode, city, country };
