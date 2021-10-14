@@ -8,7 +8,7 @@ export const useFetch = (callback, ...callbackArguments) => {
     callback(...callbackArguments)
       .then((res) => setData(res.data))
       .catch((error) => setError(error));
-  })
+  }, [])
 
-  return { data, error };
+  return { data, setData, error };
 };
