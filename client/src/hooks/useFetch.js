@@ -1,16 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export const useFetch = (callback, ...callbackArguments) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  const updateData = () => {
+  useEffect(() => {
     callback(...callbackArguments)
       .then((res) => setData(res.data))
       .catch((error) => setError(error));
-  }
+  }, [])
 
-  updateData();
-
-  return { data, error, updateData };
+  return { data, setData, error };
 };

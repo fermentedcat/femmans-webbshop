@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { updateOrder } from '../../api/api';
 
 import { styled } from '@mui/material/styles';
 import {
@@ -25,7 +26,7 @@ const StyledTitleHeader = styled(TableCell)(() => ({
   fontWeight: 700,
 }));
 
-export const OrderTable = ({ order, afterUpdate }) => {
+export const OrderTable = ({ order, updateListItem }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [orderRowData, setOrderRowData] = useState(order.orderRows);
 
@@ -35,25 +36,16 @@ export const OrderTable = ({ order, afterUpdate }) => {
 
   const handleUpdateRowQty = async () => {
     const data = { orderRows: orderRowData };
-    console.log(data);
-    const response = await fetch(
-      `http://localhost:3000/api/orders/${order._id}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      }
-    );
-    if (!response.ok) {
-      console.log('error saving update');
-      //TODO: set notification?
-    } else {
-      toggleEditRows();
-      afterUpdate();
-      //TODO: set notification?
+    try {
+      const newOrder = updateOrder('token', data, order._id)
+      updateListItem(newOrder)
+    } catch (error) {
+      console.log(error)
     }
+    finally{
+      toggleEditRows();
+    }
+    
   };
 
   const handleOnChange = (e) => {
