@@ -23,7 +23,7 @@ const StyledBox = styled(Box)(() => ({
 }));
 
 export const BasicModal = (props) => {
-  const { open, onClose, title, descriptions, content, buttons } = props;
+  const { open, onClose, title, descriptions, children} = props;
 
   return (
     <Modal
@@ -47,8 +47,7 @@ export const BasicModal = (props) => {
             )}
           )}
         </StyledBox>
-        {content}
-        {buttons && buttons}
+        {children}
       </Box>
     </Modal>
   );
