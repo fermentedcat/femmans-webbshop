@@ -30,4 +30,4 @@ export const getOrders = (token) => axios({ url: `${API_BASE_URL}orders`, header
 export const getOrder = (token, id) => axios({ url: `${API_BASE_URL}orders/${id}`, headers: { 'x-auth-token': token } });
 export const addOrder = (token, order) => axios({ url: `${API_BASE_URL}orders`, method: 'POST', headers: { 'x-auth-token': token }, data: order });
 export const updateOrder = (token, order, id) => axios({ url: `${API_BASE_URL}orders/${id}`, method: 'POST', headers: { 'x-auth-token': token }, data: order });
-export const deleteOder = (token, id) => axios({ url: `${API_BASE_URL}orders/${id}`, method: 'DELETE', headers: { 'x-auth-token': token } });
+export const deleteOrder = (token, id) => axios({ url: `${API_BASE_URL}orders/${id}`, method: 'DELETE', headers: { 'x-auth-token': token } });
