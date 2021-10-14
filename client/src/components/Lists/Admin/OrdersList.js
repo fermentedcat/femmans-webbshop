@@ -1,19 +1,20 @@
 import React from 'react';
-import { getOrders } from '../../../api/api';
-import { useFetch } from '../../../hooks/useFetch';
+import useApi from '../../../hooks/useApi';
 import List from '@mui/material/List';
 
 import { OrderListItem } from './OrderListItem';
 
 export const OrdersList = () => {
-  const {data: orders, setData: setOrders, error} = useFetch(getOrders);
+  const {
+    data: orders, 
+    error, 
+    callGet: reload, 
+    setData: setOrders
+  } = useApi('orders');
 
+  
   const removeListItem = (id) => {
     setOrders(orders.filter(item => item._id !== id))
-  }
-
-  const updateListItem = (newItem) => {
-    setOrders(orders.map(item => item._id === newItem.id ? newItem : item))
   }
 
   return (
@@ -26,7 +27,7 @@ export const OrdersList = () => {
               key={order._id}
               order={order}
               removeListItem={removeListItem}
-              updateListItem={updateListItem}
+              updateListItem={reload}
             />
           );
         })}

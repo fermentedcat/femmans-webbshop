@@ -6,7 +6,7 @@ import { Button, ListItem, ListItemText, Select, MenuItem } from '@mui/material'
 import { BasicModal } from '../../Layout/BasicModal';
 import { AddressForm } from '../../Form/AddressForm';
 import { OrderTable } from '../../Table/OrderTable';
-import { updateOrder, deleteOrder } from '../../../api/api';
+import useApi from '../../../hooks/useApi';
 
 const StyledListItem = styled(ListItem)(() => ({
   borderBottom: '2px solid #f0f0f0',
@@ -27,33 +27,25 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [orderStatus, setOrderStatus] = useState("");
+  
+  const {callPost, callDelete} = useApi();
+  const endpoint = `orders/${order._id}`;
 
   useEffect(() => {
     setOrderStatus(order.status)
   }, [order])
-  
 
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
-    const currentStatus = orderStatus;
-    setOrderStatus(newStatus);
-    try {
-      const newOrder = await updateOrder('token', {status: newStatus}, order._id)
-      updateListItem(newOrder);
-    } catch (error) {
-      console.log(error)
-      setOrderStatus(currentStatus)
-    }
+    callPost({status: newStatus}, endpoint)
   };
 
   const handleAddressEdit = async (address) => {
     const data = { address: address };
-    try {
-      const newOrder = await updateOrder('token', data, order._id)
-      updateListItem(newOrder)
+    const ok = await callPost(data, endpoint)
+    if (ok) {
+      updateListItem()
       toggleEdit();
-    } catch (error) {
-      console.log(error)  
     }
   }
 
@@ -61,12 +53,8 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
     if (!window.confirm('Är du säker på att du vill radera denna order?')) {
       return;
     }
-    try {
-      await deleteOrder('token', order._id)
-      removeListItem(order._id)
-    } catch (error) {
-      console.log(error)
-    }
+    const ok = await callDelete(endpoint)
+    if (ok) removeListItem(order._id)
   };
 
   const toggleShowModal = () => {
