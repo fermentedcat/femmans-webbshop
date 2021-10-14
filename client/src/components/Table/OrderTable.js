@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { updateOrder } from '../../api/api';
 
 import { styled } from '@mui/material/styles';
 import {
@@ -26,9 +25,10 @@ const StyledTitleHeader = styled(TableCell)(() => ({
   fontWeight: 700,
 }));
 
-export const OrderTable = ({ order, updateListItem }) => {
+export const OrderTable = ({ order, updateHandler, refresh }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [orderRowData, setOrderRowData] = useState(order.orderRows);
+  const endpoint = `orders/${order._id}`;
 
   const toggleEditRows = () => {
     setIsEditing(!isEditing);
@@ -36,16 +36,11 @@ export const OrderTable = ({ order, updateListItem }) => {
 
   const handleUpdateRowQty = async () => {
     const data = { orderRows: orderRowData };
-    try {
-      const newOrder = updateOrder('token', data, order._id)
-      updateListItem(newOrder)
-    } catch (error) {
-      console.log(error)
-    }
-    finally{
+    const ok = updateHandler(data, endpoint);
+    if (ok) {
       toggleEditRows();
+      setTimeout(() => refresh(), 20);
     }
-    
   };
 
   const handleOnChange = (e) => {
@@ -155,11 +150,12 @@ export const OrderTable = ({ order, updateListItem }) => {
           <TableBody>
             {orderRows}
             <TableRow>
-              <StyledTitleHeader align="left" colSpan="3">Summa:</StyledTitleHeader>
+              <StyledTitleHeader align="left" colSpan="3">
+                Summa:
+              </StyledTitleHeader>
               <StyledTitleHeader>{orderTotal}:-</StyledTitleHeader>
             </TableRow>
           </TableBody>
-
         </Table>
       </TableContainer>
       <Button onClick={toggleEditRows}>

@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 import { styled } from '@mui/material/styles';
-import { Button, ListItem, ListItemText, Select, MenuItem } from '@mui/material';
+import {
+  Button,
+  ListItem,
+  ListItemText,
+  Select,
+  MenuItem,
+} from '@mui/material';
 
 import { BasicModal } from '../../Layout/BasicModal';
 import { AddressForm } from '../../Form/AddressForm';
@@ -23,43 +29,46 @@ const StyledSelect = styled(Select)(() => ({
   marginRight: '1em',
 }));
 
-export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
+export const OrderListItem = ({ order, removeListItem, refresh }) => {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [orderStatus, setOrderStatus] = useState("");
-  
-  const {callPost, callDelete} = useApi();
+  const [orderStatus, setOrderStatus] = useState('');
+
+  const { error, callPost, callDelete } = useApi();
   const endpoint = `orders/${order._id}`;
 
   useEffect(() => {
-    setOrderStatus(order.status)
-  }, [order])
+    setOrderStatus(order.status);
+  }, [order]);
 
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
-    callPost({status: newStatus}, endpoint)
+    const ok = callPost({ status: newStatus }, endpoint);
+    if (ok) {
+      setTimeout(() => refresh(), 20);
+    }
   };
 
   const handleAddressEdit = async (address) => {
     const data = { address: address };
-    const ok = await callPost(data, endpoint)
+    const ok = await callPost(data, endpoint);
     if (ok) {
-      updateListItem()
+      refresh();
       toggleEdit();
     }
-  }
+  };
 
   const handleDelete = async (e) => {
     if (!window.confirm('Är du säker på att du vill radera denna order?')) {
       return;
     }
-    const ok = await callDelete(endpoint)
-    if (ok) removeListItem(order._id)
+    const ok = await callDelete(endpoint);
+    if (ok) removeListItem(order._id);
   };
 
   const toggleShowModal = () => {
-    if(showModal){
-      setIsEditing(false)
+    if (showModal) {
+      setIsEditing(false);
     }
     setShowModal(!showModal);
   };
@@ -68,7 +77,7 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
     setIsEditing(!isEditing);
   };
 
-  const timeStamp = new Date(order.createdAt).toLocaleString('se-SE')
+  const timeStamp = new Date(order.createdAt).toLocaleString('se-SE');
 
   return (
     <>
@@ -96,12 +105,15 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
         title={isEditing ? 'Ändra leveransadress' : 'Orderdetaljer'}
         descriptions={[`Order ID ${order._id}`, `Orderdatum: ${timeStamp}`]}
       >
-        {isEditing ? <AddressForm order={order} onSubmitHandler={handleAddressEdit} /> : <OrderTable updateListItem={updateListItem} order={order} />}
-         <Button color={isEditing ? 'warning' : 'primary'} onClick={toggleEdit}>
+        {isEditing ? (
+          <AddressForm order={order} onSubmitHandler={handleAddressEdit} />
+        ) : (
+          <OrderTable refresh={refresh} updateHandler={callPost} order={order} />
+        )}
+        <Button color={isEditing ? 'warning' : 'primary'} onClick={toggleEdit}>
           {isEditing ? 'Ångra' : 'Ändra adress'}
         </Button>
       </BasicModal>
-
     </>
   );
 };

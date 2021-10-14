@@ -8,7 +8,7 @@ export const OrdersList = () => {
   const {
     data: orders, 
     error, 
-    callGet: reload, 
+    callGet: refresh, 
     setData: setOrders
   } = useApi('orders');
 
@@ -27,7 +27,7 @@ export const OrdersList = () => {
               key={order._id}
               order={order}
               removeListItem={removeListItem}
-              updateListItem={reload}
+              refresh={refresh}
             />
           );
         })}

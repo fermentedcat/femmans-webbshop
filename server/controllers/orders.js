@@ -10,7 +10,7 @@ exports.getAllOrders = (req, res, next) => {
       if (err) {
         res.sendStatus(500)
       }
-      res.json(orders);
+      res.status(200).json(orders);
     })
 }
 
@@ -34,8 +34,8 @@ exports.addNewOrder = (req, res, next) => {
     user: '615d68308e37dc66ae8bff1c',
     orderRows: {
       product: '615d5d2ba6ef1c864de35b81',
-      amount: 1,
-      priceEach: 1000000
+      amount: 3,
+      priceEach: 540
     },
     address: {
       street: 'Stoftgatan',
@@ -65,7 +65,7 @@ exports.updateOneOrder = (req, res, next) => {
       else res.status(404).end();
     })
     .catch((err) => {
-      let errors = format.validationErrors(err)
+      // let errors = format.validationErrors(err)
       res.status(400).json(errors);
     });
 }
