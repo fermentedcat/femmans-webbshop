@@ -55,13 +55,21 @@ export const RegisterForm = () => {
       fullNameInput.isValid &&
       displayNameInput.isValid &&
       emailInput.isValid &&
-      passwordInput.isValid
+      passwordInput.isValid &&
+      streetInput.isValid &&
+      postalCodeInput.isValid &&
+      cityInput.isValid &&
+      countryInput.isValid
       );
   }, [
     fullNameInput.isValid,
     displayNameInput.isValid,
     emailInput.isValid,
     passwordInput.isValid,
+    streetInput.isValid,
+    postalCodeInput.isValid,
+    cityInput.isValid,
+    countryInput.isValid
   ]);
 
   const button = <Button onClick={handleSubmit} disabled={!formIsValid}>Registrera</Button>;
