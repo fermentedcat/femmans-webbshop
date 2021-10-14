@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const format = require('../utils/format');
+const jwt = require('jsonwebtoken');
 
 exports.getAllUsers = (req, res, next) => {
   User.find()
@@ -31,11 +32,18 @@ exports.addNewUser = (req, res, next) => {
 
   newUser.save()
     .then(() => {
-      res.sendStatus(201);
+
+      const token = jwt.sign(
+        { email: data.email, role: 'user' },
+        process.env.JWT_PRIVATE_KEY,
+        { expiresIn: process.env.JWT_EXPIRATION_TIME }
+      )
+
+      res.status(201).send(token);
     })
     .catch(err => {
-      let errors = format.validationErrors(err)
-      res.status(400).json(errors);
+      // let errors = format.validationErrors(err);
+      res.status(400).json(err);
     });
 }
 

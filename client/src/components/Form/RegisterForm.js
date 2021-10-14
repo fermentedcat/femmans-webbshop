@@ -46,10 +46,11 @@ export const RegisterForm = () => {
           country: countryInput.value,
         }
       }
-      addUser(data);
+      addUser(data)
+        .then(res => console.log(res.data));
     }
   };
-  
+
   useEffect(() => {
     setFormIsValid(
       fullNameInput.isValid &&
