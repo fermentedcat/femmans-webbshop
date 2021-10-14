@@ -6,7 +6,16 @@ import List from '@mui/material/List';
 import { OrderListItem } from './OrderListItem';
 
 export const OrdersList = () => {
-  const {data: orders, error} = useFetch(getOrders, 'token');
+  const {data: orders, setData: setOrders, error} = useFetch(getOrders, 'token');
+
+  
+  const removeListItem = (id) => {
+    setOrders(orders.filter(item => item._id !== id))
+  }
+
+  const updateListItem = (newItem) => {
+    setOrders(orders.map(item => item._id === newItem.id ? newItem : item))
+  }
 
   return (
     <List dense>
@@ -14,9 +23,10 @@ export const OrdersList = () => {
         orders.map((order) => {
           return (
             <OrderListItem
-              key={index}
-              order={order._id}
-              afterUpdate={updateData}
+              key={order._id}
+              order={order}
+              removeListItem={removeListItem}
+              updateListItem={updateListItem}
             />
           );
         })}
