@@ -49,11 +49,7 @@ const useApi = (initialEndpoint) => {
         }, 
         data: data 
       });
-      console.log("prev", state.data)
       dispatch({ type: 'DATA', data: response.data})
-      const newdata = state.data
-      console.log("post", newdata)
-      console.log('waiting')
       return true;
     } catch (error) {
       dispatch({ type: 'ERROR', error: 'Failed to send data.' }); //? ändra error
