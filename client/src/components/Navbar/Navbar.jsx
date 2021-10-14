@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import AppBar from '@mui/material/AppBar';
@@ -10,10 +10,14 @@ import { styled } from '@mui/material/styles';
 
 import { BasicModal } from '../Layout/BasicModal';
 import { RegisterForm } from '../Form/RegisterForm';
+import { LoginForm } from '../Form/LoginForm';
 
 const StyledButton = styled(Button)(() => ({
   backgroundColor: 'white',
   margin: '.3em',
+  '&:hover': {
+    backgroundColor: '#ededed'
+  }
 }));
 
 export const Navbar = () => {
@@ -29,7 +33,7 @@ export const Navbar = () => {
         setModalType(e.target.name)
     }
 
-    const modalForm = <RegisterForm />
+    const modalForm = modalType === 'login' ? <LoginForm /> : <RegisterForm />
 
     const loginButton = <StyledButton name="login" onClick={openModal.bind(this)}>{showModal ? 'Jag har inget konto' : 'Logga in'}</StyledButton>;
     const registerButton = <StyledButton name="register" onClick={openModal.bind(this)}>{showModal ? 'Jag har redan ett konto' : 'Registrera konto'}</StyledButton>;
