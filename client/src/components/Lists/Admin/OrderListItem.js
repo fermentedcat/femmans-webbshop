@@ -79,10 +79,6 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
   const toggleEdit = () => {
     setIsEditing(!isEditing);
   };
- 
-  // useEffect(() => {
-  //   if (!showModal) setIsEditing(false);
-  // }, [showModal]);
 
   const timeStamp = new Date(order.createdAt).toLocaleString('se-SE')
 
