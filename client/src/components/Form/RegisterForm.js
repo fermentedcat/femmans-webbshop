@@ -6,8 +6,9 @@ import { addUser } from '../../api/api'
 import { Button } from '@mui/material';
 import user, { address } from '../../constants/formFields';
 import { FormGenerator } from './FormGenerator';
+import { setToken } from '../../token';
 
-export const RegisterForm = () => {
+export const RegisterForm = ({exitForm}) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   const fullNameInput = useInput(user.fullName.validate);
@@ -30,7 +31,7 @@ export const RegisterForm = () => {
     { ...countryInput, ...address.country },
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!formIsValid) {
       return;
     } else {
@@ -46,8 +47,13 @@ export const RegisterForm = () => {
           country: countryInput.value,
         }
       }
-      addUser(data)
-        .then(res => console.log(res.data));
+      try {
+        const response = await addUser(data)
+        setToken(response.data)
+        exitForm()  
+      } catch (error) {
+        console.log('Register failed.')
+      }
     }
   };
 

@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const format = require('../utils/format');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt')
 
 exports.getAllUsers = (req, res, next) => {
   User.find()
@@ -26,6 +27,23 @@ exports.getOneUser = (req, res, next) => {
     });
 }
 
+exports.loginUser = async (req, res, next) => {
+  const data = req.body;
+  const user = await User.findOne({ email: data.email })
+  if (user) {
+    const isMatch = await bcrypt.compare(data.password, user.password)
+    if (isMatch) {
+      const token = jwt.sign(
+        { email: data.email, role: user.role },
+        process.env.JWT_PRIVATE_KEY,
+        { expiresIn: process.env.JWT_EXPIRATION_TIME }
+      )
+      return res.status(201).send(token);
+    }
+  }
+  res.status(401).send('Login failed');
+}
+
 exports.addNewUser = (req, res, next) => {
   const data = req.body;
   const newUser = new User(data);
@@ -38,7 +56,6 @@ exports.addNewUser = (req, res, next) => {
         process.env.JWT_PRIVATE_KEY,
         { expiresIn: process.env.JWT_EXPIRATION_TIME }
       )
-
       res.status(201).send(token);
     })
     .catch(err => {

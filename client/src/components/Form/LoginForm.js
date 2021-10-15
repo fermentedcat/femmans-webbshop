@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
+import { loginUser } from '../../api/api'
 import useInput from '../../hooks/useInput';
 import { Button } from '@mui/material';
 import user from '../../constants/formFields';
 import { FormGenerator } from './FormGenerator';
+import { setToken } from '../../token';
 
-export const LoginForm = () => {
+export const LoginForm = ({exitForm}) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   const emailInput = useInput(user.email.validate);
@@ -16,7 +18,7 @@ export const LoginForm = () => {
     { ...passwordInput, ...user.password },
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!formIsValid) {
       return;
     } else {
@@ -24,8 +26,13 @@ export const LoginForm = () => {
         email: emailInput.value,
         password: passwordInput.value,
       };
-      console.log(data)
-      //TODO: Logga in/ auth
+      try {
+        const response = await loginUser(data)
+        setToken(response.data)
+        exitForm()  
+      } catch (error) {
+        console.log('Login failed.')
+      }
     }
   };
 

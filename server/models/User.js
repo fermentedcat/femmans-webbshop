@@ -52,8 +52,8 @@ const UserSchema = new Schema({
     enum: {
       values: ['admin', 'user'],
       message: '{VALUE} is not a supported role',
-      default: 'user',
-    }
+    },
+    default: 'user',
   }
 }, {
   timestamps: true

@@ -33,8 +33,6 @@ export const Navbar = () => {
         setModalType(e.target.name);
     }
 
-    const modalForm = modalType === 'login' ? <LoginForm /> : <RegisterForm />;
-
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -54,10 +52,15 @@ export const Navbar = () => {
                 onClose={toggleShowModal}
                 title={modalType === 'login' ? 'Logga in' : 'Registrera konto'}
             >
-                {modalForm}
                 {modalType === 'login' ? 
-                    <StyledButton name="register" onClick={openModal.bind(this)}>Jag har inget konto</StyledButton> : 
-                    <StyledButton name="login" onClick={openModal.bind(this)}>Jag har redan ett konto</StyledButton>
+                    <>
+                        <LoginForm exitForm={toggleShowModal}/>
+                        <StyledButton name="register" onClick={openModal.bind(this)}>Jag har inget konto</StyledButton>
+                    </> : 
+                    <>
+                        <RegisterForm exitForm={toggleShowModal}/>
+                        <StyledButton name="login" onClick={openModal.bind(this)}>Jag har redan ett konto</StyledButton>
+                    </>
                 }
             </BasicModal>
         </Box>
