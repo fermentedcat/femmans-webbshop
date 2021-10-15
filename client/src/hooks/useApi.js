@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { useCallback, useReducer, useEffect } from 'react';
 import { API_BASE_URL } from "../constants/constants";
 import axios from 'axios';
 import { getToken } from "../token";
@@ -26,7 +26,7 @@ const useApi = (initialEndpoint) => {
   const [state, dispatch] = useReducer(stateReducer, initialState);
 
 
-  const callGet = async (endpoint = initialEndpoint) => {
+  const callGet = useCallback( async (endpoint = initialEndpoint) => {
     try {
       const response = await axios({ 
         url: `${API_BASE_URL}${endpoint}`, 
@@ -40,7 +40,7 @@ const useApi = (initialEndpoint) => {
       dispatch({ type: 'ERROR', error: 'Failed to get data.' }); //? ändra error
       return false;
     }
-  };
+  }, [initialEndpoint]);
 
   const callPost = async (data, endpoint) => {
     try {
@@ -82,7 +82,7 @@ const useApi = (initialEndpoint) => {
 
   useEffect(() => {
     if (initialEndpoint) callGet()
-  }, [initialEndpoint])
+  }, [initialEndpoint, callGet])
 
 
   return {
