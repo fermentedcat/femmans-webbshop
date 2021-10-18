@@ -1,7 +1,8 @@
 // const { isEmail } = require('validator');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const { isNotWhiteSpace, isEmail } = require('../utils/validator')
+const bcrypt = require('bcrypt');
+const { isNotWhiteSpace, isEmail } = require('../utils/validator');
 
 
 const UserSchema = new Schema({
@@ -51,11 +52,37 @@ const UserSchema = new Schema({
     enum: {
       values: ['admin', 'user'],
       message: '{VALUE} is not a supported role',
-      default: 'user',
-    }
+    },
+    default: 'user',
   }
 }, {
   timestamps: true
+});
+
+UserSchema.pre('validate', function (next, done) {
+  if (!this.isModified('email')) {
+    return next();
+  }
+  this.constructor.findOne({ email: this.email })
+    .then(user => {
+      if (user) {
+        const error = new Error('User Exists')
+        next(error);
+      }
+      next();
+    }
+    );
+});
+
+UserSchema.pre('save', function (next, done) {
+  bcrypt.hash(this.password, +process.env.SALT_ROUNDS, (err, hash) => {
+    if (err) {
+      const error = new Error('BCRYPT');
+      next(error);
+    }
+    this.password = hash;
+    next();
+  });
 });
 
 module.exports = mongoose.model('User', UserSchema);
