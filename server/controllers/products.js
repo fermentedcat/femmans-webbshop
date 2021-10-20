@@ -43,8 +43,8 @@ exports.addNewProduct = (req, res, next) => {
   const newProduct = new Product(data);
 
   newProduct.save()
-    .then(() => {
-      res.sendStatus(201);
+    .then((data) => {
+      res.status(201).json(data);
     })
     .catch(err => {
       let errors = format.validationErrors(err);
