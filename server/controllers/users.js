@@ -92,3 +92,11 @@ exports.deleteOneUser = (req, res, next) => {
       res.status(400).end();
     });
 }
+
+exports.addToCart = async (req, res, next) => {
+  const { email } = req.user;
+  const cartItem = req.params.id
+
+  const user = await User.findOne(email);
+  console.log(user)
+}
