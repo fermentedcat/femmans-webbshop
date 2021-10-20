@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const User = require('../models/User');
 const format = require('../utils/format');
 
 exports.getAllOrders = (req, res, next) => {
@@ -27,6 +28,14 @@ exports.getOneOrder = (req, res, next) => {
     .catch(err => {
       res.status(400).end()
     });
+}
+
+exports.getOrdersByUser = async (req, res, next) => {
+  const userData = req.user;
+  const user = await User.findOne({ email: userData.email }, '_id').exec();
+  const orders = await Order.find({ user: user._id }).exec();
+  if (orders.length > 0) res.status(200).json(orders);
+  else res.sendStatus(404);
 }
 
 exports.addNewOrder = (req, res, next) => {
