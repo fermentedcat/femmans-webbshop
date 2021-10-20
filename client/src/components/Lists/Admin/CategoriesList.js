@@ -12,14 +12,6 @@ import { CategoryForm } from '../../Form/CategoryForm';
 
 
 export const CategoriesList = () => {
-  const [categories, setCategories] = useState(null);
-
-  // useEffect(() => {
-  //   getCategories().then((data) => {
-  //     setCategories(data)
-  //   })
-  // }, [])
-
   return (
     <CategoryForm />
   )
