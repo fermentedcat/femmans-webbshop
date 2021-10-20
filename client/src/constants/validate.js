@@ -2,6 +2,10 @@ exports.string = (value) => {
   return value.trim() !== ''
 };
 
+exports.number = (value) => {
+  return !isNaN(parseFloat(value)) && isFinite(value)
+};
+
 exports.password = (value) => {
   return value.trim().length >= 6
 };
