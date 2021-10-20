@@ -2,11 +2,12 @@ const express = require('express');
 const adminAuth = require("../utils/adminAuth");
 const userAuth = require("../utils/userAuth");
 
-const { getAllOrders, addNewOrder, deleteOneOrder, getOneOrder, updateOneOrder } = require('../controllers/orders');
+const { getAllOrders, addNewOrder, deleteOneOrder, getOneOrder, updateOneOrder, getOrdersByUser } = require('../controllers/orders');
 
 const router = express.Router();
 
 router.get('/', adminAuth, getAllOrders);
+router.get('/user', userAuth, getOrdersByUser);
 router.get('/:id', userAuth, getOneOrder);
 router.post('/', userAuth, addNewOrder);
 router.post('/:id', adminAuth, updateOneOrder);
