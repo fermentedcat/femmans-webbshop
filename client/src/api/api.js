@@ -9,7 +9,7 @@ export const addUser = (user) => axios({ url: `${API_BASE_URL}users`, method: 'P
 export const updateUser = (user, id) => axios({ url: `${API_BASE_URL}users/${id}`, method: 'POST', headers: { 'x-auth-token': getToken() }, data: user })
 export const deleteUser = (id) => axios({ url: `${API_BASE_URL}users/${id}`, method: 'DELETE', headers: { 'x-auth-token': getToken() } })
 export const loginUser = (data) => axios({ url: `${API_BASE_URL}users/login`, method: 'POST', data: data })
-
+export const addToCart = (id) => axios({ url: `${API_BASE_URL}users/cart/${id}`, method: 'POST', headers: { 'x-auth-token': getToken() } })
 
 //
 export const getProducts = () => axios({ url: `${API_BASE_URL}products` });
