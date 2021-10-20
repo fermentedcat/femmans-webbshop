@@ -35,7 +35,7 @@ export const ProductForm = ({ exitForm, updateList }) => {
     { ...descriptionInput, ...product.description },
     { ...priceInput, ...product.price },
     { ...brandInput, ...product.brand },
-    { ...categorySelect, ...product.category },
+    { ...categorySelect, ...product.categories },
     { ...weightInput, ...product.weight },
     { ...photoInput, ...product.photo },
   ]
