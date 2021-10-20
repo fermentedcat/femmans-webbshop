@@ -60,17 +60,20 @@ const fullName = {
 const title = {
   type: 'text',
   name: 'city',
+  label: 'Title',
   validate: validate.string,
   required: true
 },
 thumbnail = {
   type: 'text',
   name: 'thumbnail',
+  label: 'Thumbnail',
   validate: validate.string
 }, 
 description = {
   type: 'text',
   name: 'description',
+  label: 'Description',
   validate: validate.string
 }
 
