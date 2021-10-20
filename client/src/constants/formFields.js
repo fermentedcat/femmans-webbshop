@@ -55,6 +55,51 @@ const fullName = {
         label: 'Land',
         validate: validate.string,
         required: true
+      },
+      title = {
+        type: 'text',
+        name: 'title',
+        label: 'Title',
+        validate: validate.string,
+        required: true
+      },
+      description = {
+        type: 'text',
+        name: 'description',
+        label: 'Beskrivning',
+        validate: validate.string,
+        required: true
+      },
+      price = {
+        type: 'number',
+        name: 'price',
+        label: 'Pris (kr)',
+        validate: validate.number,
+        required: true
+      },
+      brand = {
+        type: 'text',
+        name: 'brand',
+        label: 'Tillverkare',
+        validate: validate.string,
+        required: true
+      },
+      category = {
+        type: 'select',
+        name: 'category',
+        label: 'Kategori',
+      },
+      weight = {
+        type: 'number',
+        name: 'weight',
+        label: 'Vikt (kg)',
+        validate: validate.number,
+      },
+      photo = {
+        type: 'text',
+        name: 'photo',
+        label: 'Foto (url)',
+        validate: validate.string,
       }
 
 const user =  { fullName, displayName, email, password };
@@ -62,7 +107,7 @@ export default user;
 
 export const login =  { email, password };
 export const address =  { street, postalCode, city, country };
-
+export const product = { title, description, price, brand, category, weight, photo }
 
 
 
