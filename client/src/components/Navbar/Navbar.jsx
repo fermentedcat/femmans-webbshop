@@ -13,11 +13,11 @@ import { RegisterForm } from '../Form/RegisterForm';
 import { LoginForm } from '../Form/LoginForm';
 
 const StyledButton = styled(Button)(() => ({
-  backgroundColor: 'white',
-  margin: '.3em',
-  '&:hover': {
-    backgroundColor: '#ededed'
-  }
+    backgroundColor: 'white',
+    margin: '.3em',
+    '&:hover': {
+        backgroundColor: '#ededed'
+    }
 }));
 
 export const Navbar = () => {
@@ -42,8 +42,8 @@ export const Navbar = () => {
                     </Typography>
                     <StyledButton component={Link} to="/">Home</StyledButton>
                     <StyledButton component={Link} to="/admin">Admin</StyledButton>
-                    <StyledButton name="login" onClick={openModal.bind(this)}>Logga in</StyledButton>
-                    <StyledButton name="register" onClick={openModal.bind(this)}>Registrera konto</StyledButton>
+                    <StyledButton name="login" onClick={openModal}>Logga in</StyledButton>
+                    <StyledButton name="register" onClick={openModal}>Registrera konto</StyledButton>
                 </Toolbar>
             </AppBar>
             <BasicModal
@@ -52,14 +52,14 @@ export const Navbar = () => {
                 onClose={toggleShowModal}
                 title={modalType === 'login' ? 'Logga in' : 'Registrera konto'}
             >
-                {modalType === 'login' ? 
+                {modalType === 'login' ?
                     <>
-                        <LoginForm exitForm={toggleShowModal}/>
-                        <StyledButton name="register" onClick={openModal.bind(this)}>Jag har inget konto</StyledButton>
-                    </> : 
+                        <LoginForm exitForm={toggleShowModal} />
+                        <StyledButton name="register" onClick={openModal}>Jag har inget konto</StyledButton>
+                    </> :
                     <>
-                        <RegisterForm exitForm={toggleShowModal}/>
-                        <StyledButton name="login" onClick={openModal.bind(this)}>Jag har redan ett konto</StyledButton>
+                        <RegisterForm exitForm={toggleShowModal} />
+                        <StyledButton name="login" onClick={openModal}>Jag har redan ett konto</StyledButton>
                     </>
                 }
             </BasicModal>
