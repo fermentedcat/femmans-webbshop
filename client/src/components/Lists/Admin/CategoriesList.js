@@ -9,10 +9,15 @@ import IconButton from '@mui/material/IconButton';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CategoryForm } from '../../Form/CategoryForm';
+import { useFetch } from '../../../hooks/useFetch';
 
 
 export const CategoriesList = () => {
+  const {data, error} = useFetch(getCategories, []);
+
   return (
-    <CategoryForm />
+    <div>
+      {data && data.map(i => <div>{i.title}</div>)}
+    </div>
   )
 }
