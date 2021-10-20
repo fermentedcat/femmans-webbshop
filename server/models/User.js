@@ -54,7 +54,14 @@ const UserSchema = new Schema({
       message: '{VALUE} is not a supported role',
     },
     default: 'user',
-  }
+  },
+  cart: [{
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: 'Product',
+    },
+    amount: Number
+  }]
 }, {
   timestamps: true
 });
