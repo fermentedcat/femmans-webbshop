@@ -18,16 +18,16 @@ const ProductSchema = new Schema({
     type: String,
     required: true,
   },
-  categories: [{
-    type: Schema.Types.ObjectId,
+  categories: {
+    type: [Schema.Types.ObjectId],
     ref: 'Category',
-    default: 'Other',
-  }],
+    default: ['615c4c60440e6dde86a47556'],
+  },
   weight: Number,
-  photos: [{
-    type: String,
-    default: 'https://i.natgeofe.com/n/9135ca87-0115-4a22-8caf-d1bdef97a814/75552_square.jpg'
-  }]
+  photos: {
+    type: [String],
+    default: ['https://i.natgeofe.com/n/9135ca87-0115-4a22-8caf-d1bdef97a814/75552_square.jpg']
+  }
 }, {
   timestamps: true
 });
