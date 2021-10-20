@@ -1,21 +1,58 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { getProducts } from '../../../api/api'
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import FolderIcon from '@mui/icons-material/Folder';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { OrderListItem } from './OrderListItem';
 import { useFetch } from '../../../hooks/useFetch';
+import { Button } from '@mui/material';
+import { BasicModal } from '../../Layout/BasicModal';
+import { ProductForm } from '../../Form/ProductForm';
 
 export const ProductsList = () => {
-  const {data, error} = useFetch(getProducts, []);
+  const {data: products, setData: setProducts, error} = useFetch(getProducts);
+  const [showModal, setShowModal] = useState(false)
+
+  const toggleShowModal = () => {
+    setShowModal(!showModal)
+  }
+
+  const removeListItem = (id) => {
+    setProducts(products.filter(item => item._id !== id))
+  }
+
+  const updateListItem = (newItem) => {
+    setProducts(products.map(item => item._id === newItem.id ? newItem : item))
+  }
+
+  const addListItem = (newItem) => {
+    setProducts([...products, newItem])
+  }
 
   return (
-    <div>
-      {data && data.map(i => <div>{i.title}</div>)}
-    </div>
+    <List dense>
+      {error && <p>Endast Admin har tillgång</p>}
+      {!error && (
+        <Button onClick={toggleShowModal}>Lägg till produkt</Button>
+      )}
+      {products &&
+        products.map((product) => {
+          return (
+            //TODO: egen komponent?
+            <OrderListItem
+              key={product._id}
+              order={product}
+              removeListItem={removeListItem}
+              updateListItem={updateListItem}
+            />
+          );
+        })}
+        <BasicModal
+          minHeight="70vh"
+          open={showModal}
+          onClose={toggleShowModal}
+          title='Lägg till produkt'
+        >
+          <ProductForm exitForm={toggleShowModal} updateList={addListItem}/>
+        </BasicModal>
+    </List>
   )
 }
