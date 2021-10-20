@@ -31,6 +31,7 @@ export const deleteCategory = (id) => axios({ url: `${API_BASE_URL}categories/${
 //
 export const getOrders = () => axios({ url: `${API_BASE_URL}orders`, headers: { 'x-auth-token': getToken() } });
 export const getOrder = (id) => axios({ url: `${API_BASE_URL}orders/${id}`, headers: { 'x-auth-token': getToken() } });
+export const getOrdersByUser = () => axios({ url: `${API_BASE_URL}orders/user`, headers: { 'x-auth-token': getToken() } });
 export const addOrder = (order) => axios({ url: `${API_BASE_URL}orders`, method: 'POST', headers: { 'x-auth-token': getToken() }, data: order });
 export const updateOrder = (order, id) => axios({ url: `${API_BASE_URL}orders/${id}`, method: 'POST', headers: { 'x-auth-token': getToken() }, data: order });
 export const deleteOrder = (id) => axios({ url: `${API_BASE_URL}orders/${id}`, method: 'DELETE', headers: { 'x-auth-token': getToken() } });
