@@ -8,20 +8,11 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { CategoryForm } from '../../Form/CategoryForm';
 
 
 export const CategoriesList = () => {
-  const [categories, setCategories] = useState(null);
-
-  useEffect(() => {
-    getCategories().then((data) => {
-      setCategories(data)
-    })
-  }, [])
-
   return (
-    <div>
-      
-    </div>
+    <CategoryForm />
   )
 }

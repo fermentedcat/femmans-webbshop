@@ -57,9 +57,30 @@ const fullName = {
         required: true
       }
 
+const title = {
+  type: 'text',
+  name: 'city',
+  label: 'Title',
+  validate: validate.string,
+  required: true
+},
+thumbnail = {
+  type: 'text',
+  name: 'thumbnail',
+  label: 'Thumbnail',
+  validate: validate.string
+}, 
+description = {
+  type: 'text',
+  name: 'description',
+  label: 'Description',
+  validate: validate.string
+}
+
 const user =  { fullName, displayName, email, password };
 export default user;
 
+export const category = {title, thumbnail, description}
 export const login =  { email, password };
 export const address =  { street, postalCode, city, country };
 
