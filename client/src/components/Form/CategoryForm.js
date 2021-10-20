@@ -28,12 +28,14 @@ export const CategoryForm = ({exitForm}) => {
         thumbnail: thumbnailInput.value,
         description: descriptionInput.value
       }
+      console.log(data)
       try {
         const response = await addCategory(data)
         console.log('category added')
-        exitForm()  
       } catch (error) {
         console.log('Register failed.')
+      } finally{
+        exitForm()  
       }
     }
   };
