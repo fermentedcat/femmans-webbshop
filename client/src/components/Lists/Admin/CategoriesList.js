@@ -35,22 +35,26 @@ export const CategoriesList = () => {
   }
 
   return (
-    <List dense>
-      {error && <p>Endast Admin har tillgång</p>}
-      {!error && (
-        <Button onClick={toggleShowModal}>Lägg till kategori</Button>
-      )}
-      {categories &&
-        categories.map((category) => {
-          return (
-            <CategoryListItem
-            key={category._id}
-            category={category}
-            removeListItem={removeListItem}
-            updateListItem={updateListItem}
-            />
-          );
-        })}
-    </List>
+    <>
+      <CategoryForm />
+      <List dense>
+        {error && <p>Endast Admin har tillgång</p>}
+        {!error && (
+          <Button onClick={toggleShowModal}>Lägg till kategori</Button>
+        )}
+        {categories &&
+          categories.map((category) => {
+            return (
+
+              <CategoryListItem
+              key={category._id}
+              category={category}
+              removeListItem={removeListItem}
+              updateListItem={updateListItem}
+              />
+            );
+          })}
+      </List>
+    </>
   );
 };

@@ -68,7 +68,7 @@ export const CategoryListItem = ({ category, removeListItem, updateListItem}) =>
                 open={showModal}
                 onClose={toggleShowModal}
                 title={isEditing ? 'Ändra kategori' : 'Kategoridetaljer'}
-                descriptions={[`Category ID ${category._id}`]}
+                descriptions={[`${category.title}`]}
             >
                 {isEditing ? <CategoryForm category={category} onSubmitHandler={handleCategoryEdit} /> : <CategoryForm updateListItem={updateListItem} category={category} />}
                     <Button color={isEditing ? 'warning' : 'primary'} onClick={toggleEdit}>
