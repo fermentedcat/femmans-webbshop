@@ -15,7 +15,11 @@ export { AuthContext };
 const authReducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN': {
-      return { isAuthenticated: true, role: action.data.role, email: action.data.email };
+      return { 
+        isAuthenticated: true, 
+        role: action.data.role, 
+        email: action.data.email 
+      };
     }
     case 'LOGOUT': {
       return initialState;

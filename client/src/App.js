@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './App.css';
 import { Switch, Route, Link } from 'react-router-dom';
 import { AuthContext } from './context/authContext'
+import { UiContext } from './context/uiContext'
 
 import Container from '@mui/material/Container'
 import { AdminPage } from './pages/AdminPage';
@@ -11,10 +12,12 @@ import { Navbar } from './components/Navbar/Navbar.jsx';
 
 function App() {
   const { isAuthenticated, email } = useContext(AuthContext);
+  const { notification } = useContext(UiContext);
 
   return (
     <Container>
       <Navbar />
+      { notification.show && <p>{notification.type}: {notification.message}</p>}
       { isAuthenticated ? <p>Welcome, {email}</p> : <p>Not logged in</p>}
       <Switch>
         <Route path="/all-products" component={ProductsPage} />

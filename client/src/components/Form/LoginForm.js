@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/authContext'
+import { UiContext } from '../../context/uiContext'
 
 import { loginUser } from '../../api/api'
 import useInput from '../../hooks/useInput';
@@ -9,6 +10,7 @@ import { FormGenerator } from './FormGenerator';
 
 export const LoginForm = ({exitForm}) => {
   const { login } = useContext(AuthContext);
+  const { setNotification } = useContext(UiContext);
   const [formIsValid, setFormIsValid] = useState(false);
 
   const emailInput = useInput(user.email.validate);
@@ -30,6 +32,7 @@ export const LoginForm = ({exitForm}) => {
       try {
         const response = await loginUser(data)
         login(response.data)
+        setNotification({ type: 'success', message: 'inloggingen var en succé' });
         exitForm()  
       } catch (error) {
         console.log('Login failed.')
