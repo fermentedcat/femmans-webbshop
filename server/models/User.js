@@ -56,6 +56,7 @@ const UserSchema = new Schema({
     default: 'user',
   },
   cart: [{
+    _id: false,
     product: {
       type: Schema.Types.ObjectId,
       ref: 'Product',
