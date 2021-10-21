@@ -51,7 +51,6 @@ export const FormGenerator = ({inputs, onSubmit = null, button, children}) => {
         {inputFields}
         {button ? button : null}
       </StyledBox>
-      {/* for rendering ex buttons outside the form */}
       {children}
     </>
   )
