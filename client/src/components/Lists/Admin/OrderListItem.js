@@ -38,7 +38,7 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
     const currentStatus = orderStatus;
     setOrderStatus(newStatus);
     try {
-      const newOrder = await updateOrder('token', {status: newStatus}, order._id)
+      const newOrder = await updateOrder({status: newStatus}, order._id)
       updateListItem(newOrder);
     } catch (error) {
       console.log(error)
@@ -49,7 +49,7 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
   const handleAddressEdit = async (address) => {
     const data = { address: address };
     try {
-      const newOrder = await updateOrder('token', data, order._id)
+      const newOrder = await updateOrder(data, order._id)
       updateListItem(newOrder)
       toggleEdit();
     } catch (error) {
@@ -62,7 +62,7 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
       return;
     }
     try {
-      await deleteOrder('token', order._id)
+      await deleteOrder(order._id)
       removeListItem(order._id)
     } catch (error) {
       console.log(error)
