@@ -1,58 +1,43 @@
-import React, { useState } from 'react'
-import { getProducts } from '../../../api/api'
-import List from '@mui/material/List';
-import { OrderListItem } from './OrderListItem';
+import React from 'react';
+import { getProducts } from '../../../api/api';
 import { useFetch } from '../../../hooks/useFetch';
-import { Button } from '@mui/material';
-import { BasicModal } from '../../Layout/BasicModal';
-import { ProductForm } from '../../Form/ProductForm';
+import List from '@mui/material/List';
+import {ProductForm} from "../../Form/ProductForm";
+import {ProductListItem} from "./ProductListItem";
 
 export const ProductsList = () => {
+
   const {data: products, setData: setProducts, error} = useFetch(getProducts);
-  const [showModal, setShowModal] = useState(false)
-
-  const toggleShowModal = () => {
-    setShowModal(!showModal)
-  }
-
+  
   const removeListItem = (id) => {
-    setProducts(products.filter(item => item._id !== id))
+    setProducts(products.filter(product => product._id !== id))
   }
 
-  const updateListItem = (newItem) => {
-    setProducts(products.map(item => item._id === newItem.id ? newItem : item))
+  const updateListItem = (newProduct) => {
+    setProducts(products.map(product => product._id === newProduct._id ? newProduct : product))
   }
 
-  const addListItem = (newItem) => {
-    setProducts([...products, newItem])
+  const addToList = (product) => {
+    setProducts([product, ...products])
   }
 
   return (
+    <>
+    <ProductForm updateList={updateListItem} addToList={addToList}/>
     <List dense>
-      {error && <p>Endast Admin har tillgång</p>}
-      {!error && (
-        <Button onClick={toggleShowModal}>Lägg till produkt</Button>
-      )}
+      {error && <p>Kan inte hämta data</p>}
       {products &&
         products.map((product) => {
           return (
-            //TODO: egen komponent?
-            <OrderListItem
+            <ProductListItem
               key={product._id}
-              order={product}
+              product={product}
               removeListItem={removeListItem}
               updateListItem={updateListItem}
             />
           );
         })}
-        <BasicModal
-          minHeight="70vh"
-          open={showModal}
-          onClose={toggleShowModal}
-          title='Lägg till produkt'
-        >
-          <ProductForm exitForm={toggleShowModal} updateList={addListItem}/>
-        </BasicModal>
     </List>
-  )
-}
+    </>
+  );
+};
