@@ -68,7 +68,7 @@ export const OrderTable = ({ order, updateListItem }) => {
   const orderRows = Object.values(order.orderRows).map((row) => {
     return (
       <TableRow key={row._id}>
-        <TableCell>{row.product.title}</TableCell>
+        <TableCell>{row.product ? row.product.title : ""}</TableCell>
         <TableCell>
           {!isEditing ? (
             row.amount
