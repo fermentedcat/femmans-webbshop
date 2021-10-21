@@ -35,9 +35,12 @@ export const OrderTable = ({ order, updateListItem }) => {
   };
 
   const handleUpdateRowQty = async () => {
-    const data = { orderRows: orderRowData };
+    const rows = orderRowData.map((row) => {
+      return { _id: row._id, amount: row.amount, priceEach: row.priceEach };
+    })
+    const data = { orderRows: rows }
     try {
-      const newOrder = updateOrder('token', data, order._id)
+      const newOrder = await updateOrder(data, order._id)
       updateListItem(newOrder)
     } catch (error) {
       console.log(error)
@@ -68,7 +71,7 @@ export const OrderTable = ({ order, updateListItem }) => {
   const orderRows = Object.values(order.orderRows).map((row) => {
     return (
       <TableRow key={row._id}>
-        <TableCell>{row.product.title}</TableCell>
+        <TableCell>{row.product ? row.product.title : ""}</TableCell>
         <TableCell>
           {!isEditing ? (
             row.amount

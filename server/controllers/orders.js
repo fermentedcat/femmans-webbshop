@@ -74,8 +74,7 @@ exports.updateOneOrder = (req, res, next) => {
       else res.status(404).end();
     })
     .catch((err) => {
-      let errors = format.validationErrors(err)
-      res.status(400).json(errors);
+      res.status(400).json(err);
     });
 }
 
