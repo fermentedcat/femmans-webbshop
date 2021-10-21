@@ -38,30 +38,18 @@ exports.getOrdersByUser = async (req, res, next) => {
   else res.sendStatus(404);
 }
 
-exports.addNewOrder = (req, res, next) => {
-  const orderData = {
-    user: '615d68308e37dc66ae8bff1c',
-    orderRows: {
-      product: '615d5d2ba6ef1c864de35b81',
-      amount: 1,
-      priceEach: 1000000
-    },
-    address: {
-      street: 'Stoftgatan',
-      postalCode: '08080',
-      city: 'Stockholm',
-      country: 'Sverige'
-    },
-  }
-  const order = new Order(orderData);
+exports.addNewOrder = async (req, res, next) => {
+  const data = req.body;
+  const { email } = req.user;
 
-  order.save()
-    .then((data) => {
-      res.sendStatus(201).json(data)
-    }).catch(err => {
-      let errors = format.validationErrors(err)
-      res.status(400).json(errors);
-    });
+  try {
+    data.user = await User.findOne({ email }, '_id').exec();
+    const order = new Order(data);
+    const savedOrder = await order.save();
+    res.status(201).json(savedOrder);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 }
 
 exports.updateOneOrder = (req, res, next) => {
