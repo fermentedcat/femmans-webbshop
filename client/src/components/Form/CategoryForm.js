@@ -35,7 +35,7 @@ export const CategoryForm = ({exitForm}) => {
       } catch (error) {
         console.log('Register failed.')
       } finally{
-        exitForm()  
+        //exitForm()  
       }
     }
   };
@@ -49,7 +49,7 @@ export const CategoryForm = ({exitForm}) => {
 
   return (
     <FormGenerator inputs={inputs}>
-      <Button onClick={handleSubmit} disabled={!formIsValid}>Registrera</Button>
+      <Button onClick={handleSubmit} disabled={!formIsValid}>Spara</Button>
     </FormGenerator>
   )
 }

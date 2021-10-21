@@ -38,10 +38,6 @@ export const CategoriesList = () => {
     <>
       <CategoryForm />
       <List dense>
-        {error && <p>Endast Admin har tillgång</p>}
-        {!error && (
-          <Button onClick={toggleShowModal}>Lägg till kategori</Button>
-        )}
         {categories &&
           categories.map((category) => {
             return (
