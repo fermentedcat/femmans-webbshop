@@ -10,9 +10,9 @@ export const BasicProductCard = ({ product }) => {
   const buyProduct = (e) => {
     e.stopPropagation();
 
-    addToCart(product.id).catch(err => {
-      console.log(err)
-    })
+    addToCart(product._id)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
 
     //redirect if user not logged in
     //fetch add to cart 

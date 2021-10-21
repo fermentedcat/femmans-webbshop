@@ -29,6 +29,7 @@ exports.getOneUser = (req, res, next) => {
 
 exports.loginUser = async (req, res, next) => {
   const data = req.body;
+  console.log(data);
   const user = await User.findOne({ email: data.email })
   if (user) {
     const isMatch = await bcrypt.compare(data.password, user.password)
@@ -96,7 +97,13 @@ exports.deleteOneUser = (req, res, next) => {
 exports.addToCart = async (req, res, next) => {
   const { email } = req.user;
   const cartItem = req.params.id
+  // const user = await User.findOne({ email: email });
 
-  const user = await User.findOne(email);
-  console.log(user)
+  const user = await User.findOneAndUpdate(
+    { email: email },
+    { $push: { cart: { product: cartItem } } }
+  );
+
+
+  res.status(204).json();
 }
