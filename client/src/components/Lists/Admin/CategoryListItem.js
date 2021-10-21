@@ -32,11 +32,11 @@ export const CategoryListItem = ({ category, removeListItem, updateListItem}) =>
     }
 
     const handleDelete = async (e) => {
-        if (!window.confirm('Är du säker på att du vill radera denna order?')) {
+        if (!window.confirm('Är du säker på att du vill radera denna kategori?')) {
             return;
         }
         try {
-            await deleteCategory('token', category._id)
+            await deleteCategory(category._id)
             removeListItem(category._id)
         } catch (error) {
             console.log(error)
@@ -58,7 +58,7 @@ export const CategoryListItem = ({ category, removeListItem, updateListItem}) =>
         <>
             <StyledListItem>
                 <ListItemText primary={`Kategori: ${category.title}`} />
-                <Button OnClick={toggleShowModal}>Öppna</Button>
+                <Button onClick={toggleShowModal}>Öppna</Button>
                 <Button onClick={handleDelete} color="warning">
                     Ta bort
                 </Button>
