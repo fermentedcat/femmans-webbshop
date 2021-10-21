@@ -97,13 +97,23 @@ exports.deleteOneUser = (req, res, next) => {
 exports.addToCart = async (req, res, next) => {
   const { email } = req.user;
   const cartItem = req.params.id
-  // const user = await User.findOne({ email: email });
 
-  const user = await User.findOneAndUpdate(
-    { email: email },
-    { $push: { cart: { product: cartItem } } }
-  );
+  const item = await User.findOneAndUpdate(
+    {
+      email: email,
+      'cart.product': { $ne: cartItem }
+    },
+    { $push: { cart: { product: cartItem, amount: 1 } } }
+  )
 
-
+  if (!item) {
+    User.findOneAndUpdate(
+      {
+        email: email,
+        'cart.product': cartItem
+      },
+      { $inc: { 'cart.$.amount': 1 } }
+    );
+  }
   res.status(204).json();
 }
