@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../context/authContext';
+import { UiContext } from '../../context/uiContext';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -21,16 +23,11 @@ const StyledButton = styled(Button)(() => ({
 }));
 
 export const Navbar = () => {
-    const [showModal, setShowModal] = useState(false);
-    const [modalType, setModalType] = useState('login');
+    const { isAuthenticated, role, logout } = useContext(AuthContext);
+    const { modal, toggleModal, openModal } = useContext(UiContext);
 
-    const toggleShowModal = () => {
-        setShowModal(!showModal);
-    }
-
-    const openModal = (e) => {
-        if (!showModal) setShowModal(true);
-        setModalType(e.target.name);
+    const handleLogout = () => {
+        logout()
     }
 
     return (
@@ -41,24 +38,25 @@ export const Navbar = () => {
                         Webbshopp
                     </Typography>
                     <StyledButton component={Link} to="/">Home</StyledButton>
-                    <StyledButton component={Link} to="/admin">Admin</StyledButton>
-                    <StyledButton name="login" onClick={openModal}>Logga in</StyledButton>
-                    <StyledButton name="register" onClick={openModal}>Registrera konto</StyledButton>
+                    {role === 'admin' && <StyledButton component={Link} to="/admin">Admin</StyledButton>}
+                    {!isAuthenticated && <StyledButton name="login" onClick={openModal}>Logga in</StyledButton>}
+                    {isAuthenticated && <StyledButton onClick={handleLogout}>Logga ut</StyledButton>}
+                    {!isAuthenticated && <StyledButton name="register" onClick={openModal}>Registrera konto</StyledButton>}
                 </Toolbar>
             </AppBar>
             <BasicModal
                 minHeight="70vh"
-                open={showModal}
-                onClose={toggleShowModal}
-                title={modalType === 'login' ? 'Logga in' : 'Registrera konto'}
+                open={modal.show}
+                onClose={toggleModal}
+                title={modal.type === 'login' ? 'Logga in' : 'Registrera konto'}
             >
-                {modalType === 'login' ?
+                {modal.type === 'login' ?
                     <>
-                        <LoginForm exitForm={toggleShowModal} />
+                        <LoginForm exitForm={toggleModal} />
                         <StyledButton name="register" onClick={openModal}>Jag har inget konto</StyledButton>
                     </> :
                     <>
-                        <RegisterForm exitForm={toggleShowModal} />
+                        <RegisterForm exitForm={toggleModal} />
                         <StyledButton name="login" onClick={openModal}>Jag har redan ett konto</StyledButton>
                     </>
                 }
