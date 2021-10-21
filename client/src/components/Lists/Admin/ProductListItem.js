@@ -63,8 +63,6 @@ export const ProductListItem = ({ product, removeListItem, updateListItem}) => {
     }
   }
 
-  // console.log(isEditing)
-
   return (
     <>
       <StyledListItem>

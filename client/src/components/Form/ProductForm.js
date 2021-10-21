@@ -99,8 +99,6 @@ export const ProductForm = ({exitForm, addToList, handleEdit, productToEdit = nu
     </Button>
   )
 
-  console.log(inputs)
-
   return (
     <FormGenerator inputs={inputs} button={button} />
   )
