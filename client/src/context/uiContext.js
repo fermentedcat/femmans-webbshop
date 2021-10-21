@@ -78,7 +78,6 @@ export const UiProvider = ({ children}) => {
   const [state, dispatch] = useReducer(uiReducer, initialState);
 
   const setNotification = (data) => {
-    console.log("login")
     dispatch({ type: 'NOTIFICATION', data })
   }
 
