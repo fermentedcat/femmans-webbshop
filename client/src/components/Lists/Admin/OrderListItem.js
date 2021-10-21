@@ -38,7 +38,7 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
     const currentStatus = orderStatus;
     setOrderStatus(newStatus);
     try {
-      const newOrder = await updateOrder('token', {status: newStatus}, order._id)
+      const newOrder = await updateOrder({status: newStatus}, order._id)
       updateListItem(newOrder);
     } catch (error) {
       console.log(error)
