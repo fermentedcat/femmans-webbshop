@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { AuthContext } from '../../context/authContext'
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -21,6 +22,7 @@ const StyledButton = styled(Button)(() => ({
 }));
 
 export const Navbar = () => {
+    const { isAuthenticated, role, logout } = useContext(AuthContext);
     const [showModal, setShowModal] = useState(false);
     const [modalType, setModalType] = useState('login');
 
@@ -33,6 +35,10 @@ export const Navbar = () => {
         setModalType(e.target.name);
     }
 
+    const handleLogout = () => {
+        logout()
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -41,8 +47,9 @@ export const Navbar = () => {
                         Webbshopp
                     </Typography>
                     <StyledButton component={Link} to="/">Home</StyledButton>
-                    <StyledButton component={Link} to="/admin">Admin</StyledButton>
-                    <StyledButton name="login" onClick={openModal}>Logga in</StyledButton>
+                    {role === 'admin' && <StyledButton component={Link} to="/admin">Admin</StyledButton>}
+                    {!isAuthenticated && <StyledButton name="login" onClick={openModal}>Logga in</StyledButton>}
+                    {isAuthenticated && <StyledButton onClick={handleLogout}>Logga ut</StyledButton>}
                     <StyledButton name="register" onClick={openModal}>Registrera konto</StyledButton>
                 </Toolbar>
             </AppBar>

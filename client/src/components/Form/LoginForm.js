@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../../context/authContext'
 
 import { loginUser } from '../../api/api'
 import useInput from '../../hooks/useInput';
 import { Button } from '@mui/material';
 import user from '../../constants/formFields';
 import { FormGenerator } from './FormGenerator';
-import { setToken } from '../../token';
 
 export const LoginForm = ({exitForm}) => {
+  const { login } = useContext(AuthContext);
   const [formIsValid, setFormIsValid] = useState(false);
 
   const emailInput = useInput(user.email.validate);
@@ -28,7 +29,7 @@ export const LoginForm = ({exitForm}) => {
       };
       try {
         const response = await loginUser(data)
-        setToken(response.data)
+        login(response.data)
         exitForm()  
       } catch (error) {
         console.log('Login failed.')
