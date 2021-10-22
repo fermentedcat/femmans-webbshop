@@ -59,7 +59,6 @@ export const ProductListItem = ({ product, removeListItem, updateListItem}) => {
       toggleEdit();
     } catch (error) {
       console.log(error)
-      console.log('something went wrong')
     }
   }
 
