@@ -7,7 +7,7 @@ import { product } from '../../constants/formFields'
 import { FormGenerator } from './FormGenerator'
 import { useFetch } from '../../hooks/useFetch'
 
-export const ProductForm = ({exitForm, addToList, handleEdit, productToEdit = null }) => {
+export const ProductForm = ({addToList, handleEdit, productToEdit = null }) => {
   const [formIsValid, setFormIsValid] = useState(false)
   const [categoryValue, setCategoryValue] = useState("")
 
@@ -57,7 +57,6 @@ export const ProductForm = ({exitForm, addToList, handleEdit, productToEdit = nu
         const response = await addProduct(data)
         if (response.data) {
           addToList(response.data)
-          // exitForm()
         }
       } catch (error) {
         console.log(error)
@@ -91,9 +90,9 @@ export const ProductForm = ({exitForm, addToList, handleEdit, productToEdit = nu
       description: descriptionInput.value,
       price: priceInput.value,
       brand: brandInput.value,
-      categories: [categoryValue],
+      categories: categoryValue,
       weight: weightInput.value,
-      photos: [photoInput.value],
+      photos: photoInput.value,
     }, productToEdit._id ) : handleSubmit} disabled={!formIsValid}>
       Spara
     </Button>

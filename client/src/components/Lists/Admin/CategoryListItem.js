@@ -6,6 +6,7 @@ import { Button, ListItem, ListItemText, Select, MenuItem } from '@mui/material/
 import { BasicModal } from '../../Layout/BasicModal';
 import { CategoryForm } from '../../Form/CategoryForm';
 import { updateCategory, deleteCategory } from '../../../api/api';
+import { CategoryTable } from '../../Table/CategoryTable';
 
 const StyledListItem = styled(ListItem)(() => ({
     borderBottom: '2px solid #f0f0f0',
@@ -20,16 +21,16 @@ export const CategoryListItem = ({ category, removeListItem, updateListItem}) =>
     const [showModal, setShowModal] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
 
-    const handleCategoryEdit = async (category) => {
-        const data = { category: category };
+    const handleEdit = async (product, id) => {
         try {
-            const newCategory = await updateCategory('token', data, category._id)
-            updateListItem(newCategory)
-            toggleEdit();
+          await updateCategory(product, id)
+          updateListItem(product)
+          toggleEdit();
         } catch (error) {
-            console.log(error)
+          console.log(error)
+          console.log('something went wrong')
         }
-    }
+      }
 
     const handleDelete = async (e) => {
         if (!window.confirm('Är du säker på att du vill radera denna kategori?')) {
@@ -68,9 +69,9 @@ export const CategoryListItem = ({ category, removeListItem, updateListItem}) =>
                 open={showModal}
                 onClose={toggleShowModal}
                 title={isEditing ? 'Ändra kategori' : 'Kategoridetaljer'}
-                descriptions={[`Category ID ${category._id}`]}
+                descriptions={[`${category.title}`]}
             >
-                {isEditing ? <CategoryForm category={category} onSubmitHandler={handleCategoryEdit} /> : <CategoryForm updateListItem={updateListItem} category={category} />}
+                {isEditing ? <CategoryForm categoryToEdit={category} handleEdit={handleEdit} /> : <CategoryTable category={category} />}
                     <Button color={isEditing ? 'warning' : 'primary'} onClick={toggleEdit}>
                         {isEditing ? 'Ångra' : 'Ändra kategori'}
                     </Button>

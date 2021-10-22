@@ -10,8 +10,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 
-export const ProductTable = ({product}) => {
-
+export const CategoryTable = ({category}) => {
   const StyledSectionHeaderRow = styled(TableRow)(() => ({
     background: '#292828',
     th: {
@@ -30,21 +29,18 @@ export const ProductTable = ({product}) => {
           <TableHead>
             <StyledSectionHeaderRow>
               <TableCell align="left" colSpan="3">
-                Produkt
+                Category
               </TableCell>
             </StyledSectionHeaderRow>
             <TableRow>
-              {Object.keys(product).map((e, i) =>  {
+              {Object.keys(category).map((e, i) =>  {
               return <StyledTitleHeader key={i}>{e}</StyledTitleHeader>
             })}
             </TableRow>
           </TableHead>
           <TableBody>
             <TableRow>
-              {Object.values(product).map((e, i) => {
-              if(Array.isArray(e)){
-                return e.map((e, i) => <TableCell key={i}>{e.title ?? e}</TableCell>)
-              }
+              {Object.values(category).map((e, i) => {
               return <TableCell key={i}>{e}</TableCell>
               })}
             </TableRow>

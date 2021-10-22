@@ -6,12 +6,12 @@ import { FormGenerator } from './FormGenerator';
 import { Button } from '@mui/material';
 
 
-export const CategoryForm = ({exitForm}) => {
+export const CategoryForm = ({addToList, categoryToEdit, handleEdit = null}) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
-  const titleInput = useInput(category.title.validate)
-  const thumbnailInput = useInput(category.thumbnail.validate)
-  const descriptionInput = useInput(category.description.validate)
+  const titleInput = useInput(category.title.validate, categoryToEdit ? categoryToEdit.title: "")
+  const thumbnailInput = useInput(category.thumbnail.validate, categoryToEdit ? categoryToEdit.thumbnail: "")
+  const descriptionInput = useInput(category.description.validate, categoryToEdit ? categoryToEdit.description: "")
 
   const inputs = [
     {...titleInput, ...category.title},
@@ -28,14 +28,12 @@ export const CategoryForm = ({exitForm}) => {
         thumbnail: thumbnailInput.value,
         description: descriptionInput.value
       }
-      console.log(data)
       try {
         const response = await addCategory(data)
-        console.log('category added')
+        addToList(response.data);
       } catch (error) {
         console.log('Register failed.')
       } finally{
-        exitForm()  
       }
     }
   };
@@ -49,7 +47,12 @@ export const CategoryForm = ({exitForm}) => {
 
   return (
     <FormGenerator inputs={inputs}>
-      <Button onClick={handleSubmit} disabled={!formIsValid}>Registrera</Button>
+      <Button onClick={categoryToEdit ? () => handleEdit({
+        _id: categoryToEdit._id,
+        title: titleInput.value,
+        thumbnail: thumbnailInput.value,
+        description: descriptionInput.value
+      }, categoryToEdit._id) : handleSubmit} disabled={!formIsValid}>Spara</Button>
     </FormGenerator>
   )
 }
