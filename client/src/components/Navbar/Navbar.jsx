@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import { SearchField } from '../Form/SearchField';
+import { CartIcon } from '../UI/CartIcon';
 
 const NavButton = styled(Button)(() => ({
     backgroundColor: 'none',
@@ -42,6 +43,7 @@ export const Navbar = () => {
                 {!isAuthenticated && <NavButton name="login" onClick={openModal}>Logga in</NavButton>}
                 {isAuthenticated && <NavButton onClick={handleLogout}>Logga ut</NavButton>}
                 {!isAuthenticated && <NavButton name="register" onClick={openModal}>Registrera konto</NavButton>}
+                {<CartIcon />}
             </Box>
         </Toolbar>
     );
