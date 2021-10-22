@@ -28,9 +28,8 @@ exports.addNewCategory = (req, res, next) => {
 
   category.save()
     .then((data) => {
-      res.sendStatus(201).json(data);
+      res.status(201).json(data);
     }).catch(err => {
-      let errors = format.validationErrors(err)
       res.status(400).json(errors);
     });
 }
