@@ -16,27 +16,22 @@ import { CategoryListItem } from './CategoryListItem';
 
 export const CategoriesList = () => {
   const {data: categories, setData: setCategories, error} = useFetch(getCategories);
-  const [showModal, setShowModal] = useState(false)
-
-  const toggleShowModal = () => {
-    setShowModal(!showModal)
-  }
 
   const removeListItem = (id) => {
     setCategories(categories.filter(item => item._id !== id))
   }
 
   const updateListItem = (newItem) => {
-    setCategories(categories.map(item => item._id === newItem.id ? newItem : item))
+    setCategories(categories.map(item => item._id === newItem._id ? newItem : item))
   }
 
-  const addListItem = (newItem) => {
+  const addToList = (newItem) => {
     setCategories([...categories, newItem])
   }
 
   return (
     <>
-      <CategoryForm />
+      <CategoryForm addToList={addToList}/>
       <List dense>
         {categories &&
           categories.map((category) => {
