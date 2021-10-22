@@ -43,7 +43,7 @@ export const Navbar = () => {
                 {!isAuthenticated && <NavButton name="login" onClick={openModal}>Logga in</NavButton>}
                 {isAuthenticated && <NavButton onClick={handleLogout}>Logga ut</NavButton>}
                 {!isAuthenticated && <NavButton name="register" onClick={openModal}>Registrera konto</NavButton>}
-                {<CartIcon />}
+                {isAuthenticated && <CartIcon />}
             </Box>
         </Toolbar>
     );
