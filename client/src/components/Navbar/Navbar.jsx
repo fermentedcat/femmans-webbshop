@@ -1,66 +1,50 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
 import { UiContext } from '../../context/uiContext';
 
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
+import { Box } from '@mui/system';
+import { SearchField } from '../Form/SearchField';
+import { CartIcon } from '../UI/CartIcon';
 
-import { BasicModal } from '../Layout/BasicModal';
-import { RegisterForm } from '../Form/RegisterForm';
-import { LoginForm } from '../Form/LoginForm';
-
-const StyledButton = styled(Button)(() => ({
-    backgroundColor: 'white',
-    margin: '.3em',
+const NavButton = styled(Button)(() => ({
+    backgroundColor: 'none',
+    margin: 0,
+    height: '100%',
+    borderRadius: 0,
+    color: '#F9F9F9',
     '&:hover': {
-        backgroundColor: '#ededed'
+        backgroundColor: '#686364'
+    },
+    '&:active': {
+        backgroundColor: '#C6BEBE'
     }
 }));
 
 export const Navbar = () => {
-    const { isAuthenticated, role, logout } = useContext(AuthContext);
-    const { modal, toggleModal, openModal } = useContext(UiContext);
+    const { isAuthenticated, logout } = useContext(AuthContext);
+    const { openModal } = useContext(UiContext);
 
     const handleLogout = () => {
         logout()
     }
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Webbshopp
-                    </Typography>
-                    <StyledButton component={Link} to="/">Home</StyledButton>
-                    {role === 'admin' && <StyledButton component={Link} to="/admin">Admin</StyledButton>}
-                    {!isAuthenticated && <StyledButton name="login" onClick={openModal}>Logga in</StyledButton>}
-                    {isAuthenticated && <StyledButton onClick={handleLogout}>Logga ut</StyledButton>}
-                    {!isAuthenticated && <StyledButton name="register" onClick={openModal}>Registrera konto</StyledButton>}
-                </Toolbar>
-            </AppBar>
-            <BasicModal
-                minHeight="70vh"
-                open={modal.show}
-                onClose={toggleModal}
-                title={modal.type === 'login' ? 'Logga in' : 'Registrera konto'}
-            >
-                {modal.type === 'login' ?
-                    <>
-                        <LoginForm exitForm={toggleModal} />
-                        <StyledButton name="register" onClick={openModal}>Jag har inget konto</StyledButton>
-                    </> :
-                    <>
-                        <RegisterForm exitForm={toggleModal} />
-                        <StyledButton name="login" onClick={openModal}>Jag har redan ett konto</StyledButton>
-                    </>
-                }
-            </BasicModal>
-        </Box>
+        <Toolbar sx={{ backgroundColor: "#494345", alignItems: 'stretch', minHeight: '48px !important'}}>
+            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+                <NavButton component={Link} to="/">Hem</NavButton>
+                <NavButton>Spel</NavButton>
+                <SearchField />
+            </Box>
+            <Box>
+                {!isAuthenticated && <NavButton name="login" onClick={openModal}>Logga in</NavButton>}
+                {isAuthenticated && <NavButton onClick={handleLogout}>Logga ut</NavButton>}
+                {!isAuthenticated && <NavButton name="register" onClick={openModal}>Registrera konto</NavButton>}
+                {isAuthenticated && <CartIcon />}
+            </Box>
+        </Toolbar>
     );
 }

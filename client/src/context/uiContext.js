@@ -10,6 +10,7 @@ const initialState = {
     type: '',
     message: '',
   },
+  cartQty: 0
 };
 
 const UiContext = createContext(initialState);
@@ -69,6 +70,24 @@ const uiReducer = (state, action) => {
         }
       };
     }
+    case 'CART_ADD': {
+      return {
+        ...state, 
+        cartQty: state.cartQty + 1
+      };
+    }
+    case 'CART_REMOVE': {
+      return {
+        ...state, 
+        cartQty: state.cartQty - action.qty
+      };
+    }
+    case 'CART_CLEAR': {
+      return {
+        ...state, 
+        cartQty: 0
+      };
+    }
 
     default: return state;
   }
@@ -102,15 +121,31 @@ export const UiProvider = ({ children}) => {
     dispatch({ type: 'MODAL_TYPE', modalType })
   }
 
+  const cartAdd = () => {
+    dispatch({ type: 'CART_ADD' })
+  }
+
+  const cartRemove = (qty = 1) => {
+    dispatch({ type: 'CART_ADD', qty })
+  }
+
+  const cartClear = () => {
+    dispatch({ type: 'CART_CLEAR' })
+  }
+
   const ui = {
     modal: state.modal,
     notification: state.notification,
+    cartQty: state.cartQty,
     setNotification,
     resetNotification,
     toggleModal,
     openModal,
     closeModal,
     setModalType,
+    cartAdd,
+    cartRemove,
+    cartClear,
   }
 
   return (
