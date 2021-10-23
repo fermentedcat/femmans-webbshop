@@ -37,6 +37,15 @@ exports.getProductByCategory = (req, res, next) => {
     });
 }
 
+exports.getProductsBySearch = async (req, res, next) => {
+  const query = req.params.query;
+  const products = await Product.find({ title: { $regex: query, $options: 'i' } })
+    .populate('categories')
+    .exec();
+  if(products.length > 0) res.status(200).json(products);
+  else res.sendStatus(404)
+}
+
 exports.addNewProduct = (req, res, next) => {
   const data = req.body;
 
