@@ -39,7 +39,6 @@ exports.getProductByCategory = (req, res, next) => {
 
 exports.getProductsBySearch = async (req, res, next) => {
   const query = req.query.search;
-
   const queryObject = { $regex: query, $options: 'i' };
   const products = await Product.find({
     $or:
