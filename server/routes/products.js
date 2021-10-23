@@ -7,9 +7,9 @@ const { getAllProducts, addNewProduct, deleteOneProduct, updateOneProduct, getOn
 const router = express.Router();
 
 router.get('/', getAllProducts);
+router.get('/search', getProductsBySearch);
 router.get('/:id', getOneProduct);
 router.get('/category/:id', getProductByCategory);
-router.get('/search/:query', getProductsBySearch);
 router.post('/', adminAuth, addNewProduct);
 router.post('/:id', adminAuth, updateOneProduct);
 router.delete('/:id', adminAuth, deleteOneProduct);
