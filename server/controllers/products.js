@@ -47,8 +47,8 @@ exports.addNewProduct = (req, res, next) => {
       res.status(201).json(data);
     })
     .catch(err => {
-      let errors = format.validationErrors(err);
-      res.status(400).json(errors);
+      console.log(err)
+      res.status(400).json(err);
     });
 }
 
@@ -57,13 +57,12 @@ exports.updateOneProduct = (req, res, next) => {
   const data = req.body;
 
   Product.findByIdAndUpdate(id, data, { runValidators: true, new: true })
-    .then((product) => {
-      if (product) res.status(204).json(product);
-      else res.sendStatus(404).end();
-    })
-    .catch(err => {
-      let errors = format.validationErrors(err);
-      res.status(400).json(errors);
+    .populate('categories')
+    .exec((err, products) => {
+      if (err) res.sendStatus(400);
+
+      if (products) res.status(200).json(products);
+      else res.sendStatus(404);
     });
 }
 
