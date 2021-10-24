@@ -2,13 +2,13 @@ import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/authContext';
 
 import useInput from '../../hooks/useInput';
-import { addUser } from '../../api/api'
+import { addUser } from '../../api/api';
 
-import { Button } from '@mui/material';
 import user, { address } from '../../constants/formFields';
 import { FormGenerator } from './FormGenerator';
+import { StyledButton } from '../Buttons/StyledButton';
 
-export const RegisterForm = ({exitForm}) => {
+export const RegisterForm = ({ exitForm }) => {
   const { login } = useContext(AuthContext);
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -46,14 +46,14 @@ export const RegisterForm = ({exitForm}) => {
           postalCode: postalCodeInput.value,
           city: cityInput.value,
           country: countryInput.value,
-        }
-      }
+        },
+      };
       try {
-        const response = await addUser(data)
-        login(response.data)
-        exitForm()  
+        const response = await addUser(data);
+        login(response.data);
+        exitForm();
       } catch (error) {
-        console.log('Register failed.')
+        console.log('Register failed.');
       }
     }
   };
@@ -61,14 +61,14 @@ export const RegisterForm = ({exitForm}) => {
   useEffect(() => {
     setFormIsValid(
       fullNameInput.isValid &&
-      displayNameInput.isValid &&
-      emailInput.isValid &&
-      passwordInput.isValid &&
-      streetInput.isValid &&
-      postalCodeInput.isValid &&
-      cityInput.isValid &&
-      countryInput.isValid
-      );
+        displayNameInput.isValid &&
+        emailInput.isValid &&
+        passwordInput.isValid &&
+        streetInput.isValid &&
+        postalCodeInput.isValid &&
+        cityInput.isValid &&
+        countryInput.isValid
+    );
   }, [
     fullNameInput.isValid,
     displayNameInput.isValid,
@@ -77,10 +77,16 @@ export const RegisterForm = ({exitForm}) => {
     streetInput.isValid,
     postalCodeInput.isValid,
     cityInput.isValid,
-    countryInput.isValid
+    countryInput.isValid,
   ]);
 
-  const button = <Button onClick={handleSubmit} disabled={!formIsValid}>Registrera</Button>;
+  const button = (
+    <StyledButton onClick={handleSubmit} disabled={!formIsValid}>
+      Registrera
+    </StyledButton>
+  );
 
-  return <FormGenerator inputs={inputs} onSumbit={handleSubmit} button={button} />;
+  return (
+    <FormGenerator inputs={inputs} onSumbit={handleSubmit} button={button} />
+  );
 };
