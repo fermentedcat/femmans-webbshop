@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import useInput from '../../hooks/useInput';
+import validate from '../../constants/validate';
+import { getProductsBySearch } from '../../api/api';
+import { SearchResultList } from '../Lists/SearchResultList';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -44,17 +48,47 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export const SearchField = ({input}) => {
+export const SearchField = () => {
+  const input = useInput(validate.string)
+  const [result, setResult] = useState([])
+  
+  const inputProps = {
+    name: "search",
+    value: input.value,
+    onChange: input.onChange,
+  }
+
+  useEffect(() => {
+    if (input.isValid) {
+      const timer = setTimeout( async () => {
+        try {
+          //TODO: sanitize string?
+          const result = await getProductsBySearch(input.value)
+          setResult(result.data)
+        } catch (error) {
+          // also if no results on query (404)
+          setResult([])
+        }
+      }, 600);
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+    setResult([])
+  }, [input.value, input.isValid]);
+  
   return (
     <Search>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
+        autoComplete="off"
         placeholder="Sök produkter..."
         inputProps={{ 'aria-label': 'search' }}
-        components={input}
+        {...inputProps}
       />
+      { result.length > 0 && <SearchResultList result={result} reset={input.reset}/>}
     </Search>
   )
 }
