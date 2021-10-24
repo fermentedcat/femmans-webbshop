@@ -16,7 +16,7 @@ export const FormGenerator = ({inputs, onSubmit = null, button, children}) => {
       return (
         <FormControl key={index}>
           <InputLabel id="select-label">Kategori</InputLabel>
-          <Select labelId="select-label" label="Kategori" value={input.value} onChange={input.onChange}>
+          <Select labelId="select-label" label="Kategori" value={input.categoryId} onChange={input.onChange}>
             {input.options.map((category, index) => {
               return <MenuItem key={index} value={category._id}>{category.title}</MenuItem>
             })}
