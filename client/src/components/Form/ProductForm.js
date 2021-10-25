@@ -9,7 +9,7 @@ import { FormGenerator } from './FormGenerator'
 
 export const ProductForm = ({addToList, handleEdit, productToEdit = null, categories}) => {
   const [formIsValid, setFormIsValid] = useState(false)
-  const [categoryId, setCategoryId] = useState(productToEdit ? productToEdit.categories[0]._id: "")
+  const [categoryId, setCategoryId] = useState(productToEdit && productToEdit.categories[0] ? productToEdit.categories[0]._id : "")
 
   // console.log(categoryId) //DEN FÅR CATEGORY ID
 
