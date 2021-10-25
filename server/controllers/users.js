@@ -130,3 +130,13 @@ exports.addToCart = async (req, res, next) => {
   }
   res.status(204).json();
 };
+
+exports.deleteFromCart = async (req, res, next) => {
+  const { email } = req.user;
+  const cartItem = req.params.id;
+
+  await User.findOneAndDelete({
+    email: email,
+    'cart.product': { cartItem }
+  })
+}
