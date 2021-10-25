@@ -2,7 +2,7 @@ const express = require('express');
 const userAuth = require("../utils/userAuth");
 const adminAuth = require("../utils/adminAuth");
 
-const { getAllUsers, addNewUser, getOneUser, updateOneUser, deleteOneUser, loginUser, addToCart, getCart } = require('../controllers/users')
+const { getAllUsers, addNewUser, getOneUser, updateOneUser, deleteOneUser, loginUser, addToCart, getCart, emptyCart } = require('../controllers/users')
 
 const router = express.Router();
 
@@ -14,5 +14,6 @@ router.post('/', addNewUser);
 router.post('/cart/:id', userAuth, addToCart)
 router.post('/:id', userAuth, updateOneUser);
 router.delete('/:id', adminAuth, deleteOneUser);
+router.delete('/cart', userAuth, emptyCart);
 
 module.exports = router;
