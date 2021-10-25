@@ -11,8 +11,6 @@ export const ProductForm = ({addToList, handleEdit, productToEdit = null, catego
   const [formIsValid, setFormIsValid] = useState(false)
   const [categoryId, setCategoryId] = useState(productToEdit && productToEdit.categories[0] ? productToEdit.categories[0]._id : "")
 
-  // console.log(categoryId) //DEN FÅR CATEGORY ID
-
   const titleInput = useInput(product.title.validate, productToEdit ? productToEdit.title : "")
   const descriptionInput = useInput(product.description.validate, productToEdit ? productToEdit.description : "")
   const priceInput = useInput(product.price.validate, productToEdit ? productToEdit.price : "")
