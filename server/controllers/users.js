@@ -130,3 +130,16 @@ exports.addToCart = async (req, res, next) => {
   }
   res.status(204).json();
 };
+
+exports.emptyCart = async (req, res, next) => {
+  const { email } = req.user;
+
+  const item = await User.findOneAndUpdate(
+    { email: email },
+    { $set: { 'cart': [] } },
+    { new: true }
+  )
+
+  conosle.log(email)
+  res.status(204).json();
+}
