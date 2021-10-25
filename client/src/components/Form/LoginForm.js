@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { AuthContext } from '../../context/authContext'
-import { UiContext } from '../../context/uiContext'
+import { AuthContext } from '../../context/authContext';
+import { UiContext } from '../../context/uiContext';
 
-import { loginUser } from '../../api/api'
+import { loginUser } from '../../api/api';
 import useInput from '../../hooks/useInput';
-import { Button } from '@mui/material';
 import user from '../../constants/formFields';
-import { FormGenerator } from './FormGenerator';
 
-export const LoginForm = ({exitForm}) => {
+import { FormGenerator } from './FormGenerator';
+import { StyledButton } from '../Buttons/StyledButton';
+
+export const LoginForm = ({ exitForm }) => {
   const { login } = useContext(AuthContext);
   const { setNotification } = useContext(UiContext);
   const [formIsValid, setFormIsValid] = useState(false);
@@ -30,12 +31,15 @@ export const LoginForm = ({exitForm}) => {
         password: passwordInput.value,
       };
       try {
-        const response = await loginUser(data)
-        login(response.data)
-        setNotification({ type: 'success', message: 'inloggingen var en succé' });
-        exitForm()  
+        const response = await loginUser(data);
+        login(response.data);
+        setNotification({
+          type: 'success',
+          message: 'inloggingen var en succé',
+        });
+        exitForm();
       } catch (error) {
-        console.log('Login failed.')
+        console.log('Login failed.');
       }
     }
   };
@@ -45,9 +49,9 @@ export const LoginForm = ({exitForm}) => {
   }, [emailInput.isValid, passwordInput.isValid]);
 
   const button = (
-    <Button onClick={handleSubmit} disabled={!formIsValid}>
+    <StyledButton onClick={handleSubmit} disabled={!formIsValid}>
       Logga in
-    </Button>
+    </StyledButton>
   );
 
   return (

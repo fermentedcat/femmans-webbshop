@@ -4,25 +4,12 @@ import { AuthContext } from '../../context/authContext';
 import { UiContext } from '../../context/uiContext';
 
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import { SearchField } from '../Form/SearchField';
 import { CartIcon } from '../UI/CartIcon';
+import { NavButton } from '../Buttons/NavButton';
 
-const NavButton = styled(Button)(() => ({
-    backgroundColor: 'none',
-    margin: 0,
-    height: '100%',
-    borderRadius: 0,
-    color: '#F9F9F9',
-    '&:hover': {
-        backgroundColor: '#686364'
-    },
-    '&:active': {
-        backgroundColor: '#C6BEBE'
-    }
-}));
+
 
 export const Navbar = () => {
     const { isAuthenticated, logout } = useContext(AuthContext);
@@ -41,8 +28,8 @@ export const Navbar = () => {
             </Box>
             <Box>
                 {!isAuthenticated && <NavButton name="login" onClick={openModal}>Logga in</NavButton>}
-                {isAuthenticated && <NavButton onClick={handleLogout}>Logga ut</NavButton>}
                 {!isAuthenticated && <NavButton name="register" onClick={openModal}>Registrera konto</NavButton>}
+                {isAuthenticated && <NavButton onClick={handleLogout}>Logga ut</NavButton>}
                 {isAuthenticated && <CartIcon />}
             </Box>
         </Toolbar>

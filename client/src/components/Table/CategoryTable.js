@@ -1,4 +1,5 @@
-import { styled } from '@mui/material/styles';
+import React from 'react';
+
 import {
   Table,
   TableBody,
@@ -7,45 +8,35 @@ import {
   TableHead,
   TableRow,
   Paper,
-} from '@mui/material'
-import React from 'react'
+} from '@mui/material';
 
-export const CategoryTable = ({category}) => {
-  const StyledSectionHeaderRow = styled(TableRow)(() => ({
-    background: '#292828',
-    th: {
-      color: 'white',
-      fontWeight: 700,
-    },
-  }));
+import { SectionHeaderRow } from './styled/SectionHeaderRow';
+import { TitleHeader } from './styled/TitleHeader';
 
-  const StyledTitleHeader = styled(TableCell)(() => ({
-    fontWeight: 700,
-  }));
-
+export const CategoryTable = ({ category }) => {
   return (
     <TableContainer component={Paper}>
-        <Table aria-label="spanning table">
-          <TableHead>
-            <StyledSectionHeaderRow>
-              <TableCell align="left" colSpan="3">
-                Category
-              </TableCell>
-            </StyledSectionHeaderRow>
-            <TableRow>
-              {Object.keys(category).map((e, i) =>  {
-              return <StyledTitleHeader key={i}>{e}</StyledTitleHeader>
+      <Table aria-label="spanning table">
+        <TableHead>
+          <SectionHeaderRow>
+            <TableCell align="left" colSpan="3">
+              Category
+            </TableCell>
+          </SectionHeaderRow>
+          <TableRow>
+            {Object.keys(category).map((e, i) => {
+              return <TitleHeader key={i}>{e}</TitleHeader>;
             })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              {Object.values(category).map((e, i) => {
-              return <TableCell key={i}>{e}</TableCell>
-              })}
-            </TableRow>
-          </TableBody>
-        </Table>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            {Object.values(category).map((e, i) => {
+              return <TableCell key={i}>{e}</TableCell>;
+            })}
+          </TableRow>
+        </TableBody>
+      </Table>
     </TableContainer>
-  )
-}
+  );
+};
