@@ -135,8 +135,7 @@ exports.deleteFromCart = async (req, res, next) => {
   const { email } = req.user;
   const cartItem = req.params.id;
 
-  await User.findOneAndDelete({
-    email: email,
-    'cart.product': { cartItem }
-  })
+  await User.findOneAndUpdate(
+    { email: email }),
+    { $pull: { cart: { product: cartItem } } }
 }
