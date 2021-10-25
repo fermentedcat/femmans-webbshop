@@ -7,17 +7,17 @@ const OrderSchema = new Schema({
     ref: 'User'
   },
   orderRows: [{
-    product: {
-      type: Schema.Types.ObjectId,
-      ref: 'Product',
-    },
+      productTitle: {
+        type: String,
+        required: true,
+      },
     amount: {
       type: Number,
       required: true,
     },
     priceEach: {
       type: Number,
-      required: true,
+      required: true
     }
   }],
   address: {
