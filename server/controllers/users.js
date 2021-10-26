@@ -139,7 +139,5 @@ exports.emptyCart = async (req, res, next) => {
     { $set: { 'cart': [] } },
     { new: true }
   )
-
-  conosle.log(email)
   res.status(204).json();
 }

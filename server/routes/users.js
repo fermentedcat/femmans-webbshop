@@ -11,9 +11,9 @@ router.get('/cart', userAuth, getCart);
 router.get('/:id', userAuth, getOneUser);
 router.post('/login', loginUser);
 router.post('/', addNewUser);
+router.post('/cart/empty', userAuth, emptyCart);
 router.post('/cart/:id', userAuth, addToCart)
 router.post('/:id', userAuth, updateOneUser);
 router.delete('/:id', adminAuth, deleteOneUser);
-router.delete('/cart', userAuth, emptyCart);
 
 module.exports = router;
