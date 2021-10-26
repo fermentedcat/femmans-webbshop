@@ -7,8 +7,8 @@ import { useFetch } from '../hooks/useFetch';
 
 export const ProductsByCategoryPage = (props) => {
   const title = props.match.params.title;
-  const { data } = useFetch(getProductsByCategory, title);
 
+  const { data } = useFetch(getProductsByCategory, title);
   return (
     <Box>
       <Typography variant='h3'>{title.toUpperCase()}</Typography>

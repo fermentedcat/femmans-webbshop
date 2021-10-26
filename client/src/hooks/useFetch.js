@@ -16,7 +16,7 @@ export const useFetch = (callback, ...callbackArguments) => {
           message: 'Misslyckades med att hämta data.',
         });
       });
-  }, [])
+  }, [...callbackArguments])
 
 
   return { data, setData, error };
