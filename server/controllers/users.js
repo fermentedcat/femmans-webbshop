@@ -46,7 +46,7 @@ exports.getCart = async (req, res, next) => {
 
 exports.loginUser = async (req, res, next) => {
   const data = req.body;
-  console.log(data);
+
   const user = await User.findOne({ email: data.email });
   if (user) {
     const isMatch = await bcrypt.compare(data.password, user.password);
