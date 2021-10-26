@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { updateOrder } from '../../api/api';
 
-import { styled } from '@mui/material/styles';
 import {
   Table,
   TableBody,
@@ -14,17 +13,8 @@ import {
   Paper,
 } from '@mui/material';
 
-const StyledSectionHeaderRow = styled(TableRow)(() => ({
-  background: '#292828',
-  th: {
-    color: 'white',
-    fontWeight: 700,
-  },
-}));
-
-const StyledTitleHeader = styled(TableCell)(() => ({
-  fontWeight: 700,
-}));
+import { SectionHeaderRow } from './styled/SectionHeaderRow';
+import { TitleHeader } from './styled/TitleHeader';
 
 export const OrderTable = ({ order, updateListItem }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -34,20 +24,16 @@ export const OrderTable = ({ order, updateListItem }) => {
     setIsEditing(!isEditing);
   };
 
-  //Skicka en array med orderRows. vf inte bara skicka order data?
-
   const handleUpdateRowQty = async () => {
     const data = { orderRows: orderRowData }
     try {
       const newOrder = await updateOrder(data, order._id)
       updateListItem(newOrder.data)
     } catch (error) {
-      console.log(error)
-    }
-    finally{
+      console.log(error);
+    } finally {
       toggleEditRows();
     }
-    
   };
 
   const handleOnChange = (e) => {
@@ -88,14 +74,14 @@ export const OrderTable = ({ order, updateListItem }) => {
       <TableContainer component={Paper}>
         <Table aria-label="spanning table">
           <TableHead>
-            <StyledSectionHeaderRow>
+            <SectionHeaderRow>
               <TableCell align="left" colSpan="3">
                 Kundinfo
               </TableCell>
-            </StyledSectionHeaderRow>
+            </SectionHeaderRow>
             <TableRow>
-              <StyledTitleHeader>Namn</StyledTitleHeader>
-              <StyledTitleHeader>ID</StyledTitleHeader>
+              <TitleHeader>Namn</TitleHeader>
+              <TitleHeader>ID</TitleHeader>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -108,16 +94,16 @@ export const OrderTable = ({ order, updateListItem }) => {
 
         <Table aria-label="spanning table">
           <TableHead>
-            <StyledSectionHeaderRow>
+            <SectionHeaderRow>
               <TableCell align="left" colSpan="4">
                 Leveransinfo
               </TableCell>
-            </StyledSectionHeaderRow>
+            </SectionHeaderRow>
             <TableRow>
-              <StyledTitleHeader>Gatuadress</StyledTitleHeader>
-              <StyledTitleHeader>Postnummer</StyledTitleHeader>
-              <StyledTitleHeader>Postort</StyledTitleHeader>
-              <StyledTitleHeader>Land</StyledTitleHeader>
+              <TitleHeader>Gatuadress</TitleHeader>
+              <TitleHeader>Postnummer</TitleHeader>
+              <TitleHeader>Postort</TitleHeader>
+              <TitleHeader>Land</TitleHeader>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -132,16 +118,16 @@ export const OrderTable = ({ order, updateListItem }) => {
 
         <Table aria-label="spanning table">
           <TableHead>
-            <StyledSectionHeaderRow>
+            <SectionHeaderRow>
               <TableCell align="left" colSpan="4">
                 Beställning
               </TableCell>
-            </StyledSectionHeaderRow>
+            </SectionHeaderRow>
             <TableRow>
-              <StyledTitleHeader>Produkt</StyledTitleHeader>
-              <StyledTitleHeader>Antal</StyledTitleHeader>
-              <StyledTitleHeader>Styckpris</StyledTitleHeader>
-              <StyledTitleHeader>Total</StyledTitleHeader>
+              <TitleHeader>Produkt</TitleHeader>
+              <TitleHeader>Antal</TitleHeader>
+              <TitleHeader>Styckpris</TitleHeader>
+              <TitleHeader>Total</TitleHeader>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -151,7 +137,6 @@ export const OrderTable = ({ order, updateListItem }) => {
               <StyledTitleHeader>{orderRowData.reduce((prev, curr) => prev + curr.priceEach * curr.amount, 0)}:-</StyledTitleHeader>
             </TableRow>
           </TableBody>
-
         </Table>
       </TableContainer>
       <Button onClick={toggleEditRows}>

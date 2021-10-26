@@ -1,4 +1,5 @@
-import { styled } from '@mui/material/styles';
+import React from 'react';
+
 import {
   Table,
   TableBody,
@@ -7,49 +8,40 @@ import {
   TableHead,
   TableRow,
   Paper,
-} from '@mui/material'
-import React from 'react'
+} from '@mui/material';
 
-export const ProductTable = ({product}) => {
+import { SectionHeaderRow } from './styled/SectionHeaderRow';
+import { TitleHeader } from './styled/TitleHeader';
 
-  const StyledSectionHeaderRow = styled(TableRow)(() => ({
-    background: '#292828',
-    th: {
-      color: 'white',
-      fontWeight: 700,
-    },
-  }));
-
-  const StyledTitleHeader = styled(TableCell)(() => ({
-    fontWeight: 700,
-  }));
-
+export const ProductTable = ({ product }) => {
   return (
     <TableContainer component={Paper}>
-        <Table aria-label="spanning table">
-          <TableHead>
-            <StyledSectionHeaderRow>
-              <TableCell align="left" colSpan="3">
-                Produkt
-              </TableCell>
-            </StyledSectionHeaderRow>
-            <TableRow>
-              {Object.keys(product).map((e, i) =>  {
-              return <StyledTitleHeader key={i}>{e}</StyledTitleHeader>
+      <Table aria-label="spanning table">
+        <TableHead>
+          <SectionHeaderRow>
+            <TableCell align="left" colSpan="3">
+              Produkt
+            </TableCell>
+          </SectionHeaderRow>
+          <TableRow>
+            {Object.keys(product).map((e, i) => {
+              return <TitleHeader key={i}>{e}</TitleHeader>;
             })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              {Object.values(product).map((e, i) => {
-              if(Array.isArray(e)){
-                return e.map((e, i) => <TableCell key={i}>{e.title ?? e}</TableCell>)
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            {Object.values(product).map((e, i) => {
+              if (Array.isArray(e)) {
+                return e.map((e, i) => (
+                  <TableCell key={i}>{e.title ?? e}</TableCell>
+                ));
               }
-              return <TableCell key={i}>{e}</TableCell>
-              })}
-            </TableRow>
-          </TableBody>
-        </Table>
+              return <TableCell key={i}>{e}</TableCell>;
+            })}
+          </TableRow>
+        </TableBody>
+      </Table>
     </TableContainer>
-  )
-}
+  );
+};

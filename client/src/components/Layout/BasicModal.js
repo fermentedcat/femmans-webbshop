@@ -18,12 +18,11 @@ const style = {
 };
 
 const StyledBox = styled(Box)(() => ({
-  borderBottom: '3px solid #292828',
-  paddingBottom: '1em'
+  paddingBottom: '1em',
 }));
 
 export const BasicModal = (props) => {
-  const { open, onClose, title, descriptions, children} = props;
+  const { open, onClose, title, descriptions, children } = props;
 
   return (
     <Modal
@@ -39,13 +38,18 @@ export const BasicModal = (props) => {
               {title}
             </Typography>
           )}
-          {descriptions && descriptions.map((desc, index) => {
-            return (
-              <Typography key={index} id="modal-modal-description" sx={{ mt: 2 }}>
-                {desc}
-              </Typography>
-            )}
-          )}
+          {descriptions &&
+            descriptions.map((desc, index) => {
+              return (
+                <Typography
+                  key={index}
+                  id="modal-modal-description"
+                  sx={{ mt: 2 }}
+                >
+                  {desc}
+                </Typography>
+              );
+            })}
         </StyledBox>
         {children}
       </Box>
