@@ -12,6 +12,10 @@ exports.getAllUsers = (req, res, next) => {
   });
 };
 
+exports.tokenValidCheck = (req, res, next) => {
+  res.sendStatus(202);
+}
+
 exports.getOneUser = (req, res, next) => {
   const id = req.params.id;
 
