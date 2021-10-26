@@ -5,10 +5,9 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import BasicProductCard from '../components/Layout/BasicProductCard';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 
 export const ProductsPage = () => {
-  const { data, setData, errors } = useFetch(getProducts);
+  const { data } = useFetch(getProducts);
 
   return (
     <Box>
