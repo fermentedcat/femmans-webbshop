@@ -19,15 +19,12 @@ import {
 
 export const ShoppingCart = () => {
   const { data } = useFetch(getCart);
-  // const [rowsInput, setRowsInput] = useState({});
   const { setNotification } = useContext(UiContext);
-
 
   const handleChangeQty = (e) => {
     const newAmount = e.target.value;
     const productId = e.target.name;
     if (parseInt(newAmount) > 0) {
-      // setRowsInput({ ...rowsInput, [productId]: newAmount });
       const updateAmount = { amount: newAmount }
       updateCart(updateAmount, productId)
       setNotification({
@@ -94,6 +91,9 @@ export const ShoppingCart = () => {
                     </TableCell>
                     <TableCell align="right">
                       {item.product ? `${item.product.price * item.amount}kr` : ''}
+                    </TableCell>
+                    <TableCell align="right">
+                      <StyledButton sx={{ bgcolor: 'red', width: '5px' }} onClick={() => deleteFromCart(item.product._id)}>x</StyledButton>
                     </TableCell>
                   </TableRow>
                 );
