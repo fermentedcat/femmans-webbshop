@@ -111,33 +111,45 @@ exports.addToCart = async (req, res, next) => {
   const { email } = req.user;
   const cartItem = req.params.id;
 
-  const item = await User.findOneAndUpdate(
-    {
-      email: email,
-      'cart.product': { $ne: cartItem },
-    },
-    { $push: { cart: { product: cartItem, amount: 1 } } }
-  );
-
-  if (!item) {
-    await User.findOneAndUpdate(
+  try {
+    const item = await User.findOneAndUpdate(
       {
         email: email,
-        'cart.product': cartItem,
+        'cart.product': { $ne: cartItem },
       },
-      { $inc: { 'cart.$.amount': 1 } }
+      { $push: { cart: { product: cartItem, amount: 1 } } },
+      { new: true }
     );
+
+    if (item) res.status(200).json(item);
+
+    else {
+      const amount = await User.findOneAndUpdate(
+        {
+          email: email,
+          'cart.product': cartItem,
+        },
+        { $inc: { 'cart.$.amount': 1 } },
+        { new: true }
+      );
+      res.status(200).json(amount);
+    }
+  } catch (error) {
+    res.sendStatus(400);
   }
-  res.status(204).json();
 };
 
 exports.emptyCart = async (req, res, next) => {
   const { email } = req.user;
 
-  const item = await User.findOneAndUpdate(
-    { email: email },
-    { $set: { 'cart': [] } },
-    { new: true }
-  )
-  res.status(204).json();
+  try {
+    const item = await User.findOneAndUpdate(
+      { email: email },
+      { $set: { 'cart': [] } },
+      { new: true }
+    )
+    res.status(204).json();
+  } catch (error) {
+    res.sendStatus(400);
+  }
 }
