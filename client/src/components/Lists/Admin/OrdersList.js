@@ -6,7 +6,7 @@ import List from '@mui/material/List';
 import { OrderListItem } from './OrderListItem';
 
 export const OrdersList = () => {
-  const {data: orders, setData: setOrders, error} = useFetch(getOrders);
+  const {data: orders, setData: setOrders} = useFetch(getOrders);
 
   const removeListItem = (id) => {
     setOrders(orders.filter(item => item._id !== id))
@@ -18,7 +18,6 @@ export const OrdersList = () => {
 
   return (
     <List dense>
-      {error && <p>Endast Admin har tillgång</p>}
       {orders &&
         orders.map((order) => {
           return (

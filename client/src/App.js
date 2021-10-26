@@ -12,10 +12,11 @@ import { ProductsPage } from './pages/ProductsPage';
 import { Header } from './components/Layout/Header';
 import { BasicModal } from './components/Layout/BasicModal';
 import { ModalContent } from './components/Layout/ModalContent';
+import { Alert, Snackbar } from '@mui/material';
 
 function App() {
-  const { isAuthenticated, authenticate, email } = useContext(AuthContext)
-  const { modal, closeModal, notification } = useContext(UiContext)
+  const { isAuthenticated, authenticate } = useContext(AuthContext)
+  const { modal, closeModal, notification, closeNotification } = useContext(UiContext)
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -35,18 +36,17 @@ function App() {
     >
       <Header />
       <Box sx={{ padding: 2 }}>
-        {notification.show && (
-          <p>
-            {notification.type}: {notification.message}
-          </p>
-        )}
-        {isAuthenticated ? <p>Welcome, {email}</p> : <p>Not logged in</p>}
         <Switch>
           <Route path="/all-products" component={ProductsPage} />
           <Route path="/admin" component={AdminPage} />
           <Route path="/" component={LandingPage} />
         </Switch>
       </Box>
+      <Snackbar open={notification.show} autoHideDuration={6000} onClose={closeNotification}>
+        <Alert onClose={closeNotification} severity={notification.type || 'info'} sx={{ width: '100%' }}>
+          {notification.message}
+        </Alert>
+      </Snackbar>
       <BasicModal open={modal.show} onClose={closeModal}>
         <ModalContent />
       </BasicModal>

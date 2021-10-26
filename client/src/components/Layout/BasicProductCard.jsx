@@ -1,22 +1,43 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
-import { addToCart } from '../../api/api.js';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+
 import { UiContext } from '../../context/uiContext.js';
+import { AuthContext } from '../../context/authContext.js';
+import { addToCart } from '../../api/api.js';
+
+import { Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 export const BasicProductCard = ({ product }) => {
   const history = useHistory();
-  const { cartAdd } = useContext(UiContext)
+  const { cartAdd, setNotification, openModalType } = useContext(UiContext)
+  const { isAuthenticated } = useContext(AuthContext)
 
   const buyProduct = (e) => {
     e.stopPropagation();
+    if (!isAuthenticated) {
+      setNotification({
+        type: 'error',
+        message: 'Du måste vara inloggad för att handla.',
+      });
+      openModalType('login');
+      return;
+    }
 
     addToCart(product._id)
       .then(res => {
         cartAdd()
+        setNotification({
+          type: 'success',
+          message: `${product.title} har lagts till i din varukorg.`,
+        });
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        setNotification({
+          type: 'error',
+          message: 'Något gick fel. Produkten har inte lagts till i varukorgen.',
+        });
+      })
 
     //redirect if user not logged in
     //fetch add to cart 

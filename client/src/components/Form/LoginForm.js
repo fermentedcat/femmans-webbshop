@@ -35,11 +35,14 @@ export const LoginForm = ({ exitForm }) => {
         login(response.data);
         setNotification({
           type: 'success',
-          message: 'inloggingen var en succé',
+          message: 'Inloggingen var en succé!',
         });
         exitForm();
       } catch (error) {
-        console.log('Login failed.');
+        setNotification({
+          type: 'error',
+          message: 'Inloggingen misslyckades.',
+        });
       }
     }
   };

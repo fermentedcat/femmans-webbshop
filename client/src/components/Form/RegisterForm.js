@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/authContext';
 
 import useInput from '../../hooks/useInput';
 import { addUser } from '../../api/api';
+import { UiContext } from '../../context/uiContext';
 
 import user, { address } from '../../constants/formFields';
 import { FormGenerator } from './FormGenerator';
@@ -11,6 +12,7 @@ import { StyledButton } from '../Buttons/StyledButton';
 export const RegisterForm = ({ exitForm }) => {
   const { login } = useContext(AuthContext);
   const [formIsValid, setFormIsValid] = useState(false);
+  const { setNotification } = useContext(UiContext);
 
   const fullNameInput = useInput(user.fullName.validate);
   const displayNameInput = useInput(user.displayName.validate);
@@ -51,9 +53,17 @@ export const RegisterForm = ({ exitForm }) => {
       try {
         const response = await addUser(data);
         login(response.data);
+        setNotification({
+          type: 'success',
+          message: 'Registreringen lyckades! Du är nu inloggad.',
+        });
         exitForm();
       } catch (error) {
-        console.log('Register failed.');
+        setNotification({
+          type: 'error',
+          message: 'Registreringen misslyckades. Har du redan ett konto på denna mailadress?',
+        });
+        //TODO: set notification according to db error
       }
     }
   };

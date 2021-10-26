@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
+import { UiContext } from '../../../context/uiContext';
 
 import { styled } from '@mui/material/styles';
 import { Button, ListItem, ListItemText, Select, MenuItem } from '@mui/material';
@@ -27,6 +29,7 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [orderStatus, setOrderStatus] = useState("");
+  const { setNotification } = useContext(UiContext);
 
   useEffect(() => {
     setOrderStatus(order.status)
@@ -40,8 +43,15 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
     try {
       const newOrder = await updateOrder({status: newStatus}, order._id)
       updateListItem(newOrder);
+      setNotification({
+        type: 'success',
+        message: `Orderstatus för id ${order._id} har satts till '${newStatus}'.`,
+      });
     } catch (error) {
-      console.log(error)
+      setNotification({
+        type: 'error',
+        message: 'Statusuppdateringen misslyckades.',
+      });
       setOrderStatus(currentStatus)
     }
   };
@@ -51,9 +61,16 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
     try {
       const newOrder = await updateOrder(data, order._id)
       updateListItem(newOrder.data)
+      setNotification({
+        type: 'error',
+        message: 'Adressen har ändrats!',
+      });  
       toggleEdit();
     } catch (error) {
-      console.log(error)  
+      setNotification({
+        type: 'error',
+        message: 'Adressändringen misslyckades.',
+      });  
     }
   }
 
@@ -63,9 +80,16 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
     }
     try {
       await deleteOrder(order._id)
+      setNotification({
+        type: 'success',
+        message: `Ordern ${order._id} har raderats!`,
+      });  
       removeListItem(order._id)
     } catch (error) {
-      console.log(error)
+      setNotification({
+        type: 'error',
+        message: `Radering av order ${order._id} misslyckades.`,
+      });  
     }
   };
 

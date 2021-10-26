@@ -1,13 +1,17 @@
-import React, {useEffect, useState} from 'react'
-import useInput from '../../hooks/useInput';
-import { category } from "../../constants/formFields";
+import React, {useContext, useEffect, useState} from 'react'
+
 import { addCategory } from '../../api/api';
+import useInput from '../../hooks/useInput';
+import { UiContext } from '../../context/uiContext';
+
+import { category } from "../../constants/formFields";
 import { FormGenerator } from './FormGenerator';
 import { Button } from '@mui/material';
 
 
 export const CategoryForm = ({addToList, categoryToEdit, handleEdit = null}) => {
   const [formIsValid, setFormIsValid] = useState(false);
+  const { setNotification } = useContext(UiContext);
 
   const titleInput = useInput(category.title.validate, categoryToEdit ? categoryToEdit.title: "")
   const thumbnailInput = useInput(category.thumbnail.validate, categoryToEdit ? categoryToEdit.thumbnail: "")
@@ -31,9 +35,17 @@ export const CategoryForm = ({addToList, categoryToEdit, handleEdit = null}) => 
       try {
         const response = await addCategory(data)
         addToList(response.data);
+        setNotification({
+          type: 'success',
+          message: 'Kategorin har lagts till!',
+        });
       } catch (error) {
-        console.log('Register failed.')
+        setNotification({
+          type: 'error',
+          message: 'Misslyckades med att spara kategorin.',
+        });
       } finally{
+        // ?
       }
     }
   };
