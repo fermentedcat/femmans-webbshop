@@ -30,12 +30,10 @@ export const CategoryButton = () => {
 
   const handleOnCategoryClick = (_event, title) => {
     history.push(`/category/${title.toLowerCase()}`);
-    handleToggle();
   };
 
   const handleOnGameClick = () => {
     history.push('/all-products');
-    handleToggle();
   };
 
   function handleListKeyDown(event) {
