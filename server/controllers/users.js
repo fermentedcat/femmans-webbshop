@@ -120,7 +120,7 @@ exports.addToCart = async (req, res, next) => {
   );
 
   if (!item) {
-    User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       {
         email: email,
         'cart.product': cartItem,
