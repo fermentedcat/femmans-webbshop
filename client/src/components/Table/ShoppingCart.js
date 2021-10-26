@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { useFetch } from '../../hooks/useFetch';
-import { deleteFromCart, getCart, updateCart } from '../../api/api';
+import { deleteFromCart, emptyCart, getCart, updateCart } from '../../api/api';
 import { UiContext } from '../../context/uiContext';
 import { SectionHeaderRow } from './styled/SectionHeaderRow';
 import { TitleHeader } from './styled/TitleHeader';
+import { StyledButton } from '../Buttons/StyledButton';
 
 import {
   Table,
@@ -20,6 +21,7 @@ export const ShoppingCart = () => {
   const { data } = useFetch(getCart);
   // const [rowsInput, setRowsInput] = useState({});
   const { setNotification } = useContext(UiContext);
+
 
   const handleChangeQty = (e) => {
     const newAmount = e.target.value;
@@ -49,57 +51,64 @@ export const ShoppingCart = () => {
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="spanning table">
-        <TableHead>
-          <SectionHeaderRow>
-            <TableCell align="left">Produkt</TableCell>
-            <TableCell align="left">Styckpris</TableCell>
-            <TableCell align="left">Antal</TableCell>
-            <TableCell align="left">Total</TableCell>
-          </SectionHeaderRow>
-        </TableHead>
+    <>
+      <TableContainer component={Paper}>
+        <Table aria-label="spanning table">
+          <TableHead>
+            <SectionHeaderRow>
+              <TableCell align="left">Produkt</TableCell>
+              <TableCell align="left"></TableCell>
+              {/* <TableCell align="left">Styckpris</TableCell> */}
+              <TableCell align="left">Antal</TableCell>
+              <TableCell align="left">Total</TableCell>
+            </SectionHeaderRow>
+          </TableHead>
 
-        <TableBody>
-          {data &&
-            data.cart.map((item) => {
-              return (
-                <TableRow>
-                  <TitleHeader>
-                    {item.product ? item.product.title : 'Produkten saknas'}
-                  </TitleHeader>
-                  <TableCell>
+          <TableBody>
+            {data &&
+              data.cart.map((item) => {
+                return (
+                  <TableRow>
+                    <TableCell>
+                      {item.product ? <img src={item.product.photos[0]} alt='Product' style={{ 'width': '10ch' }} /> : ''}
+                    </TableCell>
+                    <TitleHeader>
+                      {item.product ? item.product.title : 'Produkten saknas'}
+                    </TitleHeader>
+                    {/* <TableCell>
                     {item.product ? item.product.price : ''}
-                  </TableCell>
-                  <TableCell>
-                    {item.product ? (
-                      <TextField
-                        type="number"
-                        min={0}
-                        name={item.product._id} //TODO: adjust to upcoming edit cart controller
-                        defaultValue={item.amount}
-                        onChange={handleChangeQty}
-                        sx={{ width: '12ch' }}
-                      />
-                    ) : (
-                      ''
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {item.product ? item.product.price * item.amount : ''}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                  </TableCell> */}
+                    <TableCell>
+                      {item.product ? (
+                        <TextField
+                          type="number"
+                          min={0}
+                          name={item.product._id} //TODO: adjust to upcoming edit cart controller
+                          defaultValue={item.amount}
+                          onChange={handleChangeQty}
+                          sx={{ width: '12ch' }}
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </TableCell>
+                    <TableCell align="right">
+                      {item.product ? `${item.product.price * item.amount}kr` : ''}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
 
-          {data && (
-            <TableRow>
-              <TitleHeader colSpan="3">Summa</TitleHeader>
-              <TitleHeader>{orderTotal}</TitleHeader>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            {data && (
+              <TableRow>
+                <TitleHeader colSpan="3">Summa:</TitleHeader>
+                <TitleHeader >{orderTotal}kr</TitleHeader>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <StyledButton sx={{ bgcolor: 'green' }} onClick={emptyCart}>Töm Varukorg</StyledButton>
+    </>
   );
 };
