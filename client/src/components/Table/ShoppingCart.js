@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useFetch } from '../../hooks/useFetch';
-import { getCart } from '../../api/api';
+import { deleteFromCart, getCart, updateCart } from '../../api/api';
 import { UiContext } from '../../context/uiContext';
 import { SectionHeaderRow } from './styled/SectionHeaderRow';
 import { TitleHeader } from './styled/TitleHeader';
@@ -18,25 +18,25 @@ import {
 
 export const ShoppingCart = () => {
   const { data } = useFetch(getCart);
-  const [rowsInput, setRowsInput] = useState({});
+  // const [rowsInput, setRowsInput] = useState({});
   const { setNotification } = useContext(UiContext);
-  
 
   const handleChangeQty = (e) => {
-    const newQty = e.target.value;
+    const newAmount = e.target.value;
     const productId = e.target.name;
-    if (parseInt(newQty) >= 0) {
-      setRowsInput({ ...rowsInput, [productId]: newQty });
-      // Todo: decide - update instantly or on save (add button)
+    if (parseInt(newAmount) > 0) {
+      // setRowsInput({ ...rowsInput, [productId]: newAmount });
+      const updateAmount = { amount: newAmount }
+      updateCart(updateAmount, productId)
       setNotification({
         type: 'success',
         message: 'Ändringen har sparats!',
       });
     } else {
-      e.target.value = 0;
+      deleteFromCart(productId)
       setNotification({
-        type: 'error',
-        message: 'Kunde inte spara dina ändringar.',
+        type: 'success',
+        message: 'Ändringen har sparats!',
       });
     }
   };
