@@ -23,11 +23,9 @@ const StyledSelect = styled(Select)(() => ({
   marginRight: '1em',
 }));
 
-export const ProductListItem = ({ product, removeListItem, updateListItem}) => {
+export const ProductListItem = ({ product, removeListItem, updateListItem, categories}) => {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  
-  //Öppna modalen och ändra alla fält. 
 
   const handleDelete = async (e) => {
     if (!window.confirm('Är du säker på att du vill radera denna produkt?')) {
@@ -54,8 +52,9 @@ export const ProductListItem = ({ product, removeListItem, updateListItem}) => {
 
   const handleEdit = async (product, id) => {
     try {
-      await updateProduct(product, id)
-      updateListItem(product)
+      const res = await updateProduct(product, id)
+      console.log(res)
+      updateListItem(res.data)
       toggleEdit();
     } catch (error) {
       console.log(error)
@@ -78,7 +77,7 @@ export const ProductListItem = ({ product, removeListItem, updateListItem}) => {
         title={isEditing ? 'Ändra produkt' : 'Produktdetaljer'}
         descriptions={[`Product ID ${product._id}`]}
       >
-        {isEditing ? <ProductForm productToEdit={product} handleEdit={handleEdit} /> : <ProductTable updateListItem={updateListItem} product={product} />}
+        {isEditing ? <ProductForm productToEdit={product} handleEdit={handleEdit} categories={categories}/> : <ProductTable product={product} />}
          <Button color={isEditing ? 'warning' : 'primary'} onClick={toggleEdit}>
           {isEditing ? 'Ångra' : 'Redigera produkt'}
         </Button>

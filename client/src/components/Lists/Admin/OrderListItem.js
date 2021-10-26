@@ -50,7 +50,7 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
     const data = { address: address };
     try {
       const newOrder = await updateOrder(data, order._id)
-      updateListItem(newOrder)
+      updateListItem(newOrder.data)
       toggleEdit();
     } catch (error) {
       console.log(error)  

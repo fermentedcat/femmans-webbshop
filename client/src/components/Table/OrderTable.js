@@ -25,13 +25,10 @@ export const OrderTable = ({ order, updateListItem }) => {
   };
 
   const handleUpdateRowQty = async () => {
-    const rows = orderRowData.map((row) => {
-      return { _id: row._id, amount: row.amount, priceEach: row.priceEach };
-    });
-    const data = { orderRows: rows };
+    const data = { orderRows: orderRowData }
     try {
-      const newOrder = await updateOrder(data, order._id);
-      updateListItem(newOrder);
+      const newOrder = await updateOrder(data, order._id)
+      updateListItem(newOrder.data)
     } catch (error) {
       console.log(error);
     } finally {
@@ -43,23 +40,17 @@ export const OrderTable = ({ order, updateListItem }) => {
     const value = e.target.value;
     const rowId = e.target.name;
     try {
-      // check input and save to state
       const newAmount = parseInt(value);
-      setOrderRowData((prevState) => {
-        const index = prevState.findIndex((row) => row._id === rowId);
-        const updated = [].concat(prevState);
-        updated[index].amount = newAmount;
-        return updated;
-      });
+      setOrderRowData(orderRowData.map(row => row._id === rowId ? {...row, amount: newAmount} : row))
     } catch {
       console.log('Ej numeriskt värde.');
     }
   };
 
-  const orderRows = Object.values(order.orderRows).map((row) => {
+  const orderRows = Object.values(orderRowData).map((row) => {
     return (
       <TableRow key={row._id}>
-        <TableCell>{row.product ? row.product.title : ''}</TableCell>
+        <TableCell>{row.productTitle ?? ""}</TableCell>
         <TableCell>
           {!isEditing ? (
             row.amount
@@ -77,10 +68,6 @@ export const OrderTable = ({ order, updateListItem }) => {
       </TableRow>
     );
   });
-
-  const orderTotal = orderRowData
-    .map((item) => item.priceEach * item.amount)
-    .reduce((sum, i) => sum + i, 0);
 
   return (
     <>
@@ -146,10 +133,8 @@ export const OrderTable = ({ order, updateListItem }) => {
           <TableBody>
             {orderRows}
             <TableRow>
-              <TitleHeader align="left" colSpan="3">
-                Summa:
-              </TitleHeader>
-              <TitleHeader>{orderTotal}:-</TitleHeader>
+              <TitleHeader align="left" colSpan="3">Summa:</TitleHeader>
+              <TitleHeader>{orderRowData.reduce((prev, curr) => prev + curr.priceEach * curr.amount, 0)}:-</TitleHeader>
             </TableRow>
           </TableBody>
         </Table>
