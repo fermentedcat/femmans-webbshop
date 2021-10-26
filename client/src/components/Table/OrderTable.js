@@ -133,8 +133,8 @@ export const OrderTable = ({ order, updateListItem }) => {
           <TableBody>
             {orderRows}
             <TableRow>
-              <StyledTitleHeader align="left" colSpan="3">Summa:</StyledTitleHeader>
-              <StyledTitleHeader>{orderRowData.reduce((prev, curr) => prev + curr.priceEach * curr.amount, 0)}:-</StyledTitleHeader>
+              <TitleHeader align="left" colSpan="3">Summa:</TitleHeader>
+              <TitleHeader>{orderRowData.reduce((prev, curr) => prev + curr.priceEach * curr.amount, 0)}:-</TitleHeader>
             </TableRow>
           </TableBody>
         </Table>
