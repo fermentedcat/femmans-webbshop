@@ -46,7 +46,7 @@ exports.getCart = async (req, res, next) => {
 
 exports.loginUser = async (req, res, next) => {
   const data = req.body;
-  console.log(data);
+
   const user = await User.findOne({ email: data.email });
   if (user) {
     const isMatch = await bcrypt.compare(data.password, user.password);
@@ -142,6 +142,26 @@ exports.addToCart = async (req, res, next) => {
     res.sendStatus(400);
   }
 };
+
+exports.updateCart = async (req, res, next) => {
+  const { email } = req.user;
+  const cartItem = req.params.id;
+  const amount = req.body.amount;
+
+  try {
+    const item = await User.findOneAndUpdate(
+      {
+        email: email,
+        'cart.product': cartItem
+      },
+      { $set: { 'cart.$.amount': amount } },
+      { new: true }
+    )
+    res.status(204).json(item);
+  } catch (error) {
+    res.sendStatus(400);
+  }
+}
 
 exports.emptyCart = async (req, res, next) => {
   const { email } = req.user;
