@@ -43,7 +43,7 @@ function App() {
         )}
         {isAuthenticated ? <p>Welcome, {email}</p> : <p>Not logged in</p>}
         <Switch>
-          <Route path="/category/:name" component={ProductsByCategoryPage} />
+          <Route path="/category/:title" component={ProductsByCategoryPage} />
           <Route path="/all-products" component={ProductsPage} />
           <Route path="/admin" component={AdminPage} />
           <Route path="/" component={LandingPage} />

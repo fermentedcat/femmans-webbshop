@@ -1,13 +1,18 @@
 import React from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { BasicProductGrid } from '../components/Layout/BasicProductGrid';
 import { getProductsByCategory } from '../api/api';
 import { useFetch } from '../hooks/useFetch';
 
 export const ProductsByCategoryPage = (props) => {
-  const name = props.match.params.name;
-  const {data} = useFetch(getProductsByCategory, name)
+  const title = props.match.params.title;
+  const { data } = useFetch(getProductsByCategory, title);
+
   return (
-    <div>
-      <h1>{name}</h1>
-    </div>
+    <Box>
+      <Typography variant='h3'>{}</Typography>
+      {data && <BasicProductGrid products={data} />}
+    </Box>
   );
 };
