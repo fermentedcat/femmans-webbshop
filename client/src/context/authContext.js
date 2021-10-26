@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from 'react';
-import { setToken, removeToken } from '../token';
+import { setToken, removeToken, getToken } from '../token';
 import jwtDecode from 'jwt-decode'
+import { authUser } from '../api/api'
 
 const initialState = {
   isAuthenticated: false,
@@ -38,6 +39,19 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'LOGIN', data });
   }
 
+  const authenticate = async () => {
+    const token = getToken()
+    if (token) {
+      try {
+        await authUser()
+        const data = jwtDecode(token);
+        dispatch({ type: 'LOGIN', data });
+      } catch (error) {
+        return;
+      }
+    }
+  }
+
   const logout = () => {
     removeToken();
     dispatch({ type: 'LOGOUT' });
@@ -48,6 +62,7 @@ export const AuthProvider = ({ children }) => {
     role: state.role,
     email: state.email,
     login,
+    authenticate,
     logout
   };
 
