@@ -1,5 +1,5 @@
 import React from 'react';
-import { getProducts } from '../../../api/api';
+import { getProducts, getCategories } from '../../../api/api';
 import { useFetch } from '../../../hooks/useFetch';
 import List from '@mui/material/List';
 import {ProductForm} from "../../Form/ProductForm";
@@ -8,6 +8,7 @@ import {ProductListItem} from "./ProductListItem";
 export const ProductsList = () => {
 
   const {data: products, setData: setProducts, error} = useFetch(getProducts);
+  const {data: categories, error: categoryError} = useFetch(getCategories)
   
   const removeListItem = (id) => {
     setProducts(products.filter(product => product._id !== id))
@@ -21,22 +22,24 @@ export const ProductsList = () => {
     setProducts([product, ...products])
   }
 
+
   return (
     <>
-    <ProductForm updateList={updateListItem} addToList={addToList}/>
+    {categories && <ProductForm updateList={updateListItem} addToList={addToList} categories={categories}/>}
     <List dense>
-      {error && <p>Kan inte hämta data</p>}
-      {products &&
-        products.map((product) => {
+      {products && categories ? (
+       products.map(product => {
           return (
             <ProductListItem
+              categories={categories}
               key={product._id}
               product={product}
               removeListItem={removeListItem}
               updateListItem={updateListItem}
             />
           );
-        })}
+        })
+      ): error ? <div>Can't get data</div> : <div>...Loading</div>}
     </List>
     </>
   );

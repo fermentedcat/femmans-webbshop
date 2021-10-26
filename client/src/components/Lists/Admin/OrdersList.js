@@ -13,7 +13,7 @@ export const OrdersList = () => {
   }
 
   const updateListItem = (newItem) => {
-    setOrders(orders.map(item => item._id === newItem.id ? newItem : item))
+    setOrders(orders.map(item => item._id === newItem._id ? newItem : item))
   }
 
   return (

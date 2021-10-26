@@ -1,12 +1,10 @@
 const Order = require('../models/Order');
 const User = require('../models/User');
-const format = require('../utils/format');
 
 exports.getAllOrders = (req, res, next) => {
 
   Order.find()
     .populate('user', '-password')
-    .populate('orderRows.product')
     .exec((err, orders) => {
       if (err) {
         res.sendStatus(500)
@@ -20,7 +18,6 @@ exports.getOneOrder = (req, res, next) => {
 
   Order.findById(id)
     .populate('user', '-password')
-    .populate('orderRows.product')
     .then(order => {
       if (order) res.status(200).json(order);
       else res.status(404).end()
