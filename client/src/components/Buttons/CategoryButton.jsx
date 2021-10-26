@@ -33,6 +33,11 @@ export const CategoryButton = () => {
     handleToggle();
   };
 
+  const handleOnGameClick = () => {
+    history.push('/all-products');
+    handleToggle();
+  };
+
   function handleListKeyDown(event) {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -51,21 +56,20 @@ export const CategoryButton = () => {
     prevOpen.current = open;
   }, [open]);
   return (
-    <div>
+    <div onMouseOver={handleToggle} onMouseOut={handleToggle}>
       <NavButton
         ref={anchorRef}
         id='composition-button'
         aria-controls={open ? 'composition-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup='true'
-        onClick={handleToggle}
+        onClick={handleOnGameClick}
       >
         Spel
       </NavButton>
       <Popper
         open={open}
         anchorEl={anchorRef.current}
-        role={undefined}
         placement='bottom-start'
         transition
         disablePortal
