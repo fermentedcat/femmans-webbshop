@@ -143,6 +143,26 @@ exports.addToCart = async (req, res, next) => {
   }
 };
 
+exports.updateCart = async (req, res, next) => {
+  const { email } = req.user;
+  const cartItem = req.params.id;
+  const amount = req.body.amount;
+
+  try {
+    const item = await User.findOneAndUpdate(
+      {
+        email: email,
+        'cart.product': cartItem
+      },
+      { $set: { 'cart.$.amount': amount } },
+      { new: true }
+    )
+    res.status(204).json(item);
+  } catch (error) {
+    res.sendStatus(400);
+  }
+}
+
 exports.emptyCart = async (req, res, next) => {
   const { email } = req.user;
 
