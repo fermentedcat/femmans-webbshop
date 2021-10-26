@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const Category = require('../models/Category');
 const format = require('../utils/format');
 
 exports.getAllProducts = (req, res, next) => {
@@ -25,16 +26,29 @@ exports.getOneProduct = (req, res, next) => {
     });
 }
 
-exports.getProductByCategory = (req, res, next) => {
-  const categoryId = req.params.id;
-  Product.find({ categories: categoryId })
-    .populate('categories')
-    .exec((err, products) => {
-      if (err) return res.sendStatus(400);
+exports.getProductByCategory = async (req, res, next) => {
+  const categoryTitle = req.params.title;
 
-      if (products.length > 0) res.status(200).json(products);
-      else res.sendStatus(404);
-    });
+  try {
+    const categoryId = await Category.findOne({ 'title': { '$regex': categoryTitle, $options: 'i' } }, '_id').exec();
+    const products = await Product.find({ categories: categoryId }).popuulate('categories').exec();
+    if (products.length > 0) res.status(200).json(products);
+    else res.sendStatus(404);
+
+  } catch (error) {
+    res.sendStatus(400);
+  }
+
+
+
+  // Product.find({ categories: categoryId })
+  //   .populate('categories')
+  //   .exec((err, products) => {
+  //     if (err) return res.sendStatus(400);
+
+  //     if (products.length > 0) res.status(200).json(products);
+  //     else res.sendStatus(404);
+  //   });
 }
 
 exports.getProductsBySearch = async (req, res, next) => {
