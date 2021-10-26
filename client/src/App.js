@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import { AdminPage } from './pages/AdminPage';
 import { LandingPage } from './pages/LandingPage';
 import { ProductsPage } from './pages/ProductsPage';
+import { ProductsByCategoryPage } from './pages/ProductsByCategoryPage';
 import { Header } from './components/Layout/Header';
 import { BasicModal } from './components/Layout/BasicModal';
 import { ModalContent } from './components/Layout/ModalContent';
@@ -42,6 +43,7 @@ function App() {
         )}
         {isAuthenticated ? <p>Welcome, {email}</p> : <p>Not logged in</p>}
         <Switch>
+          <Route path="/category/:name" component={ProductsByCategoryPage} />
           <Route path="/all-products" component={ProductsPage} />
           <Route path="/admin" component={AdminPage} />
           <Route path="/" component={LandingPage} />
