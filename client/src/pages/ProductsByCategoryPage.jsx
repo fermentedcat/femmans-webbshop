@@ -11,7 +11,7 @@ export const ProductsByCategoryPage = (props) => {
 
   return (
     <Box>
-      <Typography variant='h3'>{}</Typography>
+      <Typography variant='h3'>{title.toUpperCase()}</Typography>
       {data && <BasicProductGrid products={data} />}
     </Box>
   );

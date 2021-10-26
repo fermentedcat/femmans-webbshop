@@ -18,7 +18,7 @@ export const deleteFromCart = (id) => axios({ url: `${API_BASE_URL}users/cart/${
 //
 export const getProducts = () => axios({ url: `${API_BASE_URL}products` });
 export const getProduct = (id) => axios({ url: `${API_BASE_URL}products/${id}` });
-export const getProductsByCategory = (id) => axios({ url: `${API_BASE_URL}products/category/${id}` });
+export const getProductsByCategory = (title) => axios({ url: `${API_BASE_URL}products/category/${title}` });
 export const getProductsBySearch = (query) => axios({ url: `${API_BASE_URL}products/search?search=${query}` });
 export const addProduct = (product) => axios({ url: `${API_BASE_URL}products`, method: 'POST', headers: { 'x-auth-token': getToken() }, data: product });
 export const updateProduct = (product, id) => axios({ url: `${API_BASE_URL}products/${id}`, method: 'POST', headers: { 'x-auth-token': getToken() }, data: product });
