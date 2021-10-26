@@ -14,8 +14,14 @@ import { BasicModal } from './components/Layout/BasicModal';
 import { ModalContent } from './components/Layout/ModalContent';
 
 function App() {
-  const { isAuthenticated, email } = useContext(AuthContext);
-  const { modal, closeModal, notification } = useContext(UiContext);
+  const { isAuthenticated, authenticate, email } = useContext(AuthContext)
+  const { modal, closeModal, notification } = useContext(UiContext)
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      authenticate()
+    }
+  }, [isAuthenticated, authenticate])
 
   return (
     <Container
