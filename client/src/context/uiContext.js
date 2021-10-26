@@ -28,6 +28,15 @@ const uiReducer = (state, action) => {
         },
       };
     }
+    case 'NOTIFICATION_CLOSE': {
+      return {
+        ...state,
+        notification: {
+          ...state.notification,
+          show: false
+        },
+      };
+    }
     case 'NOTIFICATION_RESET': {
       return {
         ...state,
@@ -58,15 +67,6 @@ const uiReducer = (state, action) => {
         modal: {
           ...state.modal,
           show: false,
-        },
-      };
-    }
-    case 'MODAL_TYPE': {
-      return {
-        ...state,
-        modal: {
-          ...state.modal,
-          type: action.modalType,
         },
       };
     }
@@ -101,6 +101,13 @@ export const UiProvider = ({ children }) => {
     dispatch({ type: 'NOTIFICATION', data });
   };
 
+  const closeNotification = (e, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    dispatch({ type: 'NOTIFICATION_CLOSE' });
+  };
+
   const resetNotification = () => {
     dispatch({ type: 'NOTIFICATION_RESET' });
   };
@@ -113,13 +120,13 @@ export const UiProvider = ({ children }) => {
     const modalType = e.target.name || '';
     dispatch({ type: 'MODAL_OPEN', modalType });
   };
+  
+  const openModalType = (modalType) => {
+    dispatch({ type: 'MODAL_OPEN', modalType });
+  };
 
   const closeModal = () => {
     dispatch({ type: 'MODAL_CLOSE' });
-  };
-
-  const setModalType = (modalType) => {
-    dispatch({ type: 'MODAL_TYPE', modalType });
   };
 
   const cartAdd = () => {
@@ -139,11 +146,12 @@ export const UiProvider = ({ children }) => {
     notification: state.notification,
     cartQty: state.cartQty,
     setNotification,
+    closeNotification,
     resetNotification,
     toggleModal,
     openModal,
+    openModalType,
     closeModal,
-    setModalType,
     cartAdd,
     cartRemove,
     cartClear,

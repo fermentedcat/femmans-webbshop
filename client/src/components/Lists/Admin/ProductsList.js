@@ -8,7 +8,7 @@ import {ProductListItem} from "./ProductListItem";
 export const ProductsList = () => {
 
   const {data: products, setData: setProducts, error} = useFetch(getProducts);
-  const {data: categories, error: categoryError} = useFetch(getCategories)
+  const {data: categories } = useFetch(getCategories)
   
   const removeListItem = (id) => {
     setProducts(products.filter(product => product._id !== id))

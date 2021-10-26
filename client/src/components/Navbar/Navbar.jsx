@@ -13,10 +13,14 @@ import { NavButton } from '../Buttons/NavButton';
 
 export const Navbar = () => {
     const { isAuthenticated, logout } = useContext(AuthContext);
-    const { openModal } = useContext(UiContext);
+    const { openModal, setNotification } = useContext(UiContext);
 
     const handleLogout = () => {
         logout()
+        setNotification({
+            type: 'success',
+            message: 'Du är utloggad. Välkommen åter!',
+          });
     }
 
     return (

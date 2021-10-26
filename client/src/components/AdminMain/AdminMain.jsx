@@ -11,7 +11,7 @@ export const AdminMain = ({ categoryObject: { category } }) => {
           Orders: <OrdersList />,
           Categories: <CategoriesList />,
           Products: <ProductsList />,
-          default: "<Default />"
+          default: ""
         }[category]
       }
     </div>

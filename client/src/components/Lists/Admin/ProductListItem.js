@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+
+import { UiContext } from '../../../context/uiContext';
 
 import { styled } from '@mui/material/styles';
-import { Button, ListItem, ListItemText, Select, MenuItem } from '@mui/material';
+import { Button, ListItem, ListItemText } from '@mui/material';
 
 import { BasicModal } from '../../Layout/BasicModal';
 import { ProductForm } from '../../Form/ProductForm';
@@ -17,15 +19,10 @@ const StyledListItem = styled(ListItem)(() => ({
   },
 }));
 
-const StyledSelect = styled(Select)(() => ({
-  width: '10em',
-  padding: 0,
-  marginRight: '1em',
-}));
-
 export const ProductListItem = ({ product, removeListItem, updateListItem, categories}) => {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const { setNotification } = useContext(UiContext);
 
   const handleDelete = async (e) => {
     if (!window.confirm('Är du säker på att du vill radera denna produkt?')) {
@@ -33,9 +30,16 @@ export const ProductListItem = ({ product, removeListItem, updateListItem, categ
     }
     try {
       await deleteProduct(product._id);
+      setNotification({
+        type: 'success',
+        message: 'Produkten har raderats!',
+      });
       removeListItem(product._id)
     } catch (error) {
-      console.log(error)
+      setNotification({
+        type: 'error',
+        message: 'Misslyckades med att radera produkten.',
+      });
     }
   };
 
@@ -55,9 +59,16 @@ export const ProductListItem = ({ product, removeListItem, updateListItem, categ
       const res = await updateProduct(product, id)
       console.log(res)
       updateListItem(res.data)
+      setNotification({
+        type: 'success',
+        message: 'Produkten har uppdaterats!',
+      });
       toggleEdit();
     } catch (error) {
-      console.log(error)
+      setNotification({
+        type: 'error',
+        message: 'Uppdatering av produkten misslyckades.',
+      });
     }
   }
 

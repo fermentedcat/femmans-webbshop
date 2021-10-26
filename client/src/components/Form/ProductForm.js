@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { addProduct } from '../../api/api'
 import useInput from '../../hooks/useInput'
+import { UiContext } from '../../context/uiContext'
+
 import { Button } from '@mui/material'
 import { product } from '../../constants/formFields'
 import { FormGenerator } from './FormGenerator'
@@ -10,6 +12,7 @@ import { FormGenerator } from './FormGenerator'
 export const ProductForm = ({addToList, handleEdit, productToEdit = null, categories}) => {
   const [formIsValid, setFormIsValid] = useState(false)
   const [categoryId, setCategoryId] = useState(productToEdit && productToEdit.categories[0] ? productToEdit.categories[0]._id : "")
+  const { setNotification } = useContext(UiContext);
 
   // console.log(categoryId) //DEN FÅR CATEGORY ID
 
@@ -56,12 +59,18 @@ export const ProductForm = ({addToList, handleEdit, productToEdit = null, catego
       }
       try {
         const response = await addProduct(data)
-        console.log(response.data)
         if (response.data) {
           addToList(response.data)
+          setNotification({
+            type: 'success',
+            message: 'Produkten har lagts till!',
+          });
         }
       } catch (error) {
-        console.log(error)
+        setNotification({
+          type: 'error',
+          message: 'Misslyckades med att spara produkten.',
+        });
       }
     }
   }

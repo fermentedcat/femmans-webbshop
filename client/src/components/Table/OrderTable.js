@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { updateOrder } from '../../api/api';
+import { UiContext } from '../../context/uiContext';
 
 import {
   Table,
@@ -19,6 +20,7 @@ import { TitleHeader } from './styled/TitleHeader';
 export const OrderTable = ({ order, updateListItem }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [orderRowData, setOrderRowData] = useState(order.orderRows);
+  const { setNotification } = useContext(UiContext);
 
   const toggleEditRows = () => {
     setIsEditing(!isEditing);
@@ -28,9 +30,16 @@ export const OrderTable = ({ order, updateListItem }) => {
     const data = { orderRows: orderRowData }
     try {
       const newOrder = await updateOrder(data, order._id)
+      setNotification({
+        type: 'success',
+        message: 'Orderraderna har uppdaterats!',
+      });
       updateListItem(newOrder.data)
     } catch (error) {
-      console.log(error);
+      setNotification({
+        type: 'error',
+        message: 'Uppdateringen misslyckades.',
+      });
     } finally {
       toggleEditRows();
     }
@@ -43,7 +52,10 @@ export const OrderTable = ({ order, updateListItem }) => {
       const newAmount = parseInt(value);
       setOrderRowData(orderRowData.map(row => row._id === rowId ? {...row, amount: newAmount} : row))
     } catch {
-      console.log('Ej numeriskt värde.');
+      setNotification({
+        type: 'error',
+        message: 'Ej numeriskt värde.',
+      });
     }
   };
 
