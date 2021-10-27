@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useFetch } from '../../hooks/useFetch';
 import { deleteFromCart, emptyCart, getCart, updateCart } from '../../api/api';
 import { UiContext } from '../../context/uiContext';
@@ -19,11 +19,14 @@ import {
 } from '@mui/material';
 
 export const ShoppingCart = () => {
-  const { data } = useFetch(getCart);
+  const [amount, setAmount] = useState();
+  const { data } = useFetch(getCart, amount);
   const { setNotification } = useContext(UiContext);
 
   const handleChangeQty = (e) => {
-    const newAmount = e.target.value;
+    e.preventDefault();
+
+    let newAmount = e.target.value;
     const productId = e.target.name;
     if (parseInt(newAmount) > 0) {
       const updateAmount = { amount: newAmount }
@@ -32,12 +35,15 @@ export const ShoppingCart = () => {
         type: 'success',
         message: 'Ändringen har sparats!',
       });
+      setAmount(newAmount);
     } else {
+      newAmount++;
       deleteFromCart(productId)
       setNotification({
         type: 'success',
         message: 'Ändringen har sparats!',
       });
+      setAmount(0);
     }
   };
 
