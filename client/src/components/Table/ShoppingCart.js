@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useFetch } from '../../hooks/useFetch';
 import { deleteFromCart, emptyCart, getCart, updateCart } from '../../api/api';
 import { UiContext } from '../../context/uiContext';
@@ -15,6 +15,7 @@ import {
   TableRow,
   Paper,
   TextField,
+  Box
 } from '@mui/material';
 
 export const ShoppingCart = () => {
@@ -52,12 +53,12 @@ export const ShoppingCart = () => {
       <TableContainer component={Paper}>
         <Table aria-label="spanning table">
           <TableHead>
-            <SectionHeaderRow>
+            <SectionHeaderRow >
               <TableCell align="left">Produkt</TableCell>
-              <TableCell align="left"></TableCell>
-              {/* <TableCell align="left">Styckpris</TableCell> */}
-              <TableCell align="left">Antal</TableCell>
-              <TableCell align="left">Total</TableCell>
+              <TableCell ></TableCell>
+              <TableCell align="center">Antal</TableCell>
+              <TableCell align="right">Total</TableCell>
+              <TableCell ></TableCell>
             </SectionHeaderRow>
           </TableHead>
 
@@ -72,15 +73,12 @@ export const ShoppingCart = () => {
                     <TitleHeader>
                       {item.product ? item.product.title : 'Produkten saknas'}
                     </TitleHeader>
-                    {/* <TableCell>
-                    {item.product ? item.product.price : ''}
-                  </TableCell> */}
                     <TableCell>
                       {item.product ? (
                         <TextField
                           type="number"
                           min={0}
-                          name={item.product._id} //TODO: adjust to upcoming edit cart controller
+                          name={item.product._id}
                           defaultValue={item.amount}
                           onChange={handleChangeQty}
                           sx={{ width: '12ch' }}
@@ -93,7 +91,7 @@ export const ShoppingCart = () => {
                       {item.product ? `${item.product.price * item.amount}kr` : ''}
                     </TableCell>
                     <TableCell align="right">
-                      <StyledButton sx={{ bgcolor: 'red', width: '5px' }} onClick={() => deleteFromCart(item.product._id)}>x</StyledButton>
+                      <button style={{ background: '#cf4545', color: 'black', padding: '3px 7px', borderRadius: '10%', cursor: 'pointer' }} onClick={() => deleteFromCart(item.product._id)}>x</button>
                     </TableCell>
                   </TableRow>
                 );
@@ -101,14 +99,17 @@ export const ShoppingCart = () => {
 
             {data && (
               <TableRow>
-                <TitleHeader colSpan="3">Summa:</TitleHeader>
-                <TitleHeader >{orderTotal}kr</TitleHeader>
+                <TitleHeader colSpan="3" align='right'>Summa:</TitleHeader>
+                <TableCell >{orderTotal}kr</TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </TableContainer>
-      <StyledButton sx={{ bgcolor: 'green' }} onClick={emptyCart}>Töm Varukorg</StyledButton>
+      <Box component='div' sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '10px' }}>
+        <StyledButton sx={{ bgcolor: 'gray' }} onClick={emptyCart}>Töm Varukorg</StyledButton>
+        <StyledButton sx={{ bgcolor: 'green' }} href={'/checkout'}>Gå till kassan</StyledButton>
+      </Box>
     </>
   );
 };
