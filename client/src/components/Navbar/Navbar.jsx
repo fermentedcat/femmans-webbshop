@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom'
 import { Link, NavLink } from 'react-router-dom';
 
 import { AuthContext } from '../../context/authContext';
@@ -14,6 +15,7 @@ import { CategoryButton } from '../Buttons/CategoryButton';
 export const Navbar = () => {
   const { isAuthenticated, logout } = useContext(AuthContext);
   const { openModal, setNotification, cartFetch } = useContext(UiContext);
+  const history = useHistory()
 
   const handleLogout = () => {
     logout();
@@ -21,6 +23,7 @@ export const Navbar = () => {
       type: 'success',
       message: 'Du är utloggad. Välkommen åter!',
     });
+    history.push('/')
   };
 
   useEffect(() => {
