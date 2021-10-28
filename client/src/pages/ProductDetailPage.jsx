@@ -12,55 +12,36 @@ export const ProductDetailPage = (props) => {
     <Box>
       {product && (
         <>
-          <Typography variant='h3'>{product.title}</Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Box>
-              <img
-                src={product.photos[0]}
-                alt='product.title'
-                style={{ maxWidth: '500px', minWidth: '200px' }}
-              />
-            </Box>
+          <Typography variant='h3'> {product.title}</Typography>
+          <Box>
+            <Typography variant='h6' sx={{ display: 'inline' }}>
+              Tillverkare:{' '}
+            </Typography>
+            <Typography variant='body2' sx={{ display: 'inline' }}>
+              {product.brand}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex' }}>
+            <img
+              src={product.photos[0]}
+              alt=''
+              style={{ minHeight: '400px', maxHeight: '500px', width: 'auto' }}
+            />
             <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-around',
-              }}
+              sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}
             >
               <Button
-                sx={{ width: '50%', margin: '0 5%', alignSelf: 'center' }}
-                id='button'
                 variant='contained'
+                sx={{ width: '300px', alignSelf: 'center' }}
               >
-                <AddShoppingCartIcon sx={{ mr: '3px' }} />
+                <AddShoppingCartIcon />
                 <Typography>{product.price} kr</Typography>
               </Button>
-              <Box sx={{ margin: '0 5%' }}>
-                <Typography variant='h6'>Kategorier</Typography>
-                <List>
-                  {product.categories.map((category) => (
-                    <Link
-                      key={category._id}
-                      to={`/category/${category.title.toLowerCase()}`}
-                    >
-                      <ListItem>
-                        <Typography key={category._id}>
-                          {category.title}
-                        </Typography>
-                      </ListItem>
-                    </Link>
-                  ))}
-                </List>
-                <Typography variant='h6'>Tillverkare</Typography>
-                <Typography variant='body2'>{product.brand}</Typography>
+              <Box sx={{ margin: '20px' }}>
+                <Typography variant='h5'>Beskrivning</Typography>
+                <Typography variant='body1'>{product.description}</Typography>
               </Box>
             </Box>
-          </Box>
-          <Box>
-            <Typography variant='h4'>Beskrivning</Typography>
-            <Typography variant='body2'>{product.description}</Typography>
           </Box>
         </>
       )}
