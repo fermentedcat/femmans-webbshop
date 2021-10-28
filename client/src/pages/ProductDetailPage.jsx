@@ -25,21 +25,40 @@ export const ProductDetailPage = (props) => {
             <img
               src={product.photos[0]}
               alt=''
-              style={{ minHeight: '400px', maxHeight: '500px', width: 'auto' }}
+              style={{
+                maxWidth: '50%',
+                height: '100%',
+              }}
             />
             <Box
-              sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                margin: '20px',
+              }}
             >
               <Button
                 variant='contained'
-                sx={{ width: '300px', alignSelf: 'center' }}
+                sx={{ width: '100%', alignSelf: 'center', margin: '20px' }}
               >
                 <AddShoppingCartIcon />
                 <Typography>{product.price} kr</Typography>
               </Button>
-              <Box sx={{ margin: '20px' }}>
+              <Box>
                 <Typography variant='h5'>Beskrivning</Typography>
                 <Typography variant='body1'>{product.description}</Typography>
+                <hr />
+                <Typography variant='h6'>Kategorier</Typography>
+                <List>
+                  {product.categories.map((category) => (
+                    <Link to={`/category/${category.title.toLowerCase()}`}>
+                      <ListItem>
+                        <Typography>{category.title}</Typography>
+                      </ListItem>
+                    </Link>
+                  ))}
+                </List>
               </Box>
             </Box>
           </Box>
