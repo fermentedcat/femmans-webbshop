@@ -19,7 +19,7 @@ export const CategoryTable = ({ category }) => {
       <Table aria-label="spanning table">
         <TableHead>
           <SectionHeaderRow>
-            <TableCell align="left" colSpan="3">
+            <TableCell colSpan={12}>
               Category
             </TableCell>
           </SectionHeaderRow>
