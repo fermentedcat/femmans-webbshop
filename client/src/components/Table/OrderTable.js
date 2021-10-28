@@ -17,7 +17,7 @@ import {
 import { SectionHeaderRow } from './styled/SectionHeaderRow';
 import { TitleHeader } from './styled/TitleHeader';
 
-export const OrderTable = ({ order, updateListItem }) => {
+export const OrderTable = ({ readOnly, order, updateListItem }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [orderRowData, setOrderRowData] = useState(order.orderRows);
   const { setNotification } = useContext(UiContext);
@@ -84,25 +84,27 @@ export const OrderTable = ({ order, updateListItem }) => {
   return (
     <>
       <TableContainer component={Paper}>
-        <Table aria-label="spanning table">
-          <TableHead>
-            <SectionHeaderRow>
-              <TableCell align="left" colSpan="3">
-                Kundinfo
-              </TableCell>
-            </SectionHeaderRow>
-            <TableRow>
-              <TitleHeader>Namn</TitleHeader>
-              <TitleHeader>ID</TitleHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>{order.user.fullName}</TableCell>
-              <TableCell>{order.user._id}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        {!readOnly && (
+          <Table aria-label="spanning table">
+            <TableHead>
+              <SectionHeaderRow>
+                <TableCell align="left" colSpan="3">
+                  Kundinfo
+                </TableCell>
+              </SectionHeaderRow>
+              <TableRow>
+                <TitleHeader>Namn</TitleHeader>
+                <TitleHeader>ID</TitleHeader>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>{order.user.fullName}</TableCell>
+                <TableCell>{order.user._id}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        )}
 
         <Table aria-label="spanning table">
           <TableHead>
@@ -151,10 +153,12 @@ export const OrderTable = ({ order, updateListItem }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button onClick={toggleEditRows}>
-        {isEditing ? 'Sluta ändra' : 'Ändra order'}
-      </Button>
-      {isEditing && <Button onClick={handleUpdateRowQty}>Spara</Button>}
+      {!readOnly && (
+        <Button onClick={toggleEditRows}>
+          {isEditing ? 'Sluta ändra' : 'Ändra order'}
+        </Button>
+      )}
+      {isEditing && !readOnly && <Button onClick={handleUpdateRowQty}>Spara</Button>}
     </>
   );
 };
