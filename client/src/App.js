@@ -7,7 +7,6 @@ import { UiContext } from './context/uiContext';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { AdminPage } from './pages/AdminPage';
-import { LandingPage } from './pages/LandingPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { ProductsByCategoryPage } from './pages/ProductsByCategoryPage';
 import { Header } from './components/Layout/Header';
@@ -41,7 +40,7 @@ function App() {
           <Route path="/category/:title" component={ProductsByCategoryPage} />
           <Route path="/all-products" component={ProductsPage} />
           <Route path="/admin" component={AdminPage} />
-          <Route path="/" component={LandingPage} />
+          <Route path="/" component={ProductsPage} />
         </Switch>
       </Box>
       <Snackbar open={notification.show} autoHideDuration={6000} onClose={closeNotification}>
