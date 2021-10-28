@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+
 import { AuthContext } from '../../context/authContext';
 import { UiContext } from '../../context/uiContext';
 
@@ -12,7 +13,7 @@ import { CategoryButton } from '../Buttons/CategoryButton';
 
 export const Navbar = () => {
   const { isAuthenticated, logout } = useContext(AuthContext);
-  const { openModal, setNotification } = useContext(UiContext);
+  const { openModal, setNotification, cartFetch } = useContext(UiContext);
 
   const handleLogout = () => {
     logout();
@@ -21,6 +22,12 @@ export const Navbar = () => {
       message: 'Du är utloggad. Välkommen åter!',
     });
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      cartFetch()
+    }
+  }, [isAuthenticated, cartFetch])
 
   return (
     <Toolbar
@@ -50,6 +57,9 @@ export const Navbar = () => {
         )}
         {isAuthenticated && (
           <NavButton onClick={handleLogout}>Logga ut</NavButton>
+        )}
+        {isAuthenticated && (
+          <NavButton component={NavLink} to="/user-profile">Min sida</NavButton>
         )}
         {isAuthenticated && <CartIcon />}
       </Box>

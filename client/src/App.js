@@ -7,7 +7,6 @@ import { UiContext } from './context/uiContext';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { AdminPage } from './pages/AdminPage';
-import { LandingPage } from './pages/LandingPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { ProductsByCategoryPage } from './pages/ProductsByCategoryPage';
 import { Header } from './components/Layout/Header';
@@ -15,6 +14,8 @@ import { BasicModal } from './components/Layout/BasicModal';
 import { ModalContent } from './components/Layout/ModalContent';
 import { Alert, Snackbar } from '@mui/material';
 import { ProductDetailPage } from './pages/ProductDetailPage';
+import { ProfilePage } from './pages/ProfilePage';
+
 
 function App() {
   const { isAuthenticated, authenticate } = useContext(AuthContext)
@@ -43,8 +44,9 @@ function App() {
           <Route path="/product/:id" component={ProductDetailPage} />
           <Route path="/category/:title" component={ProductsByCategoryPage} />
           <Route path="/all-products" component={ProductsPage} />
+          <Route path="/user-profile" component={ProfilePage} />
           <Route path="/admin" component={AdminPage} />
-          <Route path="/" component={LandingPage} />
+          <Route path="/" component={ProductsPage} />
         </Switch>
       </Box>
       <Snackbar open={notification.show} autoHideDuration={6000} onClose={closeNotification}>
