@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { AuthContext } from '../../context/authContext';
+import {  getLoggedInUser } from '../../api/api';
 
 import useInput from '../../hooks/useInput';
 import { addUser } from '../../api/api';
@@ -9,19 +10,29 @@ import user, { address } from '../../constants/formFields';
 import { FormGenerator } from './FormGenerator';
 import { StyledButton } from '../Buttons/StyledButton';
 
-export const RegisterForm = ({ exitForm }) => {
+export const RegisterForm = ({ edit, exitForm }) => {
   const { login } = useContext(AuthContext);
   const [formIsValid, setFormIsValid] = useState(false);
   const { setNotification } = useContext(UiContext);
+  const [userData, setUserData] = useState({
+    fullName: '',
+    displayName: '',
+    email: '',
+    password: '',
+    street: '',
+    postalCode: '',
+    city: '',
+    country: ''
+  });
 
-  const fullNameInput = useInput(user.fullName.validate);
-  const displayNameInput = useInput(user.displayName.validate);
-  const emailInput = useInput(user.email.validate);
-  const passwordInput = useInput(user.password.validate);
-  const streetInput = useInput(address.street.validate);
-  const postalCodeInput = useInput(address.postalCode.validate);
-  const cityInput = useInput(address.city.validate);
-  const countryInput = useInput(address.country.validate);
+  const fullNameInput = useInput(user.fullName.validate, userData.fullName);
+  const displayNameInput = useInput(user.displayName.validate, userData.displayName);
+  const emailInput = useInput(user.email.validate, userData.email);
+  const passwordInput = useInput(user.password.validate, userData.password);
+  const streetInput = useInput(address.street.validate, userData.street);
+  const postalCodeInput = useInput(address.postalCode.validate, userData.postalCode);
+  const cityInput = useInput(address.city.validate, userData.city);
+  const countryInput = useInput(address.country.validate, userData.country);
 
   const inputs = [
     { ...fullNameInput, ...user.fullName },
@@ -68,6 +79,37 @@ export const RegisterForm = ({ exitForm }) => {
     }
   };
 
+  const fetchUser = useCallback( async () => {
+    try {
+      const res = await getLoggedInUser()
+      const data = res.data
+      console.log(userData);
+      setUserData({ 
+        fullName: data.fullName,
+        displayName: data.displayName,
+        email: data.email,
+        password: data.password,
+        street: data.address.street,
+        postalCode: data.address.postalCode,
+        city: data.address.city,
+        country: data.address.country
+      })
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }, []);
+
+  useEffect(() => {
+    console.log(fullNameInput)
+  }, [fullNameInput])
+
+  useEffect(() => {
+    if (edit) {
+      fetchUser()
+    }
+  }, [fetchUser, edit]);
+
   useEffect(() => {
     setFormIsValid(
       fullNameInput.isValid &&
@@ -92,7 +134,7 @@ export const RegisterForm = ({ exitForm }) => {
 
   const button = (
     <StyledButton onClick={handleSubmit} disabled={!formIsValid}>
-      Registrera
+      {edit ? 'spara' : 'registrera'}
     </StyledButton>
   );
 

@@ -29,6 +29,13 @@ export const ModalContent = () => {
         </>
       );
     }
+    case 'edit_profile': {
+      return (
+        <>
+          <RegisterForm edit exitForm={closeModal} />
+        </>
+      );
+    }
     case 'cart': {
       return <ShoppingCart />;
     }
