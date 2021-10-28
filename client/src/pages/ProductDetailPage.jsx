@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFetch } from '../hooks/useFetch';
+import { useBuy } from '../hooks/useBuy';
 import { getProduct } from '../api/api';
 import { Typography, Box, Button, List, ListItem } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -8,8 +9,13 @@ import { Link } from 'react-router-dom';
 export const ProductDetailPage = (props) => {
   const prodId = props.match.params.id;
   const { data: product } = useFetch(getProduct, prodId);
+  const [buy] = useBuy();
+
+  const handleBuy = () => {
+    buy(product);
+  };
   return (
-    <Box>
+    <>
       {product && (
         <>
           <Typography variant='h3'> {product.title}</Typography>
@@ -41,6 +47,7 @@ export const ProductDetailPage = (props) => {
               <Button
                 variant='contained'
                 sx={{ width: '100%', alignSelf: 'center', margin: '20px' }}
+                onClick={handleBuy}
               >
                 <AddShoppingCartIcon />
                 <Typography>{product.price} kr</Typography>
@@ -52,7 +59,10 @@ export const ProductDetailPage = (props) => {
                 <Typography variant='h6'>Kategorier</Typography>
                 <List>
                   {product.categories.map((category) => (
-                    <Link to={`/category/${category.title.toLowerCase()}`}>
+                    <Link
+                      key={category._id}
+                      to={`/category/${category.title.toLowerCase()}`}
+                    >
                       <ListItem>
                         <Typography>{category.title}</Typography>
                       </ListItem>
@@ -64,6 +74,6 @@ export const ProductDetailPage = (props) => {
           </Box>
         </>
       )}
-    </Box>
+    </>
   );
 };
