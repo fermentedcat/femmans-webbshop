@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
 import { UiContext } from '../../context/uiContext';
 
@@ -50,6 +50,9 @@ export const Navbar = () => {
         )}
         {isAuthenticated && (
           <NavButton onClick={handleLogout}>Logga ut</NavButton>
+        )}
+        {isAuthenticated && (
+          <NavButton component={NavLink} to="/user-profile">Min sida</NavButton>
         )}
         {isAuthenticated && <CartIcon />}
       </Box>
