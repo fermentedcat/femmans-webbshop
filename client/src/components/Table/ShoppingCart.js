@@ -19,31 +19,31 @@ import {
 } from '@mui/material';
 
 export const ShoppingCart = () => {
-  const [amount, setAmount] = useState();
-  const { data } = useFetch(getCart, amount);
+  const [triggerChange, setTriggerChange] = useState(true);
+  const { data } = useFetch(getCart, triggerChange);
   const { setNotification } = useContext(UiContext);
 
-  const handleChangeQty = (e) => {
+  const handleChangeQty = async (e) => {
     e.preventDefault();
 
     let newAmount = e.target.value;
     const productId = e.target.name;
+
     if (parseInt(newAmount) > 0) {
       const updateAmount = { amount: newAmount }
-      updateCart(updateAmount, productId)
+      await updateCart(updateAmount, productId)
       setNotification({
         type: 'success',
         message: 'Ändringen har sparats!',
       });
-      setAmount(newAmount);
+      setTriggerChange(!triggerChange);
     } else {
-      newAmount++;
-      deleteFromCart(productId)
+      await deleteFromCart(productId);
       setNotification({
         type: 'success',
-        message: 'Ändringen har sparats!',
+        message: 'Produkt är borttagen!',
       });
-      setAmount(0);
+      setTriggerChange(!triggerChange);
     }
   };
 
@@ -72,7 +72,7 @@ export const ShoppingCart = () => {
             {data &&
               data.cart.map((item) => {
                 return (
-                  <TableRow>
+                  <TableRow key={item.product._id}>
                     <TableCell>
                       {item.product ? <img src={item.product.photos[0]} alt='Product' style={{ 'width': '10ch' }} /> : ''}
                     </TableCell>
