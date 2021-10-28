@@ -6,6 +6,7 @@ import { UiContext } from './context/uiContext';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import { CheckoutPage } from './pages/CheckoutPage';
 import { AdminPage } from './pages/AdminPage';
 import { LandingPage } from './pages/LandingPage';
 import { ProductsPage } from './pages/ProductsPage';
@@ -14,7 +15,6 @@ import { Header } from './components/Layout/Header';
 import { BasicModal } from './components/Layout/BasicModal';
 import { ModalContent } from './components/Layout/ModalContent';
 import { Alert, Snackbar } from '@mui/material';
-import { CheckoutPage } from './pages/CheckoutPage';
 
 function App() {
   const { isAuthenticated, authenticate } = useContext(AuthContext)
