@@ -1,4 +1,5 @@
 const Category = require('../models/Category');
+const Product = require("../models/Product")
 const format = require('../utils/format');
 
 exports.getAllCategories = (req, res, next) => {
@@ -49,8 +50,15 @@ exports.updateOneCategory = (req, res, next) => {
   });
 }
 
-exports.deleteOneCategory = (req, res, next) => {
+exports.deleteOneCategory = async (req, res, next) => {
   const id = req.params.id;
+
+  const product = await Product.findOne({categories: req.params.id})
+  if(product){
+    console.log("You can't remove a category which is used in a product")
+    return res.status(400).json()
+  }
+
   Category.findByIdAndDelete(id)
   .then(() => {
    res.status(204).json();
