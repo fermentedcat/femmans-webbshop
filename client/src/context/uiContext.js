@@ -1,4 +1,5 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useCallback, useReducer } from 'react';
+import { getCart } from '../api/api'
 
 const initialState = {
   modal: {
@@ -70,10 +71,16 @@ const uiReducer = (state, action) => {
         },
       };
     }
+    case 'CART_SET': {
+      return {
+        ...state,
+        cartQty: action.qty,
+      };
+    }
     case 'CART_ADD': {
       return {
         ...state,
-        cartQty: state.cartQty + 1,
+        cartQty: state.cartQty + 1
       };
     }
     case 'CART_REMOVE': {
@@ -129,12 +136,22 @@ export const UiProvider = ({ children }) => {
     dispatch({ type: 'MODAL_CLOSE' });
   };
 
+  const cartFetch = useCallback( async () => {
+    try {
+      const response = await getCart();
+      const qty = response.data.cart.length;
+      dispatch({ type: 'CART_SET', qty })
+    } catch (error) {
+      setNotification({ type: 'error', message: 'Kunde inte hämta kundkorgen.'});
+    }
+  }, [])
+
   const cartAdd = () => {
     dispatch({ type: 'CART_ADD' });
   };
 
   const cartRemove = (qty = 1) => {
-    dispatch({ type: 'CART_ADD', qty });
+    dispatch({ type: 'CART_REMOVE', qty });
   };
 
   const cartClear = () => {
@@ -152,6 +169,7 @@ export const UiProvider = ({ children }) => {
     openModal,
     openModalType,
     closeModal,
+    cartFetch,
     cartAdd,
     cartRemove,
     cartClear,
