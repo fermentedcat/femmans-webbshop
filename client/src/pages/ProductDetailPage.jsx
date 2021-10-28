@@ -14,6 +14,7 @@ export const ProductDetailPage = (props) => {
   const handleBuy = () => {
     buy(product);
   };
+
   return (
     <>
       {product && (
