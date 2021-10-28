@@ -13,6 +13,7 @@ import { Header } from './components/Layout/Header';
 import { BasicModal } from './components/Layout/BasicModal';
 import { ModalContent } from './components/Layout/ModalContent';
 import { Alert, Snackbar } from '@mui/material';
+import { ProfilePage } from './pages/ProfilePage';
 
 function App() {
   const { isAuthenticated, authenticate } = useContext(AuthContext)
@@ -39,6 +40,7 @@ function App() {
         <Switch>
           <Route path="/category/:title" component={ProductsByCategoryPage} />
           <Route path="/all-products" component={ProductsPage} />
+          <Route path="/user-profile" component={ProfilePage} />
           <Route path="/admin" component={AdminPage} />
           <Route path="/" component={ProductsPage} />
         </Switch>

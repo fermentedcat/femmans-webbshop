@@ -16,6 +16,17 @@ exports.tokenValidCheck = (req, res, next) => {
   res.sendStatus(202);
 }
 
+exports.getUserByToken = async (req, res, next) => {
+  const { email } = req.user;
+
+  try {
+    const user = await User.findOne({ email: email })
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).end();
+  }
+};
+
 exports.getOneUser = (req, res, next) => {
   const id = req.params.id;
 
