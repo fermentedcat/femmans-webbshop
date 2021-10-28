@@ -14,8 +14,6 @@ export const ProductForm = ({addToList, handleEdit, productToEdit = null, catego
   const [categoryId, setCategoryId] = useState(productToEdit && productToEdit.categories[0] ? productToEdit.categories[0]._id : "")
   const { setNotification } = useContext(UiContext);
 
-  // console.log(categoryId) //DEN FÅR CATEGORY ID
-
   const titleInput = useInput(product.title.validate, productToEdit ? productToEdit.title : "")
   const descriptionInput = useInput(product.description.validate, productToEdit ? productToEdit.description : "")
   const priceInput = useInput(product.price.validate, productToEdit ? productToEdit.price : "")
@@ -99,7 +97,7 @@ export const ProductForm = ({addToList, handleEdit, productToEdit = null, catego
       description: descriptionInput.value,
       price: priceInput.value,
       brand: brandInput.value,
-      categories: [categoryId], //ta id från kategory blabla 
+      categories: [categoryId], 
       weight: weightInput.value,
       photos: [photoInput.value],
     }, productToEdit._id ) : handleSubmit} disabled={!formIsValid}>

@@ -56,19 +56,17 @@ exports.getProductsBySearch = async (req, res, next) => {
   else res.sendStatus(404);
 }
 
-exports.addNewProduct = (req, res, next) => {
+exports.addNewProduct = async (req, res, next) => {
   const data = req.body;
 
   const newProduct = new Product(data);
-
-  newProduct.save()
-    .then((data) => {
-      res.status(201).json(data);
-    })
-    .catch(err => {
-      console.log(err)
-      res.status(400).json(err);
-    });
+  try {
+    const product = await newProduct.save();
+    await product.populate('categories')
+    res.status(200).json(product)
+  } catch (error) {
+    res.sendStatus(400)
+  }
 }
 
 exports.updateOneProduct = (req, res, next) => {
