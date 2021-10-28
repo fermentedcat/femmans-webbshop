@@ -27,7 +27,7 @@ export const ProfilePage = () => {
   }
 
   const handleProfileEdit = () => {
-    openModalType('edit_profile')
+    openModalType('edit_profile', user)
   }
 
   return (
