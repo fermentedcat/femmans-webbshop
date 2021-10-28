@@ -23,6 +23,16 @@ export const ShoppingCart = () => {
   const { data } = useFetch(getCart, triggerChange);
   const { setNotification } = useContext(UiContext);
 
+  const handleDeleteItem = (item) => {
+    deleteFromCart(item.product._id);
+    setTriggerChange(!triggerChange);
+  }
+
+  const handleEmptyCart = () => {
+    emptyCart();
+    setTriggerChange(!triggerChange);
+  }
+
   const handleChangeQty = async (e) => {
     e.preventDefault();
 
@@ -37,13 +47,18 @@ export const ShoppingCart = () => {
         message: 'Ändringen har sparats!',
       });
       setTriggerChange(!triggerChange);
-    } else {
+    } else if (parseInt(newAmount) === 0) {
       await deleteFromCart(productId);
       setNotification({
         type: 'success',
         message: 'Produkt är borttagen!',
       });
       setTriggerChange(!triggerChange);
+    } else {
+      setNotification({
+        type: 'warning',
+        message: 'Måste vara en siffra',
+      });
     }
   };
 
@@ -97,7 +112,7 @@ export const ShoppingCart = () => {
                       {item.product ? `${item.product.price * item.amount}kr` : ''}
                     </TableCell>
                     <TableCell align="right">
-                      <button style={{ background: '#cf4545', color: 'black', padding: '3px 7px', borderRadius: '10%', cursor: 'pointer' }} onClick={() => deleteFromCart(item.product._id)}>x</button>
+                      <button style={{ background: '#cf4545', color: 'black', padding: '3px 7px', borderRadius: '10%', cursor: 'pointer' }} onClick={() => handleDeleteItem(item)}>x</button>
                     </TableCell>
                   </TableRow>
                 );
@@ -113,7 +128,7 @@ export const ShoppingCart = () => {
         </Table>
       </TableContainer>
       <Box component='div' sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '10px' }}>
-        <StyledButton sx={{ bgcolor: 'gray' }} onClick={emptyCart}>Töm Varukorg</StyledButton>
+        <StyledButton sx={{ bgcolor: 'gray' }} onClick={handleEmptyCart}>Töm Varukorg</StyledButton>
         <StyledButton sx={{ bgcolor: 'green' }} href={'/checkout'}>Gå till kassan</StyledButton>
       </Box>
     </>
