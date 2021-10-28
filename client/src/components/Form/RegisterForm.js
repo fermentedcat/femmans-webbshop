@@ -2,26 +2,34 @@ import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/authContext';
 
 import useInput from '../../hooks/useInput';
-import { addUser } from '../../api/api';
+import { addUser, updateUser } from '../../api/api';
 import { UiContext } from '../../context/uiContext';
 
 import user, { address } from '../../constants/formFields';
 import { FormGenerator } from './FormGenerator';
 import { StyledButton } from '../Buttons/StyledButton';
 
-export const RegisterForm = ({ exitForm }) => {
+export const RegisterForm = ({ userData, exitForm }) => {
   const { login } = useContext(AuthContext);
   const [formIsValid, setFormIsValid] = useState(false);
   const { setNotification } = useContext(UiContext);
 
-  const fullNameInput = useInput(user.fullName.validate);
-  const displayNameInput = useInput(user.displayName.validate);
-  const emailInput = useInput(user.email.validate);
+  let fullNameInitVal = userData ? userData.fullName : '';
+  let displayNameInitVal = userData ? userData.displayName : '';
+  let emailInitVal = userData ? userData.email : '';
+  let streetInitVal = userData ? userData.address.street : '';
+  let postalCodeInitVal = userData ? userData.address.postalCode : '';
+  let cityInitVal = userData ? userData.address.city : '';
+  let countryInitVal = userData ? userData.address.country : '';
+
+  const fullNameInput = useInput(user.fullName.validate, fullNameInitVal);
+  const displayNameInput = useInput(user.displayName.validate, displayNameInitVal);
+  const emailInput = useInput(user.email.validate, emailInitVal);
   const passwordInput = useInput(user.password.validate);
-  const streetInput = useInput(address.street.validate);
-  const postalCodeInput = useInput(address.postalCode.validate);
-  const cityInput = useInput(address.city.validate);
-  const countryInput = useInput(address.country.validate);
+  const streetInput = useInput(address.street.validate, streetInitVal);
+  const postalCodeInput = useInput(address.postalCode.validate, postalCodeInitVal);
+  const cityInput = useInput(address.city.validate, cityInitVal);
+  const countryInput = useInput(address.country.validate, countryInitVal);
 
   const inputs = [
     { ...fullNameInput, ...user.fullName },
@@ -50,6 +58,23 @@ export const RegisterForm = ({ exitForm }) => {
           country: countryInput.value,
         },
       };
+      if (userData) {
+        try {
+          const response = await updateUser(data, userData._id);
+          console.log(response)
+          setNotification({
+            type: 'success',
+            message: 'Din profil har uppdaterats.',
+          });
+          exitForm();
+        } catch (error) {
+          setNotification({
+            type: 'error',
+            message: 'Uppdateringen misslyckades.',
+          });
+        }
+        return;
+      }
       try {
         const response = await addUser(data);
         login(response.data);
@@ -92,7 +117,7 @@ export const RegisterForm = ({ exitForm }) => {
 
   const button = (
     <StyledButton onClick={handleSubmit} disabled={!formIsValid}>
-      Registrera
+      {user ? 'spara' : 'registrera'}
     </StyledButton>
   );
 
