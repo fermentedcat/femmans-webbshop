@@ -13,7 +13,9 @@ import { Header } from './components/Layout/Header';
 import { BasicModal } from './components/Layout/BasicModal';
 import { ModalContent } from './components/Layout/ModalContent';
 import { Alert, Snackbar } from '@mui/material';
+import { ProductDetailPage } from './pages/ProductDetailPage';
 import { ProfilePage } from './pages/ProfilePage';
+
 
 function App() {
   const { isAuthenticated, authenticate } = useContext(AuthContext)
@@ -30,7 +32,8 @@ function App() {
       disableGutters
       sx={{
         width: '75vw',
-        height: '100vh',
+        minHeight: '100vh',
+        height: 'fit-content',
         backgroundColor: '#F6F4F4',
         mx: 'auto',
       }}
@@ -38,6 +41,7 @@ function App() {
       <Header />
       <Box sx={{ padding: 2 }}>
         <Switch>
+          <Route path="/product/:id" component={ProductDetailPage} />
           <Route path="/category/:title" component={ProductsByCategoryPage} />
           <Route path="/all-products" component={ProductsPage} />
           <Route path="/user-profile" component={ProfilePage} />
