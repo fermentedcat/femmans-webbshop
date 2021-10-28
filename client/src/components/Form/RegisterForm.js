@@ -1,38 +1,35 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/authContext';
-import {  getLoggedInUser } from '../../api/api';
 
 import useInput from '../../hooks/useInput';
-import { addUser } from '../../api/api';
+import { addUser, updateUser } from '../../api/api';
 import { UiContext } from '../../context/uiContext';
 
 import user, { address } from '../../constants/formFields';
 import { FormGenerator } from './FormGenerator';
 import { StyledButton } from '../Buttons/StyledButton';
 
-export const RegisterForm = ({ edit, exitForm }) => {
+export const RegisterForm = ({ userData, exitForm }) => {
   const { login } = useContext(AuthContext);
   const [formIsValid, setFormIsValid] = useState(false);
   const { setNotification } = useContext(UiContext);
-  const [userData, setUserData] = useState({
-    fullName: '',
-    displayName: '',
-    email: '',
-    password: '',
-    street: '',
-    postalCode: '',
-    city: '',
-    country: ''
-  });
 
-  const fullNameInput = useInput(user.fullName.validate, userData.fullName);
-  const displayNameInput = useInput(user.displayName.validate, userData.displayName);
-  const emailInput = useInput(user.email.validate, userData.email);
-  const passwordInput = useInput(user.password.validate, userData.password);
-  const streetInput = useInput(address.street.validate, userData.street);
-  const postalCodeInput = useInput(address.postalCode.validate, userData.postalCode);
-  const cityInput = useInput(address.city.validate, userData.city);
-  const countryInput = useInput(address.country.validate, userData.country);
+  let fullNameInitVal = userData ? userData.fullName : '';
+  let displayNameInitVal = userData ? userData.displayName : '';
+  let emailInitVal = userData ? userData.email : '';
+  let streetInitVal = userData ? userData.address.street : '';
+  let postalCodeInitVal = userData ? userData.address.postalCode : '';
+  let cityInitVal = userData ? userData.address.city : '';
+  let countryInitVal = userData ? userData.address.country : '';
+
+  const fullNameInput = useInput(user.fullName.validate, fullNameInitVal);
+  const displayNameInput = useInput(user.displayName.validate, displayNameInitVal);
+  const emailInput = useInput(user.email.validate, emailInitVal);
+  const passwordInput = useInput(user.password.validate);
+  const streetInput = useInput(address.street.validate, streetInitVal);
+  const postalCodeInput = useInput(address.postalCode.validate, postalCodeInitVal);
+  const cityInput = useInput(address.city.validate, cityInitVal);
+  const countryInput = useInput(address.country.validate, countryInitVal);
 
   const inputs = [
     { ...fullNameInput, ...user.fullName },
@@ -61,6 +58,23 @@ export const RegisterForm = ({ edit, exitForm }) => {
           country: countryInput.value,
         },
       };
+      if (userData) {
+        try {
+          const response = await updateUser(data, userData._id);
+          console.log(response)
+          setNotification({
+            type: 'success',
+            message: 'Din profil har uppdaterats.',
+          });
+          exitForm();
+        } catch (error) {
+          setNotification({
+            type: 'error',
+            message: 'Uppdateringen misslyckades.',
+          });
+        }
+        return;
+      }
       try {
         const response = await addUser(data);
         login(response.data);
@@ -78,37 +92,6 @@ export const RegisterForm = ({ edit, exitForm }) => {
       }
     }
   };
-
-  const fetchUser = useCallback( async () => {
-    try {
-      const res = await getLoggedInUser()
-      const data = res.data
-      console.log(userData);
-      setUserData({ 
-        fullName: data.fullName,
-        displayName: data.displayName,
-        email: data.email,
-        password: data.password,
-        street: data.address.street,
-        postalCode: data.address.postalCode,
-        city: data.address.city,
-        country: data.address.country
-      })
-    } catch (error) {
-      console.log(error);
-    }
-    
-  }, []);
-
-  useEffect(() => {
-    console.log(fullNameInput)
-  }, [fullNameInput])
-
-  useEffect(() => {
-    if (edit) {
-      fetchUser()
-    }
-  }, [fetchUser, edit]);
 
   useEffect(() => {
     setFormIsValid(
@@ -134,7 +117,7 @@ export const RegisterForm = ({ edit, exitForm }) => {
 
   const button = (
     <StyledButton onClick={handleSubmit} disabled={!formIsValid}>
-      {edit ? 'spara' : 'registrera'}
+      {user ? 'spara' : 'registrera'}
     </StyledButton>
   );
 
