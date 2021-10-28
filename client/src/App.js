@@ -31,7 +31,8 @@ function App() {
       disableGutters
       sx={{
         width: '75vw',
-        height: '100vh',
+        minHeight: '100vh',
+        height: 'fit-content',
         backgroundColor: '#F6F4F4',
         mx: 'auto',
       }}
