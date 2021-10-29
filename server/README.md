@@ -383,7 +383,7 @@
 >          "role": "roll",
 >          "cart": [],
 >          "createdAt": "Tidpunkt för när användaren skapades",
->          "updatedAt": "Tidpung för senast ändring av användaren",
+>          "updatedAt": "Tidpunkt för senast ändring av användaren",
 >          "__v": 0
 >      }
 > ## Logga in
@@ -396,3 +396,29 @@
 > Skicka erhållen token och du får statuskod 202 om den är ok
 > #### HTTP-anrop
 > > POST /users/auth
+> ## Få Kundvagn
+> > Få inloggad användares kundvagn i form av en array
+> #### HTTP-anrop
+> GET /users/cart
+> #### Respons
+>      {
+>          "_id": "Användarid",
+>          "cart": [
+>              {
+>                  "product": {
+>                      "_id": "produktid",
+>                      "title": "Produktnamm",
+>                      "description": "Produktbeskrivning",
+>                      "price": Pris,
+>                      "brand": "Produktens märke",
+>                      "categories": [array med kategoriid],
+>                      "weight": vikt,
+>                      "photos": [Url till bild],
+>                      "createdAt": "Tidpunkt för när produktens skapades",
+>                      "updatedAt": "Tid punkt för senast ändring av produkten",
+>                      "__v": 0
+>                  },
+>                  "amount": 1
+>              }
+>          ]
+>      }
