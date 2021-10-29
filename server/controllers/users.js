@@ -135,7 +135,7 @@ exports.addToCart = async (req, res, next) => {
       { new: true }
     );
 
-    if (item) res.status(200).json(item);
+    if (item) res.sendStatus(200);
 
     else {
       const amount = await User.findOneAndUpdate(
@@ -146,7 +146,7 @@ exports.addToCart = async (req, res, next) => {
         { $inc: { 'cart.$.amount': 1 } },
         { new: true }
       );
-      res.status(200).json(amount);
+      if (amount) res.sendStatus(200);
     }
   } catch (error) {
     res.sendStatus(400);
@@ -197,5 +197,5 @@ exports.deleteFromCart = async (req, res, next) => {
     { $pull: { 'cart': { 'product': cartItem } } },
     { new: true }
   )
-  res.status(204).json();
+  res.sendStatus(204);
 }

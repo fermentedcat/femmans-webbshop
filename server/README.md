@@ -7,7 +7,19 @@
 > http://localhost:3000/api
 
 ## Autentisering
-> Just nu finns ingen autentisering men det kommer.
+> Några av metoderna nedan är skyddade från åtkomst av obehöriga.  
+> Detta görs med hjälp av [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token). 
+> Om du behöver tillgång till en route som kräver JWT, läggs den till som ett attribut med namnet **x-auth-token** i anropets header
+> #### Exempel
+>     fetch(url, {
+>       headers: {
+>         'x-auth-token': Din token
+>       }
+>     });
+> Beroende på vilken roll en användare besitter har denne tillgång till olika delar av apiet.  
+> Rollerna är:    
+> - **User** *märkt med en asterisk (\*)*
+> - **Admin** *märkt med två asterisker (\*\*)*
 
 ## Metoder
 > # Produkter 
@@ -65,13 +77,13 @@
 > ## Få produkter i önskad kategori
 > Den här endpointen ger dig en array med produkter som tillhör önskad kategori.
 > #### HTTP-anrop
-> > GET /products/category/``<KATEGORIID>``
+> > GET /products/category/``<KATEGORINAMN>``
 > #### Respons
 >       [
 >        {
 >         "_id": "Produktid",
 >         "title": "Produktnamn",
->         "description": "Beskrivning av produktt",
+>         "description": "Beskrivning av produkt",
 >         "price": 3000,
 >         "brand": "Märke på produkt",
 >         "categories": [
@@ -87,22 +99,54 @@
 >         "__v": 0
 >        }
 >       ]
-> ## Lägga till ny produkt
+> ## Sök produkt
+> Den här endpointen ger dig en array med produkter som stämmer överens med medskickat sökord
+> #### HTTP-anrop
+> > GET /products/search?search=``<SÖKORD>``
+> #### Respons
+>       [
+>         {
+>           "_id": "Produktid",
+>           "title": "Produktnamn",
+>           "description": "Beskrivning av produkt",
+>           "price": 395,
+>           "brand": "Märke på produkt",
+>           "categories": [
+>               {
+>                 "_id": "kategoriid",
+>                 "title": "Kategorinamn",
+>                 "thumbnail": "https://alphaspel.se/media/products/thumbs/ede9befd-07c4-46ac-a22a-c1c535a87ca4.300x300_q50_fill.png",
+>                 "description": "Beskrivning av kategori",
+>                 "createdAt": "Tidpunkt för skapandet av kategorin",
+>                 "updatedAt": "Tidpunkt för senaste ändring av kategorin",
+>                 "__v": 0
+>               }
+>             ],
+>           "weight": 3,
+>           "photos": [
+>             "URL till bild"
+>            ],
+>           "createdAt": "Tidpunkt för skapandet av kategorin",
+>           "updatedAt": "Tidpunkt för senaste ändring av kategorin",
+>           "__v": 0
+>         }
+>       ]
+> ## Lägga till ny produkt **
 > Den här endpointen skapar en produkt med inmatad data.
 > #### Data som förväntas
 > > title, description, price, brand, categories, weight och photos
 > #### HTTP-anrop
 > > POST /products
-> ## Uppdatera befintlig produkt
+> ## Uppdatera befintlig produkt **
 > Den här endponten uppdaterar en befintlig produkt.
 > #### HTTP-anrop
 > > POST /products/``<PRODUKTID>``
-> ## Ta bort produkt 
+> ## Ta bort produkt **
 > Den här endpointen tar bort önskad produkt.
 > #### HTTP-anrop
 > > DELETE /products/``<PRODUKTID>``
 > # Ordrar
-> ## Få alla ordrar
+> ## Få alla ordrar **
 > Den här endpointen ger dig en array med alla ordrar.
 > #### HTTP-anrop
 > > GET /orders
@@ -156,7 +200,7 @@
 >           "__v": 0
 >         }
 >       ]
-> ## Få specifik order
+> ## Få specifik order *
 > Den här endpointen ger dig ett objekt med önskad order
 > #### HTTP-anrop
 > > GET /orders/``<ORDERID>``
@@ -208,17 +252,47 @@
 >         "shippingPrice": 0,
 >         "__v": 0
 >       }
-> ## Lägga till order
+> ## Få alla ordrar för specifik användare *
+> Den här endpointen ger en array med alla ordrar för specifik användare
+> #### HTTP-anrop
+> > GET /order/users
+> #### Respons
+>      [
+>          {
+>              "address": {
+>                  "street": "Angiven gata och gatunummer",
+>                  "postalCode": "Postkod",
+>                  "city": "Stad",
+>                  "country": "Land"
+>              },
+>              "_id": "orderid",
+>              "user": "användarid",
+>              "orderRows": [
+>                  {
+>                      "productTitle": "Produktnamn",
+>                      "amount": Antal,
+>                      "priceEach": Pris,
+>                      "_id": "Orderradens id"
+>                  },
+>              ],
+>              "status": "Orderns status",
+>              "shippingPrice": Fraktkostnad,
+>              "createdAt": "Tidpunkt för när orderns skapades",
+>              "updatedAt": "Tid punkt för senast ändring av ordern",
+>              "__v": 0
+>          }
+>      ]
+> ## Lägga till order *
 > Den här endpoint skapar en ny order
 > #### Data som förväntas
 > > user, orderRows[{product, amout, priceEach}], address{street, postalCode, city, country}, shippingPrice
 > #### HTTP-anrop
 > > POST /orders
-> ## Uppdatera befintlig order
+> ## Uppdatera befintlig order **
 > Den här endpointen uppdaterar en befintlig order
 > #### HTTP-anrop
 > > POST /orders/``<ORDERID>``
-> ## Ta bort order
+> ## Ta bort order **
 > #### HTTP-anrop
 > > DELETE /orders/``<ORDERID>``
 > # Kategorier
@@ -248,22 +322,22 @@
 >         "description": "Kategoribeskrivning",
 >         "__v": 0
 >       }
-> ## Lägga till kategori
+> ## Lägga till kategori **
 > Den här endpointen skapar en ny kategori
 > #### Data som förväntas
 > > title, thumbnail, description
 > #### HTTP-anrop
 > > POST /categories
-> ## Uppdatera befintlig kategori
+> ## Uppdatera befintlig kategori **
 > Den här endpointen uppdaterar en befintlig kategori
 > #### HTTP-anrop
 > > POST /categories/``<KATEGORIID>``
-> ## Ta bort kategori
+> ## Ta bort kategori **
 > Den här enpointen tar bort en specifik kategori
 > #### HTTP-anrop
 > > DELETE /categories/``<KATEGORIID>``
 > # Användare
-> ## Få alla användare
+> ## Få alla användare **
 > Den här endpointen ger dig en array med alla användare
 > #### HTTP-anrop
 > > GET /users
@@ -276,7 +350,7 @@
 >           "role": "admin"
 >         }
 >       ]
-> ## Få specifik användare
+> ## Få specifik användare *
 > Den här enpointen ger dig ett objekt med en önskad användare
 > #### HTTP-anrop
 > > GET /users/``<ANVÄNDARID>``
@@ -293,11 +367,88 @@
 > > fullName, displayName, password, email, address{street, postalCode, city, country}
 > #### HTTP-anrop
 > > POST /users
-> ## Uppdatera befintlig användare
+> ## Uppdatera befintlig användare *
 > Den här endpointen uppdaterar en befintlig användare
 > #### HTTP-anrop
 > > POST /users/``<ANVÄNDARID>``
-> ## Ta bort användare
+> ## Ta bort användare **
 > Den här endpointen tar bort en specifik användare
 > #### HTTP-anrop
 > > DELETE /users/``<ANVÄNDARID>``
+> ## Få inloggad användare *
+> Få inloggad användare
+> #### HTTP-anrop
+> > GET /users/tokenUser
+> #### Respons
+>      {
+>          "address": {
+>              "street": "Gatuadress",
+>              "postalCode": "Postkod",
+>              "city": "Stad",
+>              "country": "Land"
+>          },
+>          "_id": "användarid",
+>          "fullName": "Användarens namn",
+>          "displayName": "Användarnamn",
+>          "password": "krypterat lösenord",
+>          "email": "mail",
+>          "role": "roll",
+>          "cart": [],
+>          "createdAt": "Tidpunkt för när användaren skapades",
+>          "updatedAt": "Tidpunkt för senast ändring av användaren",
+>          "__v": 0
+>      }
+> ## Logga in
+> Om inskickade värden är godkända erhålls en JWT
+> #### Data som förväntas
+> > email, password
+> #### HTTP-anrop
+> > POST /users/login
+> ## Validera erhållen JWT *
+> Skicka erhållen token och du får statuskod 202 om den är ok
+> #### HTTP-anrop
+> > POST /users/auth
+> ## Få Kundvagn *
+> > Få inloggad användares kundvagn i form av en array
+> #### HTTP-anrop
+> > GET /users/cart
+> #### Respons
+>      {
+>          "_id": "Användarid",
+>          "cart": [
+>              {
+>                  "product": {
+>                      "_id": "produktid",
+>                      "title": "Produktnamm",
+>                      "description": "Produktbeskrivning",
+>                      "price": Pris,
+>                      "brand": "Produktens märke",
+>                      "categories": [array med kategoriid],
+>                      "weight": vikt,
+>                      "photos": [Url till bild],
+>                      "createdAt": "Tidpunkt för när produktens skapades",
+>                      "updatedAt": "Tid punkt för senast ändring av produkten",
+>                      "__v": 0
+>                  },
+>                  "amount": 1
+>              }
+>          ]
+>      }
+> ## Lägg till produkt i kundvagnen *
+> Lägg till vara i inloggad användares kundvagn
+> #### HTTP-anrop
+> > POST /users/cart/``<PRODUKTID>``
+> ## Uppdatera kundvagn *
+> Uppdatera befintlig produkt i kundvagn
+> #### Data som förväntas
+> amount
+> #### HTTP-anrop
+> > POST /users/update/cart/``<PRODUKTID>``
+> ## Ta bort produkt från kundvagn *
+> Ta bort specifik produkt from inloggad användares kundvagn
+> #### HTTP-anrop
+> > DELETE /users/``<PRODUKTID>``
+> ## Töm kundvagn *
+> Töm inloggad användares kundvagn
+> #### HTTP-anrop
+> > POST /users/cart/empty
