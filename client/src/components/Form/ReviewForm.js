@@ -1,6 +1,6 @@
 
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Box, Typography, List, ListItem, ListItemText, Grid } from '@mui/material';
 
 export default function Review({ cart, user, payment }) {
@@ -38,7 +38,7 @@ export default function Review({ cart, user, payment }) {
                 <Box sx={{ height: '25ch', overflow: 'auto' }}>
                     {products.map((product) => (
                         <ListItem key={product.product.title} sx={{ py: 1, px: 0 }}>
-                            <img src={product.product.photos[0]} style={{ 'width': '10ch', 'margin-right': 2 }} alt='product' />
+                            <img src={product.product.photos[0]} style={{ 'width': '10ch', 'marginRight': 2 }} alt='product' />
                             <ListItemText primary={product.product.title} />
                             <Box sx={{ width: '30%', display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography variant="body2">{product.amount}st</Typography>
@@ -67,15 +67,15 @@ export default function Review({ cart, user, payment }) {
                         Betalning
                     </Typography>
                     <Grid container>
-                        {payments.map((payment) => (
-                            <>
+                        {payments.map((payment, i) => (
+                            <Fragment key={i}>
                                 <Grid item xs={6}>
                                     <Typography gutterBottom>{payment.name}</Typography>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Typography gutterBottom>{payment.detail}</Typography>
                                 </Grid>
-                            </>
+                            </Fragment>
                         ))}
                     </Grid>
                 </Grid>
