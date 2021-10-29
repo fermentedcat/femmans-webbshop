@@ -3,20 +3,19 @@ import { Grid, Typography, TextField } from '@mui/material';
 
 export const AddressForm = ({ user, setUser }) => {
 
-    const handleOnChange = (e) => {
-        const target = e.target.name;
+    const handleOnChange = (e, isAddress) => {
+        const key = e.target.name;
         const value = e.target.value;
-        const id = e.target.id;
 
-        if (id) {
+        if (isAddress) {
             setUser({
                 ...user,
-                [id]: { [target]: value }
+                address: { ...user.address, [key]: value }
             })
         } else {
             setUser({
                 ...user,
-                [target]: value
+                [key]: value
             })
         }
     }
@@ -31,27 +30,22 @@ export const AddressForm = ({ user, setUser }) => {
                     <TextField
                         required
                         label="Namn"
-                        id=""
                         name="fullName"
                         value={user.fullName}
                         fullWidth
                         variant="standard"
                         onChange={handleOnChange}
-                        InputLabelProps={{ shrink: true }}
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
                         required
                         label="Adress"
-                        id="address"
                         name="street"
                         value={user.address.street}
                         fullWidth
                         variant="standard"
-                        onChange={handleOnChange}
-                        InputLabelProps={{ shrink: true }}
-
+                        onChange={(e) => handleOnChange(e, true)}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -59,56 +53,44 @@ export const AddressForm = ({ user, setUser }) => {
                         required
                         type="number"
                         label="Postkod"
-                        id="address"
                         name="postalCode"
                         value={user.address.postalCode}
                         fullWidth
                         variant="standard"
-                        onChange={handleOnChange}
-                        InputLabelProps={{ shrink: true }}
-
+                        onChange={(e) => handleOnChange(e, true)}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
                         label="Stad"
-                        id="address"
                         name="city"
                         value={user.address.city}
                         fullWidth
                         variant="standard"
-                        onChange={handleOnChange}
-                        InputLabelProps={{ shrink: true }}
-
+                        onChange={(e) => handleOnChange(e, true)}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
                         label="Land"
-                        id="address"
                         name="country"
                         value={user.address.country}
                         fullWidth
                         variant="standard"
-                        onChange={handleOnChange}
-                        InputLabelProps={{ shrink: true }}
-
+                        onChange={(e) => handleOnChange(e, true)}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         disabled
                         label="Epost"
-                        id="email"
                         name="email"
                         value={user.email}
                         fullWidth
                         variant="standard"
                         onChange={handleOnChange}
-                        InputLabelProps={{ shrink: true }}
-
                     />
                 </Grid>
             </Grid>
