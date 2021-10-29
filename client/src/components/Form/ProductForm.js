@@ -9,7 +9,7 @@ import { product } from '../../constants/formFields'
 import { FormGenerator } from './FormGenerator'
 
 
-export const ProductForm = ({addToList, handleEdit, productToEdit = null, categories}) => {
+export const ProductForm = ({addToList, handleEdit, productToEdit = null, onExit, categories}) => {
   const [formIsValid, setFormIsValid] = useState(false)
   const [categoryId, setCategoryId] = useState(productToEdit && productToEdit.categories[0] ? productToEdit.categories[0]._id : "")
   const { setNotification } = useContext(UiContext);
@@ -59,6 +59,7 @@ export const ProductForm = ({addToList, handleEdit, productToEdit = null, catego
         const response = await addProduct(data)
         if (response.data) {
           addToList(response.data)
+          onExit();
           setNotification({
             type: 'success',
             message: 'Produkten har lagts till!',

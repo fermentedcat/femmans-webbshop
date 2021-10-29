@@ -2,20 +2,21 @@ import React from 'react';
 
 import {
   Table,
-
   TableCell,
   TableContainer,
   TableRow,
   Paper,
+  TableBody,
 } from '@mui/material';
 
 export const ProductTable = ({ product }) => {
   return (
     <TableContainer  component={Paper}>
       <Table aria-label="spanning table">
-        {Object.entries(product).map(i => {
+        <TableBody>
+        {Object.entries(product).map((i, index) => {
           return (
-            <TableRow>
+            <TableRow key={index}>
               <TableCell sx={{fontWeight: "bold"}}>
                 {i[0]}
               </TableCell>
@@ -25,6 +26,7 @@ export const ProductTable = ({ product }) => {
             </TableRow>
           )
         })}
+        </TableBody>
       </Table>
     </TableContainer>
   );

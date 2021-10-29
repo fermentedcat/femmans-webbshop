@@ -9,7 +9,7 @@ import { FormGenerator } from './FormGenerator';
 import { Button } from '@mui/material';
 
 
-export const CategoryForm = ({addToList, categoryToEdit, handleEdit = null}) => {
+export const CategoryForm = ({addToList, categoryToEdit, handleEdit = null, onExit}) => {
   const [formIsValid, setFormIsValid] = useState(false);
   const { setNotification } = useContext(UiContext);
 
@@ -35,6 +35,7 @@ export const CategoryForm = ({addToList, categoryToEdit, handleEdit = null}) => 
       try {
         const response = await addCategory(data)
         addToList(response.data);
+        onExit();
         setNotification({
           type: 'success',
           message: 'Kategorin har lagts till!',
@@ -44,8 +45,6 @@ export const CategoryForm = ({addToList, categoryToEdit, handleEdit = null}) => 
           type: 'error',
           message: 'Misslyckades med att spara kategorin.',
         });
-      } finally{
-        // ?
       }
     }
   };

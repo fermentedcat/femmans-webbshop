@@ -14,7 +14,7 @@ export const FormGenerator = ({inputs, onSubmit = null, button, children}) => {
   const inputFields = inputs.map((input, index) => {
     if (input.type === 'select') {
       return (
-        <FormControl key={index}>
+        <FormControl key={index} fullWidth>
           <InputLabel id="select-label">Kategori</InputLabel>
           <Select labelId="select-label" label="Kategori" value={input.categoryId} onChange={input.onChange}>
             {input.options.map((category, index) => {
@@ -24,8 +24,23 @@ export const FormGenerator = ({inputs, onSubmit = null, button, children}) => {
         </FormControl>
       )
     }
+    else if (input.type === 'multiline'){
+      return <TextField
+        multiline
+        fullWidth
+        key={index}
+        type={input.type}
+        name={input.name}
+        value={input.value}
+        onChange={input.onChange}
+        onBlur={input.onBlur}
+        label={input.label}
+        required={input.required}
+      />
+    }
     return (
       <TextField
+        fullWidth
         key={index}
         type={input.type}
         name={input.name}
@@ -44,8 +59,8 @@ export const FormGenerator = ({inputs, onSubmit = null, button, children}) => {
         onSubmit={onSubmit}
         component="form"
         sx={{
-          '& .MuiTextField-root': { m: 1, width: '25ch' },
-          '& .MuiFormControl-root': { m: 1, width: '25ch' },
+          '& .MuiTextField-root': { m: 1 },
+          '& .MuiFormControl-root': { m: 1 },
         }}
       >
         {inputFields}
