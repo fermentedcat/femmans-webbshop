@@ -21,7 +21,7 @@ import {
 export const ShoppingCart = () => {
   const [triggerChange, setTriggerChange] = useState(true);
   const { data } = useFetch(getCart, triggerChange);
-  const { setNotification } = useContext(UiContext);
+  const { setNotification, cartSet } = useContext(UiContext);
 
   const handleDeleteItem = (item) => {
     deleteFromCart(item.product._id);
@@ -61,14 +61,18 @@ export const ShoppingCart = () => {
       });
     }
   };
-
+  
   let orderTotal;
   if (data) {
     orderTotal = data.cart
-      .map((item) => item.product.price * item.amount)
-      .reduce((sum, i) => sum + i, 0);
+    .map((item) => item.product.price * item.amount)
+    .reduce((sum, i) => sum + i, 0);
   }
-
+ 
+  useEffect(() => {
+    if (data) cartSet(data.cart)
+  }, [data, cartSet])
+  
   return (
     <>
       <TableContainer component={Paper}>
