@@ -1,30 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Box, Container, Stepper, Step, StepLabel, Button, Typography, Card } from '@mui/material'
+import { UiContext } from '../context/uiContext';
 import { useFetch } from '../hooks/useFetch';
-import { getCart, getUser } from '../api/api';
+import { addOrder, getCart, getLoggedInUser, emptyCart } from '../api/api';
 import AddressForm from './AddressForm'
 import Review from '../components/Form/ReviewForm'
 import PaymentForm from '../components/Form/PaymentForm'
 
 
+
 export const CheckoutPage = () => {
 
   const [payment, setPayment] = useState({ cardName: "", cardNumber: "", expDate: "", cvv: "" });
-  const steps = ['Leveransadress', 'Betalning', 'Beställning'];
   const [activeStep, setActiveStep] = useState(0);
-  const [user, setUser] = useState();
-  const [cart, setCart] = useState();
+  const [orderNumber, setOrderNumber] = useState();
+  const { setNotification } = useContext(UiContext);
+  const steps = ['Leveransadress', 'Betalning', 'Beställning'];
 
-  useEffect(() => {
-    getUser('61794a3f8cc6b27251f823e3').then(res => setUser(res.data)).catch(err => console.log(err));
-    getCart().then(res => setCart(res.data)).catch(err => console.log(err));
-  }, [])
+  const { data: cart } = useFetch(getCart)
+  const { data: user, setData: setUser } = useFetch(getLoggedInUser)
 
-  // const placeOrder = async () => {
+  const placeOrder = async () => {
 
+    const orderRows = cart.cart.map(item => (
+      {
+        productTitle: item.product.title,
+        amount: item.amount,
+        priceEach: item.product.price
+      })
+    )
 
-  //   handleNext();
-  // }
+    const data = {
+      orderRows,
+      address: user.address
+    }
+
+    try {
+
+      const order = await addOrder(data);
+
+      if (order) {
+        emptyCart();
+        setOrderNumber(order.data._id)
+        handleNext();
+      }
+    } catch (error) {
+      setNotification({
+        type: 'warning',
+        message: 'Kunde inte bekräfta beställning',
+      });
+    }
+  }
 
   const getStepContent = (step) => {
     switch (step) {
@@ -75,10 +101,11 @@ export const CheckoutPage = () => {
                   <Typography variant="h5" gutterBottom>
                     {`Tack för din order ${user.fullName}!`}
                   </Typography>
-                  <Typography variant="subtitle1">
-                    Ditt ordernummer är: (insertordernumber).
+                  {orderNumber && <Typography variant="subtitle1">
+                    Ditt ordernummer är: {orderNumber}.
                     Vi har mailat en orderbekräftelse och hör av oss till dig så fort ordern är skickad.
                   </Typography>
+                  }
                 </>
               )
               :
@@ -96,7 +123,7 @@ export const CheckoutPage = () => {
                       (
                         <Button
                           variant="contained"
-                          onClick={handleNext}
+                          onClick={placeOrder}
                           sx={{ mt: 3, ml: 1 }}
                         > Bekräfta beställning</Button>
                       )
