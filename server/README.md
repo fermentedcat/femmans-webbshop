@@ -399,7 +399,7 @@
 > ## Få Kundvagn
 > > Få inloggad användares kundvagn i form av en array
 > #### HTTP-anrop
-> GET /users/cart
+> > GET /users/cart
 > #### Respons
 >      {
 >          "_id": "Användarid",
@@ -422,3 +422,21 @@
 >              }
 >          ]
 >      }
+> ## Lägg till produkt i kundvagnen
+> Lägg till vara i inloggad användares kundvagn
+> #### HTTP-anrop
+> > POST /users/cart/``<PRODUKTID>``
+> ## Uppdatera kundvagn
+> Uppdatera befintlig produkt i kundvagn
+> #### Data som förväntas
+> amount
+> #### HTTP-anrop
+> > POST /users/update/cart/``<PRODUKTID>``
+> ## Ta bort produkt från kundvagn
+> Ta bort specifik produkt from inloggad användares kundvagn
+> #### HTTP-anrop
+> > DELETE /users/``<PRODUKTID>``
+> ## Töm kundvagn
+> Töm inloggad användares kundvagn
+> #### HTTP-anrop
+> > POST /users/cart/empty
