@@ -15,6 +15,8 @@ import { ModalContent } from './components/Layout/ModalContent';
 import { Alert, Snackbar } from '@mui/material';
 import { ProductDetailPage } from './pages/ProductDetailPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { AuthUserRoute } from './routes/AuthUserRoute';
+import { AuthAdminRoute } from './routes/AuthAdminRoute';
 
 
 function App() {
@@ -44,8 +46,8 @@ function App() {
           <Route path="/product/:id" component={ProductDetailPage} />
           <Route path="/category/:title" component={ProductsByCategoryPage} />
           <Route path="/all-products" component={ProductsPage} />
-          <Route path="/user-profile" component={ProfilePage} />
-          <Route path="/admin" component={AdminPage} />
+          <AuthUserRoute path="/user-profile" component={ProfilePage} />
+          <AuthAdminRoute path="/admin" component={AdminPage} />
           <Route path="/" component={ProductsPage} />
         </Switch>
       </Box>
