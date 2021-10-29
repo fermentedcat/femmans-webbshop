@@ -3,11 +3,9 @@ import { Box, Container, Stepper, Step, StepLabel, Button, Typography, Card } fr
 import { UiContext } from '../context/uiContext';
 import { useFetch } from '../hooks/useFetch';
 import { addOrder, getCart, getLoggedInUser, emptyCart } from '../api/api';
-import AddressForm from './AddressForm'
+import AddressForm from '../components/Form/CheckoutAddressForm'
 import Review from '../components/Form/ReviewForm'
 import PaymentForm from '../components/Form/PaymentForm'
-
-
 
 export const CheckoutPage = () => {
 
@@ -49,6 +47,7 @@ export const CheckoutPage = () => {
         type: 'warning',
         message: 'Kunde inte bekräfta beställning',
       });
+      console.log(error)
     }
   }
 
