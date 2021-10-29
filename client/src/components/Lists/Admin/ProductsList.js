@@ -1,11 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { getProducts, getCategories } from '../../../api/api';
 import { useFetch } from '../../../hooks/useFetch';
 import List from '@mui/material/List';
 import {ProductForm} from "../../Form/ProductForm";
 import {ProductListItem} from "./ProductListItem";
+import { Modal, Button, Box } from '@mui/material';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+  overflowY: 'auto',
+  maxHeight: "80vh",
+};
 
 export const ProductsList = () => {
+  const [open, setOpen] = useState(false);
 
   const {data: products, setData: setProducts, error} = useFetch(getProducts);
   const {data: categories } = useFetch(getCategories)
@@ -25,7 +40,12 @@ export const ProductsList = () => {
 
   return (
     <>
-    {categories && <ProductForm updateList={updateListItem} addToList={addToList} categories={categories}/>}
+    {categories && <Button onClick={() => setOpen(!open)}> Add product </Button>}
+    <Modal open={open} onClose={() => setOpen(!open)}>
+    <Box sx={style}>
+      <ProductForm updateList={updateListItem} addToList={addToList} categories={categories} onExit={() => setOpen(false)}/>
+    </Box>
+    </Modal>
     <List dense>
       {products && categories ? (
        products.map(product => {

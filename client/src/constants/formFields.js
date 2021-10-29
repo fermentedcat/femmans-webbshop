@@ -64,7 +64,7 @@ const fullName = {
     required: true,
   },
   description = {
-    type: 'text',
+    type: 'multiline',
     name: 'description',
     label: 'Beskrivning',
     validate: validate.string,
