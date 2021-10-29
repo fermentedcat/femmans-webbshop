@@ -1,17 +1,19 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useFetch } from '../hooks/useFetch'
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography, Button } from '@mui/material';
 import { getOrdersByUser, getLoggedInUser } from '../api/api';
 import { OrderTable } from '../components/Table/OrderTable';
 import { SectionHeaderRow } from '../components/Table/styled/SectionHeaderRow';
 import { TitleHeader } from '../components/Table/styled/TitleHeader';
+import { UiContext } from '../context/uiContext';
 
 
 export const ProfilePage = () => {
   const { data: user } = useFetch(getLoggedInUser)
   const { data: orders } = useFetch(getOrdersByUser)
   const [viewOrder, setViewOrder] = useState(null)
-  
+  const { openModalType } = useContext(UiContext)
+
   const toggleViewOrder = (order) => {
     if (!viewOrder) {
       setViewOrder(order);
@@ -24,6 +26,10 @@ export const ProfilePage = () => {
     setViewOrder(order);
   }
 
+  const handleProfileEdit = () => {
+    openModalType('edit_profile', user)
+  }
+
   return (
     <Box>
       <Typography variant='h3'>Din profil</Typography>
@@ -33,6 +39,7 @@ export const ProfilePage = () => {
           <Typography variant='h6'>Namn: {user.fullName}</Typography>
           <Typography variant='h6'>Användarnamn: {user.displayName}</Typography>
           <Typography variant='h6'>Email: {user.email}</Typography>
+          <Button onClick={handleProfileEdit}>Redigera profil</Button>
         </Box>
       )}
       <Table aria-label="spanning table">

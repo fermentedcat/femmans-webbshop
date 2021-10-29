@@ -5,6 +5,7 @@ const initialState = {
   modal: {
     show: false,
     type: '',
+    props: null
   },
   notification: {
     show: false,
@@ -59,6 +60,7 @@ const uiReducer = (state, action) => {
         modal: {
           type: action.modalType,
           show: true,
+          props: action.props
         },
       };
     }
@@ -125,11 +127,11 @@ export const UiProvider = ({ children }) => {
 
   const openModal = (e) => {
     const modalType = e.target.name || '';
-    dispatch({ type: 'MODAL_OPEN', modalType });
+    dispatch({ type: 'MODAL_OPEN', modalType, props: null });
   };
   
-  const openModalType = (modalType) => {
-    dispatch({ type: 'MODAL_OPEN', modalType });
+  const openModalType = (modalType, props) => {
+    dispatch({ type: 'MODAL_OPEN', modalType, props });
   };
 
   const closeModal = () => {
