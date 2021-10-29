@@ -85,6 +85,12 @@ const uiReducer = (state, action) => {
         cartQty: state.cartQty + 1
       };
     }
+    case 'CART_CLEAR': {
+      return {
+        ...state,
+        cartQty: 0,
+      };
+    }  
 
     default:
       return state;
@@ -136,7 +142,7 @@ export const UiProvider = ({ children }) => {
     }, 0)
     dispatch({ type: 'CART_SET', qty });
   }, []);
-
+  
   const cartFetch = useCallback( async () => {
     try {
       const response = await getCart();
@@ -146,6 +152,10 @@ export const UiProvider = ({ children }) => {
       setNotification({ type: 'error', message: 'Kunde inte hämta kundkorgen.'});
     }
   }, [cartSet])
+  
+  const cartClear = () => {
+    dispatch({ type: 'CART_CLEAR' });
+  };
 
   const ui = {
     modal: state.modal,
@@ -160,7 +170,8 @@ export const UiProvider = ({ children }) => {
     closeModal,
     cartSet,
     cartAdd,
-    cartFetch
+    cartFetch,
+    cartClear
   };
 
   return <UiContext.Provider value={ui}>{children}</UiContext.Provider>;

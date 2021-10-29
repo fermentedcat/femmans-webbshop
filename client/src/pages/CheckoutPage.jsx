@@ -12,7 +12,7 @@ export const CheckoutPage = () => {
   const [payment, setPayment] = useState({ cardName: "", cardNumber: "", expDate: "", cvv: "" });
   const [activeStep, setActiveStep] = useState(0);
   const [orderNumber, setOrderNumber] = useState();
-  const { setNotification } = useContext(UiContext);
+  const { setNotification, cartClear } = useContext(UiContext);
   const steps = ['Leveransadress', 'Betalning', 'Beställning'];
 
   const { data: cart } = useFetch(getCart)
@@ -41,13 +41,13 @@ export const CheckoutPage = () => {
         emptyCart();
         setOrderNumber(order.data._id)
         handleNext();
+        cartClear();
       }
     } catch (error) {
       setNotification({
         type: 'warning',
         message: 'Kunde inte bekräfta beställning',
       });
-      console.log(error)
     }
   }
 
