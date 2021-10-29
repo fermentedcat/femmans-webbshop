@@ -1,25 +1,19 @@
 
 
-import React, { useState } from 'react';
-import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Grid from '@mui/material/Grid';
-import { ListItemIcon, Box } from '@mui/material';
-
+import React from 'react';
+import { Box, Typography, List, ListItem, ListItemText, Grid } from '@mui/material';
 
 export default function Review({ cart, user, payment }) {
 
     const products = cart.cart;
     const payments = [
-        { name: 'Card holder', detail: `${payment.cardName}` || 'Mr Luri Fax' },
-        { name: 'Card number', detail: `${payment.cardNumber}` || 'xxxx-xxxx-xxxx-1234' },
-        { name: 'Expiry date', detail: `${payment.expDate}` || '04/2024' },
+        { name: 'Namn på kort', detail: `${payment.cardName}` || 'Mr Luri Fax' },
+        { name: 'Kortnummer', detail: `${payment.cardNumber}` || 'xxxx-xxxx-xxxx-1234' },
+        { name: 'Utgångsdatum', detail: `${payment.expDate}` || '04/2024' },
     ];
 
     const getAddress = () => {
-        return [`${user.address.street}, ${user.address.postalCode}, ${user.address.city}, ${user.address.country}`];
+        return [`${user.address.street}, ${user.address.postalCode} ${user.address.city}, ${user.address.country}`];
     }
 
     const getTotal = () => {
@@ -28,19 +22,28 @@ export default function Review({ cart, user, payment }) {
             .reduce((sum, i) => sum + i, 0);
     }
 
-
     return (
         <>
             <Typography variant="h6" gutterBottom>
                 Beställning
             </Typography>
             <List disablePadding>
+                <ListItem>
+                    <ListItemText primary={'Produkt'} />
+                    <Box sx={{ width: '30%', display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Antal</Typography>
+                        <Typography variant="body2">Pris</Typography>
+                    </Box>
+                </ListItem>
                 <Box sx={{ height: '25ch', overflow: 'auto' }}>
                     {products.map((product) => (
                         <ListItem key={product.product.title} sx={{ py: 1, px: 0 }}>
                             <img src={product.product.photos[0]} style={{ 'width': '10ch', 'margin-right': 2 }} alt='product' />
                             <ListItemText primary={product.product.title} />
-                            <Typography variant="body2">{product.product.price}kr</Typography>
+                            <Box sx={{ width: '30%', display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography variant="body2">{product.amount}st</Typography>
+                                <Typography variant="body2">{product.product.price}kr</Typography>
+                            </Box>
                         </ListItem>
                     ))}
                 </Box>
@@ -57,7 +60,7 @@ export default function Review({ cart, user, payment }) {
                         Leveransadress
                     </Typography>
                     <Typography gutterBottom>{user.fullName}</Typography>
-                    <Typography gutterBottom>{getAddress()}</Typography>
+                    <Typography sx={{ width: '30ch' }} gutterBottom>{getAddress()}</Typography>
                 </Grid>
                 <Grid item container direction="column" xs={12} sm={6}>
                     <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
