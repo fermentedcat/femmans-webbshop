@@ -65,13 +65,13 @@
 > ## Få produkter i önskad kategori
 > Den här endpointen ger dig en array med produkter som tillhör önskad kategori.
 > #### HTTP-anrop
-> > GET /products/category/``<KATEGORIID>``
+> > GET /products/category/``<KATEGORINAMN>``
 > #### Respons
 >       [
 >        {
 >         "_id": "Produktid",
 >         "title": "Produktnamn",
->         "description": "Beskrivning av produktt",
+>         "description": "Beskrivning av produkt",
 >         "price": 3000,
 >         "brand": "Märke på produkt",
 >         "categories": [
@@ -86,6 +86,38 @@
 >         ],
 >         "__v": 0
 >        }
+>       ]
+> ## Sök produkt
+> Den här endpointen ger dig en array med produkter som stämmer överens med medskickat sökord
+> #### HTTP-anrop
+> > GET /products/search?search=``<SÖKORD>``
+> #### Respons
+>       [
+>         {
+>           "_id": "Produktid",
+>           "title": "Produktnamn",
+>           "description": "Beskrivning av produkt",
+>           "price": 395,
+>           "brand": "Märke på produkt",
+>           "categories": [
+>               {
+>                 "_id": "kategoriid",
+>                 "title": "Kategorinamn",
+>                 "thumbnail": "https://alphaspel.se/media/products/thumbs/ede9befd-07c4-46ac-a22a-c1c535a87ca4.300x300_q50_fill.png",
+>                 "description": "Beskrivning av kategori",
+>                 "createdAt": "Tidpunkt för skapandet av kategorin",
+>                 "updatedAt": "Tidpunkt för senaste ändring av kategorin",
+>                 "__v": 0
+>               }
+>             ],
+>           "weight": 3,
+>           "photos": [
+>             "URL till bild"
+>            ],
+>           "createdAt": "Tidpunkt för skapandet av kategorin",
+>           "updatedAt": "Tidpunkt för senaste ändring av kategorin",
+>           "__v": 0
+>         }
 >       ]
 > ## Lägga till ny produkt
 > Den här endpointen skapar en produkt med inmatad data.
@@ -208,6 +240,36 @@
 >         "shippingPrice": 0,
 >         "__v": 0
 >       }
+> ## Få alla ordrar för specifik användare
+> Den här endpointen ger en array med alla ordrar för specifik användare
+> #### HTTP-anrop
+> > GET /order/users
+> #### Respons
+>      [
+>          {
+>              "address": {
+>                  "street": "Angiven gata och gatunummer",
+>                  "postalCode": "Postkod",
+>                  "city": "Stad",
+>                  "country": "Land"
+>              },
+>              "_id": "orderid",
+>              "user": "användarid",
+>              "orderRows": [
+>                  {
+>                      "productTitle": "Produktnamn",
+>                      "amount": Antal,
+>                      "priceEach": Pris,
+>                      "_id": "Orderradens id"
+>                  },
+>              ],
+>              "status": "Orderns status",
+>              "shippingPrice": Fraktkostnad,
+>              "createdAt": "Tidpunkt för när orderns skapades",
+>              "updatedAt": "Tid punkt för senast ändring av ordern",
+>              "__v": 0
+>          }
+>      ]
 > ## Lägga till order
 > Den här endpoint skapar en ny order
 > #### Data som förväntas
@@ -301,3 +363,36 @@
 > Den här endpointen tar bort en specifik användare
 > #### HTTP-anrop
 > > DELETE /users/``<ANVÄNDARID>``
+> ## Få inloggad användare
+> Få inloggad användare
+> #### HTTP-anrop
+> > GET /users/tokenUser
+> #### Respons
+>      {
+>          "address": {
+>              "street": "Gatuadress",
+>              "postalCode": "Postkod",
+>              "city": "Stad",
+>              "country": "Land"
+>          },
+>          "_id": "användarid",
+>          "fullName": "Användarens namn",
+>          "displayName": "Användarnamn",
+>          "password": "krypterat lösenord",
+>          "email": "mail",
+>          "role": "roll",
+>          "cart": [],
+>          "createdAt": "Tidpunkt för när användaren skapades",
+>          "updatedAt": "Tidpung för senast ändring av användaren",
+>          "__v": 0
+>      }
+> ## Logga in
+> Om inskickade värden är godkända erhålls en JWT
+> #### Data som förväntas
+> > email, password
+> #### HTTP-anrop
+> > POST /users/login
+> ## Validera erhållen JWT
+> Skicka erhållen token och du får statuskod 202 om den är ok
+> #### HTTP-anrop
+> > POST /users/auth
