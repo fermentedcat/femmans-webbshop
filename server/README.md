@@ -7,7 +7,19 @@
 > http://localhost:3000/api
 
 ## Autentisering
-> Just nu finns ingen autentisering men det kommer.
+> Några av metoderna nedan är skyddade från åtkomst av obehöriga.  
+> Detta görs med hjälp av [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token). 
+> Om du behöver tillgång till en route som kräver JWT, läggs den till som ett attribut med namnet **x-auth-token** i anropets header
+> #### Exempel
+>     fetch(url, {
+>       headers: {
+>         'x-auth-token': Din token
+>       }
+>     });
+> Beroende på vilken roll en användare besitter har denne tillgång till olika delar av apiet.  
+> Rollerna är:    
+> - **User** *märkt med en asterisk (\*)*
+> - **Admin** *märkt med två asterisker (\*\*)*
 
 ## Metoder
 > # Produkter 
