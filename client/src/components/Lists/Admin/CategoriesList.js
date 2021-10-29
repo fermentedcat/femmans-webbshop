@@ -39,7 +39,7 @@ export const CategoriesList = () => {
 
   return (
     <>
-    <Button onClick={() => setOpen(!open)}> Add product </Button>
+    <Button onClick={() => setOpen(!open)}> Add category </Button>
     <Modal open={open} onClose={() => setOpen(!open)}>
       <Box sx={style}>
       <CategoryForm addToList={addToList} onExit={() => setOpen(false)}/>
