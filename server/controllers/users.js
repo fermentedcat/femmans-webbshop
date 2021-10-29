@@ -16,6 +16,17 @@ exports.tokenValidCheck = (req, res, next) => {
   res.sendStatus(202);
 }
 
+exports.getUserByToken = async (req, res, next) => {
+  const { email } = req.user;
+
+  try {
+    const user = await User.findOne({ email: email })
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).end();
+  }
+};
+
 exports.getOneUser = (req, res, next) => {
   const id = req.params.id;
 
@@ -93,8 +104,7 @@ exports.updateOneUser = (req, res, next) => {
       else res.status(404).end();
     })
     .catch((err) => {
-      let errors = format.validationErrors(err);
-      res.status(400).json(errors);
+      res.status(400).json(err);
     });
 };
 

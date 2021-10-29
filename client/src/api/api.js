@@ -5,6 +5,7 @@ import { getToken } from "../token";
 
 export const getUsers = () => axios({ url: `${API_BASE_URL}users`, headers: { 'x-auth-token': getToken() } })
 export const getUser = (id) => axios({ url: `${API_BASE_URL}users/${id}`, headers: { 'x-auth-token': getToken() } })
+export const getLoggedInUser = () => axios({ url: `${API_BASE_URL}users/tokenUser`, headers: { 'x-auth-token': getToken() } })
 export const getCart = () => axios({ url: `${API_BASE_URL}users/cart`, headers: { 'x-auth-token': getToken() } })
 export const authUser = () => axios({ url: `${API_BASE_URL}users/auth`, headers: { 'x-auth-token': getToken() } })
 export const addUser = (user) => axios({ url: `${API_BASE_URL}users`, method: 'POST', data: user })

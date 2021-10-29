@@ -95,4 +95,18 @@ UserSchema.pre('save', function (next, done) {
   });
 });
 
+UserSchema.pre('findOneAndUpdate', function (next, done) {
+  if (!this._update.password) {
+    return next();
+  }
+  bcrypt.hash(this._update.password, +process.env.SALT_ROUNDS, (err, hash) => {
+    if (err) {
+      const error = new Error('BCRYPT');
+      next(error);
+    }
+    this._update.password = hash;
+    next();
+  });
+});
+
 module.exports = mongoose.model('User', UserSchema);

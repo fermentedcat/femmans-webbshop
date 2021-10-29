@@ -8,13 +8,17 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { AdminPage } from './pages/AdminPage';
-import { LandingPage } from './pages/LandingPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { ProductsByCategoryPage } from './pages/ProductsByCategoryPage';
 import { Header } from './components/Layout/Header';
 import { BasicModal } from './components/Layout/BasicModal';
 import { ModalContent } from './components/Layout/ModalContent';
 import { Alert, Snackbar } from '@mui/material';
+import { ProductDetailPage } from './pages/ProductDetailPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { AuthUserRoute } from './routes/AuthUserRoute';
+import { AuthAdminRoute } from './routes/AuthAdminRoute';
+
 
 function App() {
   const { isAuthenticated, authenticate } = useContext(AuthContext)
@@ -31,7 +35,8 @@ function App() {
       disableGutters
       sx={{
         width: '75vw',
-        height: '100vh',
+        minHeight: '100vh',
+        height: 'fit-content',
         backgroundColor: '#F6F4F4',
         mx: 'auto',
       }}
@@ -39,11 +44,13 @@ function App() {
       <Header />
       <Box sx={{ padding: 2 }}>
         <Switch>
+          <Route path="/product/:id" component={ProductDetailPage} />
           <Route path="/category/:title" component={ProductsByCategoryPage} />
           <Route path="/all-products" component={ProductsPage} />
+          <AuthUserRoute path="/user-profile" component={ProfilePage} />
+          <AuthAdminRoute path="/admin" component={AdminPage} />
           <Route path="/checkout" component={CheckoutPage} />
-          <Route path="/admin" component={AdminPage} />
-          <Route path="/" component={LandingPage} />
+          <Route path="/" component={ProductsPage} />
         </Switch>
       </Box>
       <Snackbar open={notification.show} autoHideDuration={6000} onClose={closeNotification}>
