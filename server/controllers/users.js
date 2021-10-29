@@ -197,5 +197,5 @@ exports.deleteFromCart = async (req, res, next) => {
     { $pull: { 'cart': { 'product': cartItem } } },
     { new: true }
   )
-  res.status(204).json();
+  res.sendStatus(204);
 }
