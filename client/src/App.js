@@ -6,6 +6,7 @@ import { UiContext } from './context/uiContext';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import { CheckoutPage } from './pages/CheckoutPage';
 import { AdminPage } from './pages/AdminPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { ProductsByCategoryPage } from './pages/ProductsByCategoryPage';
@@ -48,6 +49,7 @@ function App() {
           <Route path="/all-products" component={ProductsPage} />
           <AuthUserRoute path="/user-profile" component={ProfilePage} />
           <AuthAdminRoute path="/admin" component={AdminPage} />
+          <Route path="/checkout" component={CheckoutPage} />
           <Route path="/" component={ProductsPage} />
         </Switch>
       </Box>
