@@ -1,11 +1,11 @@
 import React, { createContext, useCallback, useReducer } from 'react';
-import { getCart } from '../api/api'
+import { getCart } from '../api/api';
 
 const initialState = {
   modal: {
     show: false,
     type: '',
-    props: null
+    props: null,
   },
   notification: {
     show: false,
@@ -35,7 +35,7 @@ const uiReducer = (state, action) => {
         ...state,
         notification: {
           ...state.notification,
-          show: false
+          show: false,
         },
       };
     }
@@ -60,7 +60,7 @@ const uiReducer = (state, action) => {
         modal: {
           type: action.modalType,
           show: true,
-          props: action.props
+          props: action.props,
         },
       };
     }
@@ -82,7 +82,7 @@ const uiReducer = (state, action) => {
     case 'CART_ADD': {
       return {
         ...state,
-        cartQty: state.cartQty + 1
+        cartQty: state.cartQty + 1,
       };
     }
     case 'CART_CLEAR': {
@@ -90,7 +90,7 @@ const uiReducer = (state, action) => {
         ...state,
         cartQty: 0,
       };
-    }  
+    }
 
     default:
       return state;
@@ -123,7 +123,7 @@ export const UiProvider = ({ children }) => {
     const modalType = e.target.name || '';
     dispatch({ type: 'MODAL_OPEN', modalType, props: null });
   };
-  
+
   const openModalType = (modalType, props) => {
     dispatch({ type: 'MODAL_OPEN', modalType, props });
   };
@@ -137,22 +137,20 @@ export const UiProvider = ({ children }) => {
   };
 
   const cartSet = useCallback((cart) => {
-    const qty = cart.reduce((previousValue, item) => {
-      return previousValue + item.amount
-    }, 0)
+    const qty = cart.reduce((previousValue, item) => previousValue + item.amount, 0);
     dispatch({ type: 'CART_SET', qty });
   }, []);
-  
-  const cartFetch = useCallback( async () => {
+
+  const cartFetch = useCallback(async () => {
     try {
       const response = await getCart();
-      const cart = response.data.cart;
-      cartSet(cart)
+      const { cart } = response.data;
+      cartSet(cart);
     } catch (error) {
-      setNotification({ type: 'error', message: 'Kunde inte hämta kundkorgen.'});
+      setNotification({ type: 'error', message: 'Kunde inte hämta kundkorgen.' });
     }
-  }, [cartSet])
-  
+  }, [cartSet]);
+
   const cartClear = () => {
     dispatch({ type: 'CART_CLEAR' });
   };
@@ -171,7 +169,7 @@ export const UiProvider = ({ children }) => {
     cartSet,
     cartAdd,
     cartFetch,
-    cartClear
+    cartClear,
   };
 
   return <UiContext.Provider value={ui}>{children}</UiContext.Provider>;

@@ -9,15 +9,14 @@ export const useFetch = (callback, ...callbackArguments) => {
   useEffect(() => {
     callback(...callbackArguments)
       .then((res) => setData(res.data))
-      .catch((error) => {
-        setError(error)
+      .catch((err) => {
+        setError(err);
         setNotification({
           type: 'error',
           message: 'Misslyckades med att hämta data.',
         });
       });
-  }, [...callbackArguments])
-
+  }, [...callbackArguments]);
 
   return { data, setData, error };
 };

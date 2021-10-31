@@ -30,7 +30,7 @@ export const ModalContent = () => {
       );
     }
     case 'edit_profile': {
-      return <RegisterForm userData={modal.props} exitForm={closeModal} />
+      return <RegisterForm userData={modal.props} exitForm={closeModal} />;
     }
     case 'cart': {
       return <ShoppingCart />;

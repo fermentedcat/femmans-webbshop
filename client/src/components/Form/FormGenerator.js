@@ -1,47 +1,55 @@
-import React from 'react'
-import { Box, MenuItem, Select, TextField, InputLabel, FormControl } from '@mui/material';
+import React from 'react';
+import {
+  Box, MenuItem, Select, TextField, InputLabel, FormControl,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const StyledBox = styled(Box)(() => ({
   button: {
     display: 'block',
-    marginLeft: '.3em'
-  }
+    marginLeft: '.3em',
+  },
 }));
 
-export const FormGenerator = ({inputs, onSubmit = null, button, children}) => {
-
-  const inputFields = inputs.map((input, index) => {
+export const FormGenerator = ({
+  inputs, onSubmit = null, button, children,
+}) => {
+  const inputFields = inputs.map((input) => {
     if (input.type === 'select') {
       return (
-        <FormControl key={index} fullWidth>
+        <FormControl key={input.categoryId} fullWidth>
           <InputLabel id="select-label">Kategori</InputLabel>
-          <Select labelId="select-label" label="Kategori" value={input.categoryId} onChange={input.onChange}>
-            {input.options.map((category, index) => {
-              return <MenuItem key={index} value={category._id}>{category.title}</MenuItem>
-            })}
+          <Select
+            labelId="select-label"
+            label="Kategori"
+            value={input.categoryId}
+            onChange={input.onChange}
+          >
+            {input.options.map((category) => <MenuItem key={category.title} value={category._id}>{category.title}</MenuItem>)}
           </Select>
         </FormControl>
-      )
+      );
     }
-    else if (input.type === 'multiline'){
-      return <TextField
-        multiline
-        fullWidth
-        key={index}
-        type={input.type}
-        name={input.name}
-        value={input.value}
-        onChange={input.onChange}
-        onBlur={input.onBlur}
-        label={input.label}
-        required={input.required}
-      />
+    if (input.type === 'multiline') {
+      return (
+        <TextField
+          multiline
+          fullWidth
+          key={input.name}
+          type={input.type}
+          name={input.name}
+          value={input.value}
+          onChange={input.onChange}
+          onBlur={input.onBlur}
+          label={input.label}
+          required={input.required}
+        />
+      );
     }
     return (
       <TextField
         fullWidth
-        key={index}
+        key={input.name}
         type={input.type}
         name={input.name}
         value={input.value}
@@ -64,9 +72,9 @@ export const FormGenerator = ({inputs, onSubmit = null, button, children}) => {
         }}
       >
         {inputFields}
-        {button ? button : null}
+        {button || null}
       </StyledBox>
       {children}
     </>
-  )
-}
+  );
+};

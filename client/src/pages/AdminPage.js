@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import { Sidebar } from '../components/Sidebar/Sidebar';
 import { AdminMain } from '../components/AdminMain/AdminMain';
 
 export const AdminPage = () => {
-  const [categoryObject, setCategoryObject] = useState({ category: "default", endpoint: "" });
+  const [categoryObject, setCategoryObject] = useState({ category: 'default', endpoint: '' });
 
   return (
     <Grid container>
@@ -15,5 +15,5 @@ export const AdminPage = () => {
         <AdminMain categoryObject={categoryObject} />
       </Grid>
     </Grid>
-  )
-}
+  );
+};

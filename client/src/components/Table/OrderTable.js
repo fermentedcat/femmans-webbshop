@@ -1,7 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { updateOrder } from '../../api/api';
-import { UiContext } from '../../context/uiContext';
-
 import {
   Table,
   TableBody,
@@ -13,6 +10,8 @@ import {
   Button,
   Paper,
 } from '@mui/material';
+import { updateOrder } from '../../api/api';
+import { UiContext } from '../../context/uiContext';
 
 import { SectionHeaderRow } from './styled/SectionHeaderRow';
 import { TitleHeader } from './styled/TitleHeader';
@@ -27,14 +26,14 @@ export const OrderTable = ({ readOnly, order, updateListItem }) => {
   };
 
   const handleUpdateRowQty = async () => {
-    const data = { orderRows: orderRowData }
+    const data = { orderRows: orderRowData };
     try {
-      const newOrder = await updateOrder(data, order._id)
+      const newOrder = await updateOrder(data, order._id);
       setNotification({
         type: 'success',
         message: 'Orderraderna har uppdaterats!',
       });
-      updateListItem(newOrder.data)
+      updateListItem(newOrder.data);
     } catch (error) {
       setNotification({
         type: 'error',
@@ -46,11 +45,11 @@ export const OrderTable = ({ readOnly, order, updateListItem }) => {
   };
 
   const handleOnChange = (e) => {
-    const value = e.target.value;
+    const { value } = e.target;
     const rowId = e.target.name;
     try {
-      const newAmount = parseInt(value);
-      setOrderRowData(orderRowData.map(row => row._id === rowId ? {...row, amount: newAmount} : row))
+      const newAmount = parseInt(value, 10);
+      setOrderRowData(orderRowData.map((row) => (row._id === rowId ? { ...row, amount: newAmount } : row)));
     } catch {
       setNotification({
         type: 'error',
@@ -59,27 +58,31 @@ export const OrderTable = ({ readOnly, order, updateListItem }) => {
     }
   };
 
-  const orderRows = Object.values(orderRowData).map((row) => {
-    return (
-      <TableRow key={row._id}>
-        <TableCell>{row.productTitle ?? ""}</TableCell>
-        <TableCell>
-          {!isEditing ? (
-            row.amount
-          ) : (
-            <TextField
-              type="number"
-              name={row._id}
-              defaultValue={row.amount}
-              onChange={handleOnChange}
-            />
-          )}
-        </TableCell>
-        <TableCell>{row.priceEach}:-</TableCell>
-        <TableCell>{row.priceEach * row.amount}:-</TableCell>
-      </TableRow>
-    );
-  });
+  const orderRows = Object.values(orderRowData).map((row) => (
+    <TableRow key={row._id}>
+      <TableCell>{row.productTitle ?? ''}</TableCell>
+      <TableCell>
+        {!isEditing ? (
+          row.amount
+        ) : (
+          <TextField
+            type="number"
+            name={row._id}
+            defaultValue={row.amount}
+            onChange={handleOnChange}
+          />
+        )}
+      </TableCell>
+      <TableCell>
+        {row.priceEach}
+        :-
+      </TableCell>
+      <TableCell>
+        {row.priceEach * row.amount}
+        :-
+      </TableCell>
+    </TableRow>
+  ));
 
   return (
     <>
@@ -148,7 +151,10 @@ export const OrderTable = ({ readOnly, order, updateListItem }) => {
             {orderRows}
             <TableRow>
               <TitleHeader align="left" colSpan="3">Summa:</TitleHeader>
-              <TitleHeader>{orderRowData.reduce((prev, curr) => prev + curr.priceEach * curr.amount, 0)}:-</TitleHeader>
+              <TitleHeader>
+                {orderRowData.reduce((prev, curr) => prev + curr.priceEach * curr.amount, 0)}
+                :-
+              </TitleHeader>
             </TableRow>
           </TableBody>
         </Table>

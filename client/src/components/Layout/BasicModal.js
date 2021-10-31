@@ -16,7 +16,7 @@ const style = {
   boxShadow: 24,
   p: 4,
   overflowY: 'auto',
-  maxHeight: "80vh",
+  maxHeight: '80vh',
 };
 
 const StyledBox = styled(Box)(() => ({
@@ -24,7 +24,9 @@ const StyledBox = styled(Box)(() => ({
 }));
 
 export const BasicModal = (props) => {
-  const { open, onClose, title, descriptions, children } = props;
+  const {
+    open, onClose, title, descriptions, children,
+  } = props;
 
   return (
     <Modal
@@ -40,18 +42,16 @@ export const BasicModal = (props) => {
               {title}
             </Typography>
           )}
-          {descriptions &&
-            descriptions.map((desc, index) => {
-              return (
-                <Typography
-                  key={index}
-                  id="modal-modal-description"
-                  sx={{ mt: 2 }}
-                >
-                  {desc}
-                </Typography>
-              );
-            })}
+          {descriptions
+            && descriptions.map((desc) => (
+              <Typography
+                key={desc}
+                id="modal-modal-description"
+                sx={{ mt: 2 }}
+              >
+                {desc}
+              </Typography>
+            ))}
         </StyledBox>
         {children}
       </Box>

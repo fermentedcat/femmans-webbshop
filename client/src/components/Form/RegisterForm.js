@@ -14,13 +14,13 @@ export const RegisterForm = ({ userData, exitForm }) => {
   const [formIsValid, setFormIsValid] = useState(false);
   const { setNotification } = useContext(UiContext);
 
-  let fullNameInitVal = userData ? userData.fullName : '';
-  let displayNameInitVal = userData ? userData.displayName : '';
-  let emailInitVal = userData ? userData.email : '';
-  let streetInitVal = userData ? userData.address.street : '';
-  let postalCodeInitVal = userData ? userData.address.postalCode : '';
-  let cityInitVal = userData ? userData.address.city : '';
-  let countryInitVal = userData ? userData.address.country : '';
+  const fullNameInitVal = userData ? userData.fullName : '';
+  const displayNameInitVal = userData ? userData.displayName : '';
+  const emailInitVal = userData ? userData.email : '';
+  const streetInitVal = userData ? userData.address.street : '';
+  const postalCodeInitVal = userData ? userData.address.postalCode : '';
+  const cityInitVal = userData ? userData.address.city : '';
+  const countryInitVal = userData ? userData.address.country : '';
 
   const fullNameInput = useInput(user.fullName.validate, fullNameInitVal);
   const displayNameInput = useInput(user.displayName.validate, displayNameInitVal);
@@ -44,7 +44,10 @@ export const RegisterForm = ({ userData, exitForm }) => {
 
   const handleSubmit = async () => {
     if (!formIsValid) {
-      return;
+      setNotification({
+        type: 'error',
+        message: 'Alla fält måste vara korrekt ifyllda',
+      });
     } else {
       const data = {
         fullName: fullNameInput.value,
@@ -60,8 +63,7 @@ export const RegisterForm = ({ userData, exitForm }) => {
       };
       if (userData) {
         try {
-          const response = await updateUser(data, userData._id);
-          console.log(response)
+          await updateUser(data, userData._id);
           setNotification({
             type: 'success',
             message: 'Din profil har uppdaterats.',
@@ -88,21 +90,21 @@ export const RegisterForm = ({ userData, exitForm }) => {
           type: 'error',
           message: 'Registreringen misslyckades. Har du redan ett konto på denna mailadress?',
         });
-        //TODO: set notification according to db error
+        // TODO: set notification according to db error
       }
     }
   };
 
   useEffect(() => {
     setFormIsValid(
-      fullNameInput.isValid &&
-        displayNameInput.isValid &&
-        emailInput.isValid &&
-        passwordInput.isValid &&
-        streetInput.isValid &&
-        postalCodeInput.isValid &&
-        cityInput.isValid &&
-        countryInput.isValid
+      fullNameInput.isValid
+        && displayNameInput.isValid
+        && emailInput.isValid
+        && passwordInput.isValid
+        && streetInput.isValid
+        && postalCodeInput.isValid
+        && cityInput.isValid
+        && countryInput.isValid,
     );
   }, [
     fullNameInput.isValid,

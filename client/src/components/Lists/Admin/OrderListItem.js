@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { UiContext } from '../../../context/uiContext';
-
 import { styled } from '@mui/material/styles';
-import { Button, ListItem, ListItemText, Select, MenuItem } from '@mui/material';
+import {
+  Button, ListItem, ListItemText, Select, MenuItem,
+} from '@mui/material';
+import { UiContext } from '../../../context/uiContext';
 
 import { BasicModal } from '../../Layout/BasicModal';
 import { AddressForm } from '../../Form/AddressForm';
@@ -25,23 +26,33 @@ const StyledSelect = styled(Select)(() => ({
   marginRight: '1em',
 }));
 
-export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
+export const OrderListItem = ({ order, removeListItem, updateListItem }) => {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [orderStatus, setOrderStatus] = useState("");
+  const [orderStatus, setOrderStatus] = useState('');
   const { setNotification } = useContext(UiContext);
 
   useEffect(() => {
-    setOrderStatus(order.status)
-  }, [order])
-  
+    setOrderStatus(order.status);
+  }, [order]);
+
+  const toggleShowModal = () => {
+    if (showModal) {
+      setIsEditing(false);
+    }
+    setShowModal(!showModal);
+  };
+
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
 
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
     const currentStatus = orderStatus;
     setOrderStatus(newStatus);
     try {
-      const newOrder = await updateOrder({status: newStatus}, order._id)
+      const newOrder = await updateOrder({ status: newStatus }, order._id);
       updateListItem(newOrder);
       setNotification({
         type: 'success',
@@ -52,59 +63,48 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
         type: 'error',
         message: 'Statusuppdateringen misslyckades.',
       });
-      setOrderStatus(currentStatus)
+      setOrderStatus(currentStatus);
     }
   };
 
   const handleAddressEdit = async (address) => {
-    const data = { address: address };
+    const data = { address };
     try {
-      const newOrder = await updateOrder(data, order._id)
-      updateListItem(newOrder.data)
+      const newOrder = await updateOrder(data, order._id);
+      updateListItem(newOrder.data);
       setNotification({
         type: 'error',
         message: 'Adressen har ändrats!',
-      });  
+      });
       toggleEdit();
     } catch (error) {
       setNotification({
         type: 'error',
         message: 'Adressändringen misslyckades.',
-      });  
+      });
     }
-  }
+  };
 
-  const handleDelete = async (e) => {
+  const handleDelete = async () => {
     if (!window.confirm('Är du säker på att du vill radera denna order?')) {
       return;
     }
     try {
-      await deleteOrder(order._id)
+      await deleteOrder(order._id);
       setNotification({
         type: 'success',
         message: `Ordern ${order._id} har raderats!`,
-      });  
-      removeListItem(order._id)
+      });
+      removeListItem(order._id);
     } catch (error) {
       setNotification({
         type: 'error',
         message: `Radering av order ${order._id} misslyckades.`,
-      });  
+      });
     }
   };
 
-  const toggleShowModal = () => {
-    if(showModal){
-      setIsEditing(false)
-    }
-    setShowModal(!showModal);
-  };
-
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const timeStamp = new Date(order.createdAt).toLocaleString('se-SE')
+  const timeStamp = new Date(order.createdAt).toLocaleString('se-SE');
 
   return (
     <>
@@ -132,8 +132,9 @@ export const OrderListItem = ({ order, removeListItem, updateListItem}) => {
         title={isEditing ? 'Ändra leveransadress' : 'Orderdetaljer'}
         descriptions={[`Order ID ${order._id}`, `Orderdatum: ${timeStamp}`]}
       >
-        {isEditing ? <AddressForm order={order} onSubmitHandler={handleAddressEdit} /> : <OrderTable updateListItem={updateListItem} order={order} />}
-         <Button color={isEditing ? 'warning' : 'primary'} onClick={toggleEdit}>
+        {isEditing ? <AddressForm order={order} onSubmitHandler={handleAddressEdit} />
+          : <OrderTable updateListItem={updateListItem} order={order} />}
+        <Button color={isEditing ? 'warning' : 'primary'} onClick={toggleEdit}>
           {isEditing ? 'Ångra' : 'Ändra adress'}
         </Button>
       </BasicModal>

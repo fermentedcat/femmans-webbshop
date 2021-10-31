@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-
-import useInput from '../../hooks/useInput';
+import React, { useEffect, useState, useContext } from 'react';
 import { Button } from '@mui/material';
+import useInput from '../../hooks/useInput';
+import { UiContext } from '../../context/uiContext';
 import { address } from '../../constants/formFields';
 import { FormGenerator } from './FormGenerator';
 
 export const AddressForm = ({ order, onSubmitHandler }) => {
   const [formIsValid, setFormIsValid] = useState(false);
+  const { setNotification } = useContext(UiContext);
 
   const streetValue = order ? order.address.street : '';
   const postalCodeValue = order ? order.address.postalCode : '';
@@ -16,7 +17,7 @@ export const AddressForm = ({ order, onSubmitHandler }) => {
   const streetInput = useInput(address.street.validate, streetValue);
   const postalCodeInput = useInput(
     address.postalCode.validate,
-    postalCodeValue
+    postalCodeValue,
   );
   const cityInput = useInput(address.city.validate, cityValue);
   const countryInput = useInput(address.country.validate, countryValue);
@@ -30,7 +31,10 @@ export const AddressForm = ({ order, onSubmitHandler }) => {
 
   const handleSubmit = () => {
     if (!formIsValid) {
-      return;
+      setNotification({
+        type: 'error',
+        message: 'Felaktiga uppgifter',
+      });
     } else {
       const data = {
         street: streetInput.value,
@@ -44,10 +48,10 @@ export const AddressForm = ({ order, onSubmitHandler }) => {
 
   useEffect(() => {
     setFormIsValid(
-      streetInput.isValid &&
-        postalCodeInput.isValid &&
-        cityInput.isValid &&
-        countryInput.isValid
+      streetInput.isValid
+        && postalCodeInput.isValid
+        && cityInput.isValid
+        && countryInput.isValid,
     );
   }, [
     streetInput.isValid,
