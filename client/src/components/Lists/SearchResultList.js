@@ -1,8 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import List from '@mui/material/List'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import List from '@mui/material/List';
 import { styled } from '@mui/material/styles';
-import { ListItemButton } from '@mui/material'
+import { ListItemButton } from '@mui/material';
 
 const ResultList = styled(List)(() => ({
   width: '100%',
@@ -26,25 +26,21 @@ const ResultList = styled(List)(() => ({
     },
     '& + a': {
       borderTop: '1px solid #EBE8E8',
-    }
+    },
   },
-}))
+}));
 
-export const SearchResultList = ({ result, reset }) => {
-  return (
-    <ResultList>
-      {result.map((product) => {
-        return (
-          <ListItemButton
-            key={product._id}
-            component={Link}
-            to={`/product/${product._id}`}
-            onClick={reset}
-          >
-            {product.title}
-          </ListItemButton>
-        )
-      })}
-    </ResultList>
-  )
-}
+export const SearchResultList = ({ result, reset }) => (
+  <ResultList>
+    {result.map((product) => (
+      <ListItemButton
+        key={product._id}
+        component={Link}
+        to={`/product/${product._id}`}
+        onClick={reset}
+      >
+        {product.title}
+      </ListItemButton>
+    ))}
+  </ResultList>
+);

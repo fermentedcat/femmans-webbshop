@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
-import { getCategories } from '../../../api/api'
+import React, { useState } from 'react';
 import List from '@mui/material/List';
+import { Modal, Button, Box } from '@mui/material';
+import { getCategories } from '../../../api/api';
 import { CategoryForm } from '../../Form/CategoryForm';
 import { useFetch } from '../../../hooks/useFetch';
 import { CategoryListItem } from './CategoryListItem';
-import { Modal, Button, Box } from '@mui/material';
 
 const style = {
   position: 'absolute',
@@ -16,48 +16,44 @@ const style = {
   boxShadow: 24,
   p: 4,
   overflowY: 'auto',
-  maxHeight: "80vh",
+  maxHeight: '80vh',
 };
-
-
 
 export const CategoriesList = () => {
   const [open, setOpen] = useState(false);
-  const {data: categories, setData: setCategories } = useFetch(getCategories);
+  const { data: categories, setData: setCategories } = useFetch(getCategories);
 
   const removeListItem = (id) => {
-    setCategories(categories.filter(item => item._id !== id))
-  }
+    setCategories(categories.filter((item) => item._id !== id));
+  };
 
   const updateListItem = (newItem) => {
-    setCategories(categories.map(item => item._id === newItem._id ? newItem : item))
-  }
+    setCategories(categories.map((item) => (item._id === newItem._id ? newItem : item)));
+  };
 
   const addToList = (newItem) => {
-    setCategories([...categories, newItem])
-  }
+    setCategories([...categories, newItem]);
+  };
 
   return (
     <>
-    <Button onClick={() => setOpen(!open)}> Add category </Button>
-    <Modal open={open} onClose={() => setOpen(!open)}>
-      <Box sx={style}>
-      <CategoryForm addToList={addToList} onExit={() => setOpen(false)}/>
-      </Box>
-    </Modal>
+      <Button onClick={() => setOpen(!open)}> Add category </Button>
+      <Modal open={open} onClose={() => setOpen(!open)}>
+        <Box sx={style}>
+          <CategoryForm addToList={addToList} onExit={() => setOpen(false)} />
+        </Box>
+      </Modal>
       <List dense>
-        {categories &&
-          categories.map((category) => {
-            return (
+        {categories
+          && categories.map((category) => (
 
-              <CategoryListItem
+            <CategoryListItem
               key={category._id}
               category={category}
               removeListItem={removeListItem}
               updateListItem={updateListItem}
-              />
-            );
-          })}
+            />
+          ))}
       </List>
     </>
   );

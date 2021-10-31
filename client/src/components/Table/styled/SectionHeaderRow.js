@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { TableRow } from '@mui/material'
+import { TableRow } from '@mui/material';
 
 export const SectionHeaderRow = styled(TableRow)(() => ({
   background: '#292828',

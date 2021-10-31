@@ -1,9 +1,8 @@
-const User = require('../models/User');
-const format = require('../utils/format');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const User = require('../models/User');
 
-exports.getAllUsers = (req, res, next) => {
+exports.getAllUsers = (req, res) => {
   User.find().exec((err, users) => {
     if (err) res.sendStatus(400);
 
@@ -12,23 +11,23 @@ exports.getAllUsers = (req, res, next) => {
   });
 };
 
-exports.tokenValidCheck = (req, res, next) => {
+exports.tokenValidCheck = (req, res) => {
   res.sendStatus(202);
-}
+};
 
-exports.getUserByToken = async (req, res, next) => {
+exports.getUserByToken = async (req, res) => {
   const { email } = req.user;
 
   try {
-    const user = await User.findOne({ email: email })
+    const user = await User.findOne({ email });
     res.status(200).json(user);
-  } catch (error) {
-    res.status(400).end();
+  } catch {
+    res.sendStatus(400);
   }
 };
 
-exports.getOneUser = (req, res, next) => {
-  const id = req.params.id;
+exports.getOneUser = (req, res) => {
+  const { id } = req.params;
 
   User.findById(id)
     .select('-password')
@@ -36,26 +35,26 @@ exports.getOneUser = (req, res, next) => {
       if (user) res.status(200).json(user);
       else res.status(404).end();
     })
-    .catch((err) => {
-      res.status(400).end();
+    .catch(() => {
+      res.sendStatus(400);
     });
 };
 
-exports.getCart = async (req, res, next) => {
-  const email = req.user.email;
+exports.getCart = async (req, res) => {
+  const { email } = req.user;
 
   try {
-    const cart = await User.findOne({ email: email })
+    const cart = await User.findOne({ email })
       .select('cart')
       .populate('cart.product')
       .exec();
     res.status(200).json(cart);
-  } catch (error) {
-    res.status(400).json(error);
+  } catch {
+    res.sendStatus(400);
   }
 };
 
-exports.loginUser = async (req, res, next) => {
+exports.loginUser = async (req, res) => {
   const data = req.body;
 
   const user = await User.findOne({ email: data.email });
@@ -65,15 +64,16 @@ exports.loginUser = async (req, res, next) => {
       const token = jwt.sign(
         { email: data.email, role: user.role },
         process.env.JWT_PRIVATE_KEY,
-        { expiresIn: process.env.JWT_EXPIRATION_TIME }
+        { expiresIn: process.env.JWT_EXPIRATION_TIME },
       );
-      return res.status(201).send(token);
+      res.status(201).send(token);
     }
+  } else {
+    res.sendStatus(401);
   }
-  res.status(401).send('Login failed');
 };
 
-exports.addNewUser = (req, res, next) => {
+exports.addNewUser = (req, res) => {
   const data = req.body;
   const newUser = new User(data);
 
@@ -83,18 +83,17 @@ exports.addNewUser = (req, res, next) => {
       const token = jwt.sign(
         { email: data.email, role: 'user' },
         process.env.JWT_PRIVATE_KEY,
-        { expiresIn: process.env.JWT_EXPIRATION_TIME }
+        { expiresIn: process.env.JWT_EXPIRATION_TIME },
       );
       res.status(201).send(token);
     })
-    .catch((err) => {
-      // let errors = format.validationErrors(err);
-      res.status(400).json(err);
+    .catch(() => {
+      res.sendStatus(400);
     });
 };
 
-exports.updateOneUser = (req, res, next) => {
-  const id = req.params.id;
+exports.updateOneUser = (req, res) => {
+  const { id } = req.params;
   const data = req.body;
 
   User.findByIdAndUpdate(id, data, { runValidators: true, new: true })
@@ -103,36 +102,36 @@ exports.updateOneUser = (req, res, next) => {
       if (user) res.status(200).json(user);
       else res.status(404).end();
     })
-    .catch((err) => {
-      res.status(400).json(err);
+    .catch(() => {
+      res.sendStatus(400);
     });
 };
 
-exports.deleteOneUser = (req, res, next) => {
-  const id = req.params.id;
+exports.deleteOneUser = (req, res) => {
+  const { id } = req.params;
 
   User.findByIdAndDelete(id)
     .then((user) => {
       if (user) res.status(204).json();
       else res.status(404).end();
     })
-    .catch((err) => {
-      res.status(400).end();
+    .catch(() => {
+      res.sendStatus(400);
     });
 };
 
-exports.addToCart = async (req, res, next) => {
+exports.addToCart = async (req, res) => {
   const { email } = req.user;
   const cartItem = req.params.id;
 
   try {
     const item = await User.findOneAndUpdate(
       {
-        email: email,
+        email,
         'cart.product': { $ne: cartItem },
       },
       { $push: { cart: { product: cartItem, amount: 1 } } },
-      { new: true }
+      { new: true },
     );
 
     if (item) res.sendStatus(200);
@@ -140,62 +139,65 @@ exports.addToCart = async (req, res, next) => {
     else {
       const amount = await User.findOneAndUpdate(
         {
-          email: email,
+          email,
           'cart.product': cartItem,
         },
         { $inc: { 'cart.$.amount': 1 } },
-        { new: true }
+        { new: true },
       );
       if (amount) res.sendStatus(200);
     }
-  } catch (error) {
+  } catch {
     res.sendStatus(400);
   }
 };
 
-exports.updateCart = async (req, res, next) => {
+exports.updateCart = async (req, res) => {
   const { email } = req.user;
   const cartItem = req.params.id;
-  const amount = req.body.amount;
+  const { amount } = req.body;
 
   try {
     const item = await User.findOneAndUpdate(
       {
-        email: email,
-        'cart.product': cartItem
+        email,
+        'cart.product': cartItem,
       },
       { $set: { 'cart.$.amount': amount } },
-      { new: true }
-    )
+      { new: true },
+    );
     res.status(204).json(item);
-  } catch (error) {
+  } catch {
     res.sendStatus(400);
   }
-}
+};
 
-exports.emptyCart = async (req, res, next) => {
+exports.emptyCart = async (req, res) => {
   const { email } = req.user;
 
   try {
-    const item = await User.findOneAndUpdate(
-      { email: email },
-      { $set: { 'cart': [] } },
-      { new: true }
-    )
-    res.status(204).json();
-  } catch (error) {
+    await User.findOneAndUpdate(
+      { email },
+      { $set: { cart: [] } },
+      { new: true },
+    );
+    res.sendStatus(204);
+  } catch {
     res.sendStatus(400);
   }
-}
+};
 
-exports.deleteFromCart = async (req, res, next) => {
+exports.deleteFromCart = async (req, res) => {
   const { email } = req.user;
   const cartItem = req.params.id;
 
-  const item = await User.findOneAndUpdate(
-    { email: email },
-    { $pull: { 'cart': { 'product': cartItem } } },
-    { new: true }
-  )
-  res.sendStatus(204);
-}
+  try {
+    await User.findOneAndUpdate(
+      { email },
+      { $pull: { cart: { product: cartItem } } },
+    );
+    res.sendStatus(204);
+  } catch {
+    res.sendStatus(400);
+  }
+};

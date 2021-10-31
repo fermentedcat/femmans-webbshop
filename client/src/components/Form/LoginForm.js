@@ -24,7 +24,10 @@ export const LoginForm = ({ exitForm }) => {
 
   const handleSubmit = async () => {
     if (!formIsValid) {
-      return;
+      setNotification({
+        type: 'error',
+        message: 'Alla fält måste vara korrekt ifyllda',
+      });
     } else {
       const data = {
         email: emailInput.value,

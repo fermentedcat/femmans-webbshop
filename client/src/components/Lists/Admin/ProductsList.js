@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import List from '@mui/material/List';
+import { Modal, Button, Box } from '@mui/material';
 import { getProducts, getCategories } from '../../../api/api';
 import { useFetch } from '../../../hooks/useFetch';
-import List from '@mui/material/List';
-import {ProductForm} from "../../Form/ProductForm";
-import {ProductListItem} from "./ProductListItem";
-import { Modal, Button, Box } from '@mui/material';
+import { ProductForm } from '../../Form/ProductForm';
+import { ProductListItem } from './ProductListItem';
 
 const style = {
   position: 'absolute',
@@ -16,40 +16,38 @@ const style = {
   boxShadow: 24,
   p: 4,
   overflowY: 'auto',
-  maxHeight: "80vh",
+  maxHeight: '80vh',
 };
 
 export const ProductsList = () => {
   const [open, setOpen] = useState(false);
 
-  const {data: products, setData: setProducts, error} = useFetch(getProducts);
-  const {data: categories } = useFetch(getCategories)
-  
+  const { data: products, setData: setProducts, error } = useFetch(getProducts);
+  const { data: categories } = useFetch(getCategories);
+
   const removeListItem = (id) => {
-    setProducts(products.filter(product => product._id !== id))
-  }
+    setProducts(products.filter((product) => product._id !== id));
+  };
 
   const updateListItem = (newProduct) => {
-    setProducts(products.map(product => product._id === newProduct._id ? newProduct : product))
-  }
+    setProducts(products.map((product) => (product._id === newProduct._id ? newProduct : product)));
+  };
 
   const addToList = (product) => {
-    setProducts([product, ...products])
-  }
-
+    setProducts([product, ...products]);
+  };
 
   return (
     <>
-    {categories && <Button onClick={() => setOpen(!open)}> Add product </Button>}
-    <Modal open={open} onClose={() => setOpen(!open)}>
-    <Box sx={style}>
-      <ProductForm updateList={updateListItem} addToList={addToList} categories={categories} onExit={() => setOpen(false)}/>
-    </Box>
-    </Modal>
-    <List dense>
-      {products && categories ? (
-       products.map(product => {
-          return (
+      {categories && <Button onClick={() => setOpen(!open)}> Add product </Button>}
+      <Modal open={open} onClose={() => setOpen(!open)}>
+        <Box sx={style}>
+          <ProductForm updateList={updateListItem} addToList={addToList} categories={categories} onExit={() => setOpen(false)} />
+        </Box>
+      </Modal>
+      <List dense>
+        {products && categories && (
+          products.map((product) => (
             <ProductListItem
               categories={categories}
               key={product._id}
@@ -57,10 +55,11 @@ export const ProductsList = () => {
               removeListItem={removeListItem}
               updateListItem={updateListItem}
             />
-          );
-        })
-      ): error ? <div>Can't get data</div> : <div>...Loading</div>}
-    </List>
+          ))
+        )}
+        {error && <div>Can&apos;t get data</div>}
+        {(!products || !categories) && !error && <div>...Loading</div>}
+      </List>
     </>
   );
 };

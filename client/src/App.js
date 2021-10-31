@@ -1,11 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import { Alert, Snackbar } from '@mui/material';
 import { AuthContext } from './context/authContext';
 import { UiContext } from './context/uiContext';
 
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { AdminPage } from './pages/AdminPage';
 import { ProductsPage } from './pages/ProductsPage';
@@ -13,22 +14,22 @@ import { ProductsByCategoryPage } from './pages/ProductsByCategoryPage';
 import { Header } from './components/Layout/Header';
 import { BasicModal } from './components/Layout/BasicModal';
 import { ModalContent } from './components/Layout/ModalContent';
-import { Alert, Snackbar } from '@mui/material';
 import { ProductDetailPage } from './pages/ProductDetailPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { AuthUserRoute } from './routes/AuthUserRoute';
 import { AuthAdminRoute } from './routes/AuthAdminRoute';
 
-
 function App() {
-  const { isAuthenticated, authenticate } = useContext(AuthContext)
-  const { modal, closeModal, notification, closeNotification } = useContext(UiContext)
+  const { isAuthenticated, authenticate } = useContext(AuthContext);
+  const {
+    modal, closeModal, notification, closeNotification,
+  } = useContext(UiContext);
 
   useEffect(() => {
     if (!isAuthenticated) {
-      authenticate()
+      authenticate();
     }
-  }, [isAuthenticated, authenticate])
+  }, [isAuthenticated, authenticate]);
 
   return (
     <Container

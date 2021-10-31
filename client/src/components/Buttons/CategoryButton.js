@@ -5,10 +5,10 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
+import { useHistory } from 'react-router-dom';
 import { NavButton } from './NavButton';
 import { useFetch } from '../../hooks/useFetch';
 import { getCategories } from '../../api/api';
-import { useHistory } from 'react-router';
 
 export const CategoryButton = () => {
   const { data: categories } = useFetch(getCategories);
@@ -36,14 +36,14 @@ export const CategoryButton = () => {
     history.push('/all-products');
   };
 
-  function handleListKeyDown(event) {
+  const handleListKeyDown = (event) => {
     if (event.key === 'Tab') {
       event.preventDefault();
       setOpen(false);
     } else if (event.key === 'Escape') {
       setOpen(false);
     }
-  }
+  };
 
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
@@ -57,10 +57,10 @@ export const CategoryButton = () => {
     <div onMouseOver={handleToggle} onMouseOut={handleToggle}>
       <NavButton
         ref={anchorRef}
-        id='composition-button'
+        id="composition-button"
         aria-controls={open ? 'composition-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
-        aria-haspopup='true'
+        aria-haspopup="true"
         onClick={handleOnGameClick}
       >
         Spel
@@ -68,7 +68,7 @@ export const CategoryButton = () => {
       <Popper
         open={open}
         anchorEl={anchorRef.current}
-        placement='bottom-start'
+        placement="bottom-start"
         transition
         disablePortal
       >
@@ -84,16 +84,14 @@ export const CategoryButton = () => {
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList
                   autoFocusItem={open}
-                  id='composition-menu'
-                  aria-labelledby='composition-button'
+                  id="composition-menu"
+                  aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
                 >
-                  {categories &&
-                    categories.map((category) => (
+                  {categories
+                    && categories.map((category) => (
                       <MenuItem
-                        onClick={(event) =>
-                          handleOnCategoryClick(event, category.title)
-                        }
+                        onClick={(event) => handleOnCategoryClick(event, category.title)}
                         key={category.title}
                       >
                         {category.title}

@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../context/authContext';
-
-import { Navbar } from '../Navbar/Navbar.jsx';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import { Card, CardMedia } from '@mui/material';
+import { AuthContext } from '../../context/authContext';
+import { Navbar } from '../Navbar/Navbar';
 import { StyledButton } from '../Buttons/StyledButton';
 
 export const Header = () => {

@@ -1,19 +1,21 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-    try {
-        const token = req.header("x-auth-token");
-        if (!token) return res.status(403).send("Access denied.");
+  try {
+    const token = req.header('x-auth-token');
+    if (!token) {
+      res.status(403).send('Access denied.');
+    } else {
+      const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
 
-        const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-
-        if (decoded.role !== "admin") return res.status(403).send("Access denied.");
+      if (decoded.role !== 'admin') {
+        res.status(403).send('Access denied.');
+      } else {
         req.user = decoded;
-
         next();
-
-    } catch (error) {
-        res.status(400).send("Invalid token");
+      }
     }
+  } catch (error) {
+    res.status(400).send('Invalid token');
+  }
 };
-

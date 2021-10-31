@@ -1,13 +1,14 @@
-import React, { useContext } from 'react'
-import { Route, Redirect } from 'react-router-dom'
-import { AuthContext } from '../context/authContext'
+import React, { useContext } from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import { AuthContext } from '../context/authContext';
 
-export const AuthAdminRoute = ({ component: Component, ...restOfProps }) => {
-  const { isAuthenticated, role } = useContext(AuthContext)
-  
+export const AuthAdminRoute = ({ component: Component, path }) => {
+  const { isAuthenticated, role } = useContext(AuthContext);
+
   return (
-    <Route {...restOfProps} render={() => {
-      return isAuthenticated && role === 'admin' ? <Component /> : <Redirect to="/" />
-    }}/>
-  )
-}
+    <Route
+      path={path}
+      render={() => (isAuthenticated && role === 'admin' ? <Component /> : <Redirect to="/" />)}
+    />
+  );
+};

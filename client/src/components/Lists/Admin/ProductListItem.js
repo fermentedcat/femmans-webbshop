@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react';
 
-import { UiContext } from '../../../context/uiContext';
-
 import { styled } from '@mui/material/styles';
 import { Button, ListItem, ListItemText } from '@mui/material';
+import { UiContext } from '../../../context/uiContext';
 
 import { BasicModal } from '../../Layout/BasicModal';
 import { ProductForm } from '../../Form/ProductForm';
@@ -19,12 +18,25 @@ const StyledListItem = styled(ListItem)(() => ({
   },
 }));
 
-export const ProductListItem = ({ product, removeListItem, updateListItem, categories}) => {
+export const ProductListItem = ({
+  product, removeListItem, updateListItem, categories,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { setNotification } = useContext(UiContext);
 
-  const handleDelete = async (e) => {
+  const toggleShowModal = () => {
+    if (showModal) {
+      setIsEditing(false);
+    }
+    setShowModal(!showModal);
+  };
+
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleDelete = async () => {
     if (!window.confirm('Är du säker på att du vill radera denna produkt?')) {
       return;
     }
@@ -34,7 +46,7 @@ export const ProductListItem = ({ product, removeListItem, updateListItem, categ
         type: 'success',
         message: 'Produkten har raderats!',
       });
-      removeListItem(product._id)
+      removeListItem(product._id);
     } catch (error) {
       setNotification({
         type: 'error',
@@ -43,22 +55,10 @@ export const ProductListItem = ({ product, removeListItem, updateListItem, categ
     }
   };
 
-  const toggleShowModal = () => {
-    if(showModal){
-      setIsEditing(false)
-    }
-    setShowModal(!showModal);
-  };
-
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const handleEdit = async (product, id) => {
+  const handleEdit = async (prod, id) => {
     try {
-      const res = await updateProduct(product, id)
-      console.log(res)
-      updateListItem(res.data)
+      const res = await updateProduct(prod, id);
+      updateListItem(res.data);
       setNotification({
         type: 'success',
         message: 'Produkten har uppdaterats!',
@@ -70,12 +70,12 @@ export const ProductListItem = ({ product, removeListItem, updateListItem, categ
         message: 'Uppdatering av produkten misslyckades.',
       });
     }
-  }
+  };
 
   return (
     <>
       <StyledListItem>
-        <ListItemText primary={`${product.title}`}/>
+        <ListItemText primary={`${product.title}`} />
         <Button onClick={toggleShowModal}>Öppna</Button>
         <Button onClick={handleDelete} color="warning">
           Ta bort
@@ -88,8 +88,8 @@ export const ProductListItem = ({ product, removeListItem, updateListItem, categ
         title={isEditing ? 'Ändra produkt' : 'Produktdetaljer'}
         descriptions={[`Product ID ${product._id}`]}
       >
-        {isEditing ? <ProductForm productToEdit={product} handleEdit={handleEdit} categories={categories}/> : <ProductTable product={product} />}
-         <Button color={isEditing ? 'warning' : 'primary'} onClick={toggleEdit}>
+        {isEditing ? <ProductForm productToEdit={product} handleEdit={handleEdit} categories={categories} /> : <ProductTable product={product} />}
+        <Button color={isEditing ? 'warning' : 'primary'} onClick={toggleEdit}>
           {isEditing ? 'Ångra' : 'Redigera produkt'}
         </Button>
       </BasicModal>

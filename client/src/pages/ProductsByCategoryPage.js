@@ -5,13 +5,13 @@ import { BasicProductGrid } from '../components/Layout/BasicProductGrid';
 import { getProductsByCategory } from '../api/api';
 import { useFetch } from '../hooks/useFetch';
 
-export const ProductsByCategoryPage = (props) => {
-  const title = props.match.params.title;
+export const ProductsByCategoryPage = ({ match }) => {
+  const { title } = match.params;
 
   const { data } = useFetch(getProductsByCategory, title);
   return (
     <Box>
-      <Typography variant='h3'>{title.toUpperCase()}</Typography>
+      <Typography variant="h3">{title.toUpperCase()}</Typography>
       {data && <BasicProductGrid products={data} />}
     </Box>
   );

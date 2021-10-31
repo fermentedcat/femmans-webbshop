@@ -1,44 +1,43 @@
 const Order = require('../models/Order');
 const User = require('../models/User');
 
-exports.getAllOrders = (req, res, next) => {
-
+exports.getAllOrders = (req, res) => {
   Order.find()
     .populate('user', '-password')
     .exec((err, orders) => {
       if (err) {
-        res.sendStatus(500)
+        res.sendStatus(500);
       }
       res.json(orders);
-    })
-}
+    });
+};
 
-exports.getOneOrder = (req, res, next) => {
-  const id = req.params.id;
+exports.getOneOrder = (req, res) => {
+  const { id } = req.params;
 
   Order.findById(id)
     .populate('user', '-password')
-    .then(order => {
+    .then((order) => {
       if (order) res.status(200).json(order);
-      else res.status(404).end()
+      else res.status(404).end();
     })
-    .catch(err => {
-      res.status(400).end()
+    .catch(() => {
+      res.status(400).end();
     });
-}
+};
 
-exports.getOrdersByUser = async (req, res, next) => {
+exports.getOrdersByUser = async (req, res) => {
   const userData = req.user;
   try {
     const user = await User.findOne({ email: userData.email }, '_id').exec();
     const orders = await Order.find({ user: user._id }).exec();
     res.status(200).json(orders);
-  } catch (error) {
+  } catch {
     res.sendStatus(404);
   }
-}
+};
 
-exports.addNewOrder = async (req, res, next) => {
+exports.addNewOrder = async (req, res) => {
   const data = req.body;
   const { email } = req.user;
 
@@ -47,32 +46,32 @@ exports.addNewOrder = async (req, res, next) => {
     const order = new Order(data);
     const savedOrder = await order.save();
     res.status(201).json(savedOrder);
-  } catch (err) {
-    res.status(400).json(err);
+  } catch {
+    res.sendStatus(400);
   }
-}
+};
 
-exports.updateOneOrder = (req, res, next) => {
-  const id = req.params.id;
+exports.updateOneOrder = (req, res) => {
+  const { id } = req.params;
   const data = req.body;
 
   Order.findByIdAndUpdate(id, data, { runValidators: true, new: true })
-    .then(order => {
+    .then((order) => {
       if (order) res.status(200).json(order);
       else res.status(404).end();
     })
-    .catch((err) => {
-      res.status(400).json(err);
+    .catch(() => {
+      res.sendStatus(400);
     });
-}
+};
 
-exports.deleteOneOrder = (req, res, next) => {
-  const id = req.params.id;
+exports.deleteOneOrder = (req, res) => {
+  const { id } = req.params;
   Order.findByIdAndDelete(id)
     .then(() => {
-      res.status(204).json();
+      res.sendStatus(204);
     })
-    .catch(err => {
-      res.status(400).end();
+    .catch(() => {
+      res.sendStatus(400);
     });
-}
+};

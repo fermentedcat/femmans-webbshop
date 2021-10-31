@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
@@ -21,7 +21,7 @@ const Search = styled('div')(({ theme }) => ({
     marginLeft: theme.spacing(3),
     width: 'auto',
   },
-  display: 'inline-flex'
+  display: 'inline-flex',
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -49,34 +49,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export const SearchField = () => {
-  const input = useInput(validate.string)
-  const [result, setResult] = useState([])
-  
+  const input = useInput(validate.string);
+  const [result, setResult] = useState([]);
+
   const inputProps = {
-    name: "search",
+    name: 'search',
     value: input.value,
     onChange: input.onChange,
-  }
+  };
 
   useEffect(() => {
     if (input.isValid) {
-      const timer = setTimeout( async () => {
+      const timer = setTimeout(async () => {
         try {
-          //TODO: sanitize string?
-          const result = await getProductsBySearch(input.value)
-          setResult(result.data)
+          const res = await getProductsBySearch(input.value);
+          setResult(res.data);
         } catch (error) {
-          // also if no results on query (404)
-          setResult([])
+          setResult([]);
         }
       }, 600);
-      return () => {
-        clearTimeout(timer)
-      }
+      return () => clearTimeout(timer);
     }
-    setResult([])
+    return setResult([]);
   }, [input.value, input.isValid]);
-  
+
   return (
     <Search>
       <SearchIconWrapper>
@@ -88,7 +84,7 @@ export const SearchField = () => {
         inputProps={{ 'aria-label': 'search' }}
         {...inputProps}
       />
-      { result.length > 0 && <SearchResultList result={result} reset={input.reset}/>}
+      { result.length > 0 && <SearchResultList result={result} reset={input.reset} />}
     </Search>
-  )
-}
+  );
+};

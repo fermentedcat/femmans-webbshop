@@ -1,11 +1,9 @@
 import { useReducer } from 'react';
 
-const initialInputState = (initialValue) => {
-  return {
-    value: initialValue,
-    isTouched: false,
-  };
-};
+const initialInputState = (initialValue) => ({
+  value: initialValue,
+  isTouched: false,
+});
 
 const inputStateReducer = (state, action) => {
   if (action.type === 'INPUT') {
@@ -22,14 +20,12 @@ const inputStateReducer = (state, action) => {
 };
 
 const useInput = (
-  validate = () => {
-    return true;
-  },
-  initialValue = ''
+  validate = () => true,
+  initialValue = '',
 ) => {
   const [inputState, dispatch] = useReducer(
     inputStateReducer,
-    initialInputState(initialValue)
+    initialInputState(initialValue),
   );
 
   const isValid = validate(inputState.value);
@@ -39,7 +35,7 @@ const useInput = (
     dispatch({ type: 'INPUT', value: e.target.value });
   };
 
-  const onBlur = (event) => {
+  const onBlur = () => {
     dispatch({ type: 'BLUR' });
   };
 
