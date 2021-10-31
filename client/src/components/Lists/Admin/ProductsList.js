@@ -57,7 +57,8 @@ export const ProductsList = () => {
             />
           ))
         )}
-        {(!products || !categories) && error ? <div>Can&apos;t get data</div> : <div>...Loading</div>}
+        {error && <div>Can&apos;t get data</div>}
+        {(!products || !categories) && !error && <div>...Loading</div>}
       </List>
     </>
   );
