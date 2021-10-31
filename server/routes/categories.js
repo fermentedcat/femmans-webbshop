@@ -1,7 +1,9 @@
 const express = require('express');
-const adminAuth = require("../utils/adminAuth");
+const adminAuth = require('../utils/adminAuth');
 
-const { addNewCategory, getAllCategories, deleteOneCategory, getOneCategory, updateOneCategory } = require('../controllers/categories');
+const {
+  addNewCategory, getAllCategories, deleteOneCategory, getOneCategory, updateOneCategory,
+} = require('../controllers/categories');
 
 const router = express.Router();
 

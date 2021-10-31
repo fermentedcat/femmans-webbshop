@@ -1,4 +1,4 @@
-const { isNotWhiteSpace, isEmail } = require('../utils/validator')
+const { isNotWhiteSpace, isEmail } = require('../utils/validator');
 
 describe('Checks if input is whitespace', () => {
   test('Returns true if not whitespace', () => {

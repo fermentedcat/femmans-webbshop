@@ -1,20 +1,19 @@
-// const { isEmail } = require('validator');
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 const bcrypt = require('bcrypt');
 const { isNotWhiteSpace, isEmail } = require('../utils/validator');
-
 
 const UserSchema = new Schema({
   fullName: {
     type: String,
     required: true,
-    validate: [isNotWhiteSpace, 'Invalid Format']
+    validate: [isNotWhiteSpace, 'Invalid Format'],
   },
   displayName: {
     type: String,
     required: true,
-    validate: [isNotWhiteSpace, 'Invalid Format']
+    validate: [isNotWhiteSpace, 'Invalid Format'],
   },
   password: {
     type: String,
@@ -23,29 +22,29 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
-    validate: [isEmail, 'Invalid Email']
+    validate: [isEmail, 'Invalid Email'],
   },
   address: {
     street: {
       type: String,
       required: true,
-      validate: [isNotWhiteSpace, 'Invalid Format']
+      validate: [isNotWhiteSpace, 'Invalid Format'],
     },
     postalCode: {
       type: String,
       required: true,
-      validate: [isNotWhiteSpace, 'Invalid Format']
+      validate: [isNotWhiteSpace, 'Invalid Format'],
     },
     city: {
       type: String,
       required: true,
-      validate: [isNotWhiteSpace, 'Invalid Format']
+      validate: [isNotWhiteSpace, 'Invalid Format'],
     },
     country: {
       type: String,
       required: true,
-      validate: [isNotWhiteSpace, 'Invalid Format']
-    }
+      validate: [isNotWhiteSpace, 'Invalid Format'],
+    },
   },
   role: {
     type: String,
@@ -62,29 +61,29 @@ const UserSchema = new Schema({
       ref: 'Product',
     },
     amount: {
-      type: Number
-    }
-  }]
+      type: Number,
+    },
+  }],
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
-UserSchema.pre('validate', function (next, done) {
+UserSchema.pre('validate', function (next) {
   if (!this.isModified('email')) {
-    return next();
+    next();
+  } else {
+    this.constructor.findOne({ email: this.email })
+      .then((user) => {
+        if (user) {
+          const error = new Error('User Exists');
+          next(error);
+        }
+        next();
+      });
   }
-  this.constructor.findOne({ email: this.email })
-    .then(user => {
-      if (user) {
-        const error = new Error('User Exists')
-        next(error);
-      }
-      next();
-    }
-    );
 });
 
-UserSchema.pre('save', function (next, done) {
+UserSchema.pre('save', function (next) {
   bcrypt.hash(this.password, +process.env.SALT_ROUNDS, (err, hash) => {
     if (err) {
       const error = new Error('BCRYPT');
@@ -95,18 +94,19 @@ UserSchema.pre('save', function (next, done) {
   });
 });
 
-UserSchema.pre('findOneAndUpdate', function (next, done) {
+UserSchema.pre('findOneAndUpdate', function (next) {
   if (!this._update.password) {
-    return next();
-  }
-  bcrypt.hash(this._update.password, +process.env.SALT_ROUNDS, (err, hash) => {
-    if (err) {
-      const error = new Error('BCRYPT');
-      next(error);
-    }
-    this._update.password = hash;
     next();
-  });
+  } else {
+    bcrypt.hash(this._update.password, +process.env.SALT_ROUNDS, (err, hash) => {
+      if (err) {
+        const error = new Error('BCRYPT');
+        next(error);
+      }
+      this._update.password = hash;
+      next();
+    });
+  }
 });
 
 module.exports = mongoose.model('User', UserSchema);

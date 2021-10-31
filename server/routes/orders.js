@@ -1,8 +1,10 @@
 const express = require('express');
-const adminAuth = require("../utils/adminAuth");
-const userAuth = require("../utils/userAuth");
+const adminAuth = require('../utils/adminAuth');
+const userAuth = require('../utils/userAuth');
 
-const { getAllOrders, addNewOrder, deleteOneOrder, getOneOrder, updateOneOrder, getOrdersByUser } = require('../controllers/orders');
+const {
+  getAllOrders, addNewOrder, deleteOneOrder, getOneOrder, updateOneOrder, getOrdersByUser,
+} = require('../controllers/orders');
 
 const router = express.Router();
 

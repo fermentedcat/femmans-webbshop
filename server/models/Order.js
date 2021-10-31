@@ -1,24 +1,25 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 const OrderSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   orderRows: [{
-      productTitle: {
-        type: String,
-        required: true,
-      },
+    productTitle: {
+      type: String,
+      required: true,
+    },
     amount: {
       type: Number,
       required: true,
     },
     priceEach: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   }],
   address: {
     street: {
@@ -36,21 +37,19 @@ const OrderSchema = new Schema({
     country: {
       type: String,
       required: true,
-    }
+    },
   },
   status: {
     type: String,
     enum: ['Registered', 'Processing', 'Shipped', 'Delivered'],
-    default: 'Registered'
+    default: 'Registered',
   },
   shippingPrice: {
     type: Number,
     default: 0,
-  }
+  },
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
 module.exports = mongoose.model('Order', OrderSchema);
-
-

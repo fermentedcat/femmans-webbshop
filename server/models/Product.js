@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 const ProductSchema = new Schema({
   title: {
@@ -26,10 +27,10 @@ const ProductSchema = new Schema({
   weight: Number,
   photos: {
     type: [String],
-    default: ['https://i.natgeofe.com/n/9135ca87-0115-4a22-8caf-d1bdef97a814/75552_square.jpg']
-  }
+    default: ['https://i.natgeofe.com/n/9135ca87-0115-4a22-8caf-d1bdef97a814/75552_square.jpg'],
+  },
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
 module.exports = mongoose.model('Product', ProductSchema);

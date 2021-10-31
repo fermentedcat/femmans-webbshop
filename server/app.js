@@ -20,7 +20,7 @@ mongoose.connect(process.env.DB_URI, {
   pass: process.env.DB_PASS,
   useNewUrlParser: true,
   useUnifiedTopology: true,
-})
+});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection error:'));
@@ -32,8 +32,8 @@ app.use('/api/products', productsRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/categories', categoriesRoutes);
-app.use('/', (req, res, next) => {
+app.use('/', (req, res) => {
   res.status(404).send('Not found');
-})
+});
 
 app.listen(3000);
