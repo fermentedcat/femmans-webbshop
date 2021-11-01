@@ -4,4 +4,4 @@ export const DATA_CATEGORIES = [
   { category: 'Categories', endpoint: 'categories' },
 ];
 
-export const API_BASE_URL = 'femmans-api.herokuapp.com/api/';
+export const API_BASE_URL = 'https://femmans-api.herokuapp.com/api/';
