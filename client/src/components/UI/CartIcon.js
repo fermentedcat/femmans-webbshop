@@ -10,6 +10,7 @@ export const CartIcon = () => {
     <Box sx={{ display: 'inline-block' }}>
       <IconButton
         sx={{
+          color: '#F9F9F9',
           '& > *': {
             pointerEvents: 'none',
           },
