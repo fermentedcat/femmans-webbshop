@@ -25,13 +25,13 @@ export const ShoppingCart = () => {
   const { data } = useFetch(getCart, triggerChange);
   const { setNotification, cartSet } = useContext(UiContext);
 
-  const handleDeleteItem = (item) => {
-    deleteFromCart(item.product._id);
+  const handleDeleteItem = async (item) => {
+    await deleteFromCart(item.product._id);
     setTriggerChange(!triggerChange);
   };
 
-  const handleEmptyCart = () => {
-    emptyCart();
+  const handleEmptyCart = async () => {
+    await emptyCart();
     setTriggerChange(!triggerChange);
   };
 
