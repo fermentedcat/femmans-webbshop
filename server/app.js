@@ -33,7 +33,7 @@ app.use('/api/orders', ordersRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/categories', categoriesRoutes);
 app.use('/', (req, res) => {
-  res.status(404).send('Not found');
+  res.status(404).send('Not found. Please use /api/...');
 });
 
 app.listen(process.env.PORT);
